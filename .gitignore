@@ -1,0 +1,11 @@
+# Jetbrains IDE
+.idea
+
+# Virtual Enviroments Folders
+env
+venv
+
+# Visual Code
+.vcode
+
+.env
