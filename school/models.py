@@ -26,6 +26,10 @@ class Person(models.Model):
         import datetime
         return int((datetime.datetime.now() - self.birthday).days / 365.25)
 
+    class Meta:
+        verbose_name = 'Persona'
+        verbose_name_plural = 'Personas'
+
 
 class Teacher(models.Model):
     VOCATIONAL_CHOICES = [
@@ -35,3 +39,7 @@ class Teacher(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE, verbose_name='Docente')
     cedula = models.CharField(max_length=16, unique=True)
     vocation = models.CharField(max_length=2, choices=VOCATIONAL_CHOICES, verbose_name='Formacion')
+
+    class Meta:
+        verbose_name = 'Docente'
+        verbose_name_plural = 'Docentes'
