@@ -25,3 +25,13 @@ class Person(models.Model):
     def age(self):
         import datetime
         return int((datetime.datetime.now() - self.birthday).days / 365.25)
+
+
+class Teacher(models.Model):
+    VOCATIONAL_CHOICES = [
+        ('M', 'Masculino'),
+        ('F', 'Femenino'),
+    ]
+    person = models.OneToOneField(Person, on_delete=models.CASCADE, verbose_name='Docente')
+    cedula = models.CharField(max_length=16, unique=True)
+    vocation = models.CharField(max_length=2, choices=VOCATIONAL_CHOICES, verbose_name='Formacion')
