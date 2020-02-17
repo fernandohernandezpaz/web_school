@@ -33,8 +33,8 @@ class Person(models.Model):
 
 class Teacher(models.Model):
     VOCATIONAL_CHOICES = [
-        ('M', 'Masculino'),
-        ('F', 'Femenino'),
+        ('P', 'Primaria'),
+        ('S', 'Secundaria'),
     ]
     person = models.OneToOneField(Person, on_delete=models.CASCADE, verbose_name='Docente')
     cedula = models.CharField(max_length=16, unique=True)
