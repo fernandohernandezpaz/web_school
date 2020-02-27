@@ -99,12 +99,12 @@ class Family(models.Model):
     full_name = models.CharField(max_length=50,
                                  verbose_name='Nombre Completo')
     document = models.CharField(max_length=16, unique=True, null=False, blank=False,
-                                verbose_name='Cedula')
+                                verbose_name='Cédula')
     family_role = models.CharField(max_length=20, choices=FAMILY_ROLE_CHOICES,
                                    null=False, verbose_name='Rol Familiar')
-    mobile = models.PositiveSmallIntegerField(null=True, blank=True,
+    mobile = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Celular')
-    cellphone = models.PositiveSmallIntegerField(null=True, blank=True,
+    cellphone = models.PositiveIntegerField(null=True, blank=True,
                                                  verbose_name='Teléfono')
     tutor = models.BooleanField(default=False, verbose_name='Tutor')
     occupation = models.CharField(max_length=30, blank=True,
@@ -143,6 +143,7 @@ class Student(models.Model):
                                       verbose_name='Estado Estudiante')
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Fecha de Registro')
+    family_members = models.ManyToManyField(Family, verbose_name='Familiares')
 
     def age(self):
         import datetime
