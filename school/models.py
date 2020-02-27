@@ -82,9 +82,44 @@ class PersonalFile(models.Model):
     in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
                                            verbose_name='En caso de emergencias llamar a')
 
-    def __str__(self):
-        return self.have_brothers_center
-
     class Meta:
         verbose_name = 'Expediente Personal'
         verbose_name_plural = 'Expedientes Personales'
+
+
+class Student(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Masculino'),
+        ('F', 'Femenino'),
+    ]
+    STUDENT_STATUS_CHOICE = [
+        (1, 'Nuevo'),
+        (2, 'Reingreso'),
+        (3, 'Inactivo'),
+    ]
+
+    names = models.CharField(max_length=50,
+                             verbose_name='Nombres')
+    last_name = models.CharField(max_length=50,
+                                 verbose_name='Apellidos')
+    birthday = models.DateField(null=False,
+                                verbose_name='Fecha Nacimiento')
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICES,
+                              verbose_name='Género')
+    nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
+                                    verbose_name='Nacionalidad')
+    status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
+                                      verbose_name='Estado Estudiante')
+    created = models.DateTimeField(auto_now_add=True,
+                                   verbose_name='Fecha de Registro')
+
+    def age(self):
+        import datetime
+        return int((datetime.datetime.now() - self.birthday).days / 365.25)
+
+    def __str__(self):
+        return '{} {}'.format(self.names, self.last_name)
+
+    class Meta:
+        verbose_name = 'Estudiante'
+        verbose_name_plural = 'Estudiantes'
