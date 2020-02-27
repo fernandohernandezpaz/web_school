@@ -34,3 +34,15 @@ class Profile(models.Model):
         ordering = ['user']
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfiles'
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=50, unique=True, null=True, blank=True, verbose_name='Nombre')
+    active = models.BooleanField(default=True, verbose_name='Activo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Asignatura'
+        verbose_name_plural = 'Asignaturas'
