@@ -87,6 +87,37 @@ class PersonalFile(models.Model):
         verbose_name_plural = 'Expedientes Personales'
 
 
+class Family(models.Model):
+    FAMILY_ROLE_CHOICES = [
+        ('PAPA', 'PAPA'),
+        ('MAMA', 'MAMA'),
+        ('HERMANO/A', 'HERMANO/A'),
+        ('TIO/A', 'TIO/A'),
+        ('ABUELO/A', 'ABUELO/A'),
+    ]
+
+    full_name = models.CharField(max_length=50,
+                                 verbose_name='Nombre Completo')
+    document = models.CharField(max_length=16, unique=True, null=False, blank=False,
+                                verbose_name='Cédula')
+    family_role = models.CharField(max_length=20, choices=FAMILY_ROLE_CHOICES,
+                                   null=False, verbose_name='Rol Familiar')
+    mobile = models.PositiveIntegerField(null=True, blank=True,
+                                              verbose_name='Celular')
+    cellphone = models.PositiveIntegerField(null=True, blank=True,
+                                                 verbose_name='Teléfono')
+    tutor = models.BooleanField(default=False, verbose_name='Tutor')
+    occupation = models.CharField(max_length=30, blank=True,
+                                  verbose_name="Ocupación")
+
+    def __str__(self):
+        return '{}'.format(self.full_name)
+
+    class Meta:
+        verbose_name = 'Familiar'
+        verbose_name_plural = 'Familiares'
+
+
 class Student(models.Model):
     GENDER_CHOICES = [
         ('M', 'Masculino'),
@@ -112,6 +143,7 @@ class Student(models.Model):
                                       verbose_name='Estado Estudiante')
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Fecha de Registro')
+    family_members = models.ManyToManyField(Family, verbose_name='Familiares')
 
     def age(self):
         import datetime
