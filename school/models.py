@@ -148,8 +148,8 @@ class Student(models.Model):
                                  verbose_name='Apellidos')
     birthday = models.DateField(null=False,
                                 verbose_name='Fecha Nacimiento')
-    gender = models.CharField(max_length=2, choices=GENDER_CHOICES,
-                              verbose_name='Género')
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE,
+                                  verbose_name='Género')
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
