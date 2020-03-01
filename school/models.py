@@ -132,10 +132,6 @@ class Family(models.Model):
 
 
 class Student(models.Model):
-    GENDER_CHOICES = [
-        ('M', 'Masculino'),
-        ('F', 'Femenino'),
-    ]
     STUDENT_STATUS_CHOICE = [
         (1, 'Nuevo'),
         (2, 'Reingreso'),
