@@ -32,6 +32,19 @@ class Nationality(models.Model):
         verbose_name_plural = 'Nacionalidades'
 
 
+class Gender(models.Model):
+    id = models.CharField(primary_key=True, max_length=1, verbose_name='ID')
+    name = models.CharField(max_length=20, verbose_name='Nombre')
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = 'Género'
+        verbose_name_plural = 'Géneros'
+
+
 class Profile(models.Model):
     VOCATIONAL_CHOICES = [
         ('P', 'Primaria'),
@@ -103,9 +116,9 @@ class Family(models.Model):
     family_role = models.CharField(max_length=20, choices=FAMILY_ROLE_CHOICES,
                                    null=False, verbose_name='Rol Familiar')
     mobile = models.PositiveIntegerField(null=True, blank=True,
-                                              verbose_name='Celular')
+                                         verbose_name='Celular')
     cellphone = models.PositiveIntegerField(null=True, blank=True,
-                                                 verbose_name='Teléfono')
+                                            verbose_name='Teléfono')
     tutor = models.BooleanField(default=False, verbose_name='Tutor')
     occupation = models.CharField(max_length=30, blank=True,
                                   verbose_name="Ocupación")
@@ -119,10 +132,6 @@ class Family(models.Model):
 
 
 class Student(models.Model):
-    GENDER_CHOICES = [
-        ('M', 'Masculino'),
-        ('F', 'Femenino'),
-    ]
     STUDENT_STATUS_CHOICE = [
         (1, 'Nuevo'),
         (2, 'Reingreso'),
@@ -135,8 +144,8 @@ class Student(models.Model):
                                  verbose_name='Apellidos')
     birthday = models.DateField(null=False,
                                 verbose_name='Fecha Nacimiento')
-    gender = models.CharField(max_length=2, choices=GENDER_CHOICES,
-                              verbose_name='Género')
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE,
+                                  verbose_name='Género')
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
