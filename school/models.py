@@ -3,23 +3,6 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-GRADE_CHOICES = [
-    ('I', '1er Nivel'),
-    ('II', '2do Nivel'),
-    ('III', '3er Nivel'),
-    ('1er', '1er Grado'),
-    ('2do', '2do Grado'),
-    ('3er', '3er Grado'),
-    ('4to', '4to Grado'),
-    ('5to', '5to Grado'),
-    ('6to', '6to Grado'),
-    ('7mo', '7mo Grado'),
-    ('8vo', '8vo Grado'),
-    ('9no', '9no Grado'),
-    ('10mo', '10mo Grado'),
-    ('11vo', '11vo Grado'),
-]
-
 
 def year_choices():
     return [(r, r) for r in range(2019, datetime.date.today().year)]
@@ -94,8 +77,8 @@ class PersonalFile(models.Model):
                                 verbose_name='Religión')
     origin_center = models.CharField(max_length=50, null=True, blank=False,
                                      verbose_name='Centro de Procedencia')
-    year_taken_origin_center = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
-                                                verbose_name='Año cursado del centro de procedencia')
+    year_taken_origin_center = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True, blank=True,
+                                                 verbose_name='Año cursado del centro de procedencia')
     diseases = models.CharField(max_length=350, null=True, blank=True,
                                 verbose_name='Enfermedades')
     in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
@@ -107,13 +90,13 @@ class PersonalFile(models.Model):
 
 
 class Family(models.Model):
-    FAMILY_ROLE_CHOICES = {
+    FAMILY_ROLE_CHOICES = [
         ('PAPA', 'PAPA'),
         ('MAMA', 'MAMA'),
         ('HERMANO/A', 'HERMANO/A'),
         ('TIO/A', 'TIO/A'),
         ('ABUELO/A', 'ABUELO/A'),
-    }
+    ]
 
     full_name = models.CharField(max_length=50,
                                  verbose_name='Nombre Completo')
@@ -147,8 +130,8 @@ class Matriculation(models.Model):
     teaching_year = models.IntegerField(choices=year_choices(), null=False,
                                         default=datetime.date.today().year,
                                         verbose_name='Año Lectivo')
-    school_year = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
-                                   verbose_name='Año Escolar')
+    school_year = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True,
+                                    blank=True, verbose_name='Año Escolar')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
@@ -192,3 +175,16 @@ class Student(models.Model):
     class Meta:
         verbose_name = 'Estudiante'
         verbose_name_plural = 'Estudiantes'
+
+
+class Grade(models.Model):
+    id = models.CharField(primary_key=True, max_length=4, verbose_name='ID')
+    name = models.CharField(max_length=50, unique=True, verbose_name='Grado')
+    active = models.BooleanField(default=True, verbose_name='Activo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Grado'
+        verbose_name_plural = 'Grados'
