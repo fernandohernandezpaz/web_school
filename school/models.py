@@ -101,13 +101,13 @@ class PersonalFile(models.Model):
 
 
 class Family(models.Model):
-    FAMILY_ROLE_CHOICES = [
+    FAMILY_ROLE_CHOICES = {
         ('PAPA', 'PAPA'),
         ('MAMA', 'MAMA'),
         ('HERMANO/A', 'HERMANO/A'),
         ('TIO/A', 'TIO/A'),
         ('ABUELO/A', 'ABUELO/A'),
-    ]
+    }
 
     full_name = models.CharField(max_length=50,
                                  verbose_name='Nombre Completo')
@@ -131,6 +131,29 @@ class Family(models.Model):
         verbose_name_plural = 'Familiares'
 
 
+class Matriculation(models.Model):
+    STUDENT_STATUS_CHOICE = [
+        (1, 'Nuevo'),
+        (2, 'Inactivo'),
+    ]
+    student = models.OneToOneField(User, on_delete=models.CASCADE,
+                                   verbose_name='Alumno')
+    teaching_year = models.DateField(null=False,
+                                     verbose_name='Año Lectivo')
+    school_year = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
+                                   verbose_name='Año Escolar')
+    registration_date = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='Fecha de Matricula')
+    Family = models.CharField(max_length=50,
+                              verbose_name='Familiar')
+    status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
+                                      verbose_name='Estado')
+
+    class Meta:
+        verbose_name = 'Matricula'
+        verbose_name_plural = 'Matriculas'
+
+
 class Student(models.Model):
     STUDENT_STATUS_CHOICE = [
         (1, 'Nuevo'),
@@ -145,7 +168,7 @@ class Student(models.Model):
     birthday = models.DateField(null=False,
                                 verbose_name='Fecha Nacimiento')
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE,
-                                  verbose_name='Género')
+                               verbose_name='Género')
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
