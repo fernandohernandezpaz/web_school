@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -17,6 +19,10 @@ GRADE_CHOICES = [
     ('10mo', '10mo Grado'),
     ('11vo', '11vo Grado'),
 ]
+
+
+def year_choices():
+    return [(r, r) for r in range(2019, datetime.date.today().year)]
 
 
 # Create your models here.
@@ -138,8 +144,9 @@ class Matriculation(models.Model):
     ]
     student = models.OneToOneField(User, on_delete=models.CASCADE,
                                    verbose_name='Alumno')
-    teaching_year = models.DateField(null=False,
-                                     verbose_name='Año Lectivo')
+    teaching_year = models.IntegerField(choices=year_choices(), null=False,
+                                        default=datetime.date.today().year,
+                                        verbose_name='Año Lectivo')
     school_year = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
                                    verbose_name='Año Escolar')
     registration_date = models.DateTimeField(auto_now_add=True,
