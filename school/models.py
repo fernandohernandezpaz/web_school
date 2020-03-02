@@ -94,8 +94,8 @@ class PersonalFile(models.Model):
                                 verbose_name='Religión')
     origin_center = models.CharField(max_length=50, null=True, blank=False,
                                      verbose_name='Centro de Procedencia')
-    year_taken_origin_center = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
-                                                verbose_name='Año cursado del centro de procedencia')
+    year_taken_origin_center = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True, blank=True,
+                                                 verbose_name='Año cursado del centro de procedencia')
     diseases = models.CharField(max_length=350, null=True, blank=True,
                                 verbose_name='Enfermedades')
     in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
@@ -147,8 +147,8 @@ class Matriculation(models.Model):
     teaching_year = models.IntegerField(choices=year_choices(), null=False,
                                         default=datetime.date.today().year,
                                         verbose_name='Año Lectivo')
-    school_year = models.CharField(max_length=4, choices=GRADE_CHOICES, null=True,
-                                   verbose_name='Año Escolar')
+    school_year = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True,
+                                    blank=True, verbose_name='Año Escolar')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
