@@ -144,8 +144,6 @@ class Matriculation(models.Model):
                                    verbose_name='Año Escolar')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
-    Family = models.CharField(max_length=50,
-                              verbose_name='Familiar')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
                                       verbose_name='Estado')
 
