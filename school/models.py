@@ -3,23 +3,6 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-GRADE_CHOICES = [
-    ('I', '1er Nivel'),
-    ('II', '2do Nivel'),
-    ('III', '3er Nivel'),
-    ('1er', '1er Grado'),
-    ('2do', '2do Grado'),
-    ('3er', '3er Grado'),
-    ('4to', '4to Grado'),
-    ('5to', '5to Grado'),
-    ('6to', '6to Grado'),
-    ('7mo', '7mo Grado'),
-    ('8vo', '8vo Grado'),
-    ('9no', '9no Grado'),
-    ('10mo', '10mo Grado'),
-    ('11vo', '11vo Grado'),
-]
-
 
 def year_choices():
     return [(r, r) for r in range(2019, datetime.date.today().year)]
