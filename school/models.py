@@ -107,13 +107,13 @@ class PersonalFile(models.Model):
 
 
 class Family(models.Model):
-    FAMILY_ROLE_CHOICES = {
+    FAMILY_ROLE_CHOICES = [
         ('PAPA', 'PAPA'),
         ('MAMA', 'MAMA'),
         ('HERMANO/A', 'HERMANO/A'),
         ('TIO/A', 'TIO/A'),
         ('ABUELO/A', 'ABUELO/A'),
-    }
+    ]
 
     full_name = models.CharField(max_length=50,
                                  verbose_name='Nombre Completo')
@@ -192,3 +192,16 @@ class Student(models.Model):
     class Meta:
         verbose_name = 'Estudiante'
         verbose_name_plural = 'Estudiantes'
+
+
+class Grade(models.Model):
+    id = models.CharField(primary_key=True, max_length=4, verbose_name='ID')
+    name = models.CharField(max_length=50, unique=True, verbose_name='Grado')
+    active = models.BooleanField(default=True, verbose_name='Activo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Grado'
+        verbose_name_plural = 'Grados'
