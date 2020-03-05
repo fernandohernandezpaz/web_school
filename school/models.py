@@ -187,3 +187,24 @@ class Student(models.Model):
     class Meta:
         verbose_name = 'Estudiante'
         verbose_name_plural = 'Estudiantes'
+
+
+class CenterPapers(models.Model):
+    id = models.PositiveIntegerField(primary_key=True,
+                                     verbose_name='ID')
+    matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
+                                      verbose_name='Matricula')
+    note = models.BooleanField(default=True,
+                               verbose_name='Nota')
+    diploma = models.BooleanField(default=True,
+                               verbose_name='Diploma')
+    birth_certificate = models.BooleanField(default=True,
+                               verbose_name='Partida de Nacimiento')
+    certificate_of_conduct = models.BooleanField(default=True,
+                               verbose_name='Certificado de Conducta')
+    observations = models.CharField(max_length=200, null=True, blank=True,
+                                    verbose_name='Observaciones')
+
+    class Meta:
+        verbose_name = 'Papel del Centro'
+        verbose_name_plural = 'Papeles del Centro'
