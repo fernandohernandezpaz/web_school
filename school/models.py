@@ -208,3 +208,4 @@ class CenterPapers(models.Model):
     class Meta:
         verbose_name = 'Papel del Centro'
         verbose_name_plural = 'Papeles del Centro'
+
