@@ -188,3 +188,25 @@ class Grade(models.Model):
     class Meta:
         verbose_name = 'Grado'
         verbose_name_plural = 'Grados'
+
+
+class PaperCenter(models.Model):
+    matricula = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
+                                  verbose_name='Matricula')
+    academic_notes = models.BooleanField(default=False,
+                                         verbose_name='¿Entrego boletin de notas?')
+    diploma = models.BooleanField(default=False,
+                                  verbose_name='¿Entrego Diploma?')
+    birth_certificate = models.BooleanField(default=False,
+                                            verbose_name='¿Entrego Partida de nacimiento?')
+    conduct_certificate = models.BooleanField(default=False,
+                                              verbose_name='¿Entrego Certificado de conducta?')
+    observations = models.TextField(null=True, blank=True,
+                                    verbose_name='Observaciones')
+
+    def __str__(self):
+        return self.matricula_id
+
+    class Meta:
+        verbose_name = 'Papeles para el Centro'
+        verbose_name_plural = 'Papeles para el Centro'
