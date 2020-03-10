@@ -210,3 +210,28 @@ class PaperCenter(models.Model):
     class Meta:
         verbose_name = 'Papeles para el Centro'
         verbose_name_plural = 'Papeles para el Centro'
+
+
+class Note(models.Model):
+    matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
+                                 verbose_name='Matricula')
+    course_id = models.ForeignKey(Course,on_delete=models.CASCADE,
+                           verbose_name='Asignatura_Id')
+    bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
+                                              verbose_name='Bimensual I')
+    bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Bimensual II')
+    biannual_I = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Semestral I')
+    bimonthly_III = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Bimensual III')
+    bimonthly_IV = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Bimensual IV')
+    biannual_II = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Semestral II')
+    final = models.PositiveIntegerField(null=True, blank=True,
+                                             verbose_name='Final')
+
+    class Meta:
+        verbose_name = 'Nota'
+        verbose_name_plural = 'Notas'
