@@ -179,7 +179,7 @@ class Student(models.Model):
 
 class Grade(models.Model):
     id = models.CharField(primary_key=True, max_length=4, verbose_name='ID')
-    name = models.CharField(max_length=50, unique=True, verbose_name='Grado')
+    name = models.CharField(max_length=50, verbose_name='Grado')
     active = models.BooleanField(default=True, verbose_name='Activo')
 
     def __str__(self):
