@@ -69,6 +69,8 @@ class Course(models.Model):
 
 class PersonalFile(models.Model):
     YES_OR_NOT_CHOICES = ((True, 'Si'), (False, 'No'))
+    student = models.OneToOneField('Student', on_delete=models.CASCADE,
+                                   verbose_name='Estudiante')
     have_brothers_center = models.BooleanField(choices=YES_OR_NOT_CHOICES, null=False,
                                                verbose_name='¿Tiene hermanos en el centro?')
     how_many = models.PositiveSmallIntegerField(null=True, blank=True,
@@ -163,7 +165,8 @@ class Student(models.Model):
                                       verbose_name='Estado Estudiante')
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Fecha de Registro')
-    family_members = models.ManyToManyField(Family, verbose_name='Familiares')
+    family_members = models.ManyToManyField(Family, blank=True,
+                                            verbose_name='Familiares')
 
     def age(self):
         import datetime
