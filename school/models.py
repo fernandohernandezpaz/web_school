@@ -86,6 +86,9 @@ class PersonalFile(models.Model):
     in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
                                            verbose_name='En caso de emergencias llamar a')
 
+    def __str__(self):
+        return '{} {}'.format(self.student.names, self.student.last_name)
+
     class Meta:
         verbose_name = 'Expediente Personal'
         verbose_name_plural = 'Expedientes Personales'
