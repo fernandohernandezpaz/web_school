@@ -54,6 +54,8 @@ class Profile(models.Model):
     address = models.TextField(max_length=200, null=True,
                                blank=True,
                                verbose_name='Dirección')
+    courses = models.ManyToManyField('Course',
+                                     verbose_name='Asignaturas')
 
     def __str__(self):
         return "%s" % self.user
