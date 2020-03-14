@@ -127,7 +127,7 @@ class Family(models.Model):
 
 class Matriculation(models.Model):
     STUDENT_STATUS_CHOICE = [
-        (1, 'Nuevo'),
+        (1, 'Activo'),
         (2, 'Inactivo'),
     ]
     student = models.OneToOneField('Student', on_delete=models.CASCADE,
