@@ -127,7 +127,7 @@ class Matriculation(models.Model):
         (1, 'Nuevo'),
         (2, 'Inactivo'),
     ]
-    student = models.OneToOneField(User, on_delete=models.CASCADE,
+    student = models.OneToOneField('Student', on_delete=models.CASCADE,
                                    verbose_name='Alumno')
     teaching_year = models.IntegerField(choices=year_choices(), null=False,
                                         default=datetime.date.today().year,
