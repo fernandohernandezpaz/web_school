@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 def year_choices():
-    return [(r, r) for r in range(2019, datetime.date.today().year)]
+    return [(r, r) for r in range(2020, datetime.date.today().year)]
 
 
 # Create your models here.
