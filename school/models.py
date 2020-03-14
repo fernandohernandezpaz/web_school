@@ -142,6 +142,12 @@ class Matriculation(models.Model):
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
                                       verbose_name='Estado')
 
+    def __str__(self):
+        return '{} {} - {} - {}'.format(self.student.names,
+                                     self.student.last_name,
+                                     self.teaching_year,
+                                     self.school_year)
+
     class Meta:
         verbose_name = 'Matricula'
         verbose_name_plural = 'Matriculas'
