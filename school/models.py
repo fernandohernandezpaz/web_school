@@ -48,7 +48,7 @@ class Profile(models.Model):
     vocation = models.CharField(max_length=2,
                                 choices=VOCATIONAL_CHOICES,
                                 verbose_name='Formación')
-    cellphone = models.PositiveSmallIntegerField(null=True,
+    cellphone = models.PositiveIntegerField(null=True,
                                                  blank=True,
                                                  verbose_name='Teléfono')
     address = models.TextField(max_length=200, null=True,
