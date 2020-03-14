@@ -151,6 +151,7 @@ class Matriculation(models.Model):
     class Meta:
         verbose_name = 'Matricula'
         verbose_name_plural = 'Matriculas'
+        unique_together = [['student', 'teaching_year']]
 
 
 class Student(models.Model):
