@@ -136,7 +136,7 @@ class Matriculation(models.Model):
                                         default=datetime.date.today().year,
                                         verbose_name='Año Lectivo')
     school_year = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True,
-                                    blank=True, verbose_name='Año Escolar')
+                                    blank=True, verbose_name='Año Escolar(A cursar)')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
