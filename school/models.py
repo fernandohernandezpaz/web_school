@@ -204,7 +204,7 @@ class Grade(models.Model):
 
 
 class PaperCenter(models.Model):
-    matricula = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
+    matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
                                   verbose_name='Matricula')
     academic_notes = models.BooleanField(default=False,
                                          verbose_name='¿Entrego boletin de notas?')
@@ -218,7 +218,7 @@ class PaperCenter(models.Model):
                                     verbose_name='Observaciones')
 
     def __str__(self):
-        return self.matricula_id
+        return '{}'.format(self.matriculation)
 
     class Meta:
         verbose_name = 'Papeles para el Centro'
