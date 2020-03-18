@@ -243,8 +243,8 @@ class PaperCenter(models.Model):
 class Note(models.Model):
     matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
                                  verbose_name='Matricula')
-    course_id = models.ForeignKey(Course,on_delete=models.CASCADE,
-                           verbose_name='Asignatura_Id')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                           verbose_name='Asignatura')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Bimensual I')
     bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
@@ -260,6 +260,10 @@ class Note(models.Model):
     final = models.PositiveIntegerField(null=True, blank=True,
                                              verbose_name='Final')
 
+    def __str__(self):
+        return '{} {}'.format(self.course.name, self.matriculation)
+
     class Meta:
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
+
