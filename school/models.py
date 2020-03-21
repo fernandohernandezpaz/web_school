@@ -10,7 +10,7 @@ def year_choices():
 
 # Create your models here.
 class Nationality(models.Model):
-    name = models.CharField(max_length=50, unique=True, verbose_name='País')
+    name = models.CharField(max_length=50, verbose_name='País')
     active = models.BooleanField(default=True, verbose_name='Activo')
 
     def __str__(self):
@@ -67,8 +67,7 @@ class Profile(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=50, unique=True,
-                            null=True,
+    name = models.CharField(max_length=50, null=True,
                             blank=True,
                             verbose_name='Nombre')
     active = models.BooleanField(default=True,
