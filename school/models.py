@@ -49,8 +49,8 @@ class Profile(models.Model):
                                 choices=VOCATIONAL_CHOICES,
                                 verbose_name='Formación')
     cellphone = models.PositiveIntegerField(null=True,
-                                                 blank=True,
-                                                 verbose_name='Teléfono')
+                                            blank=True,
+                                            verbose_name='Teléfono')
     address = models.TextField(max_length=200, null=True,
                                blank=True,
                                verbose_name='Dirección')
@@ -145,7 +145,7 @@ class Matriculation(models.Model):
         (2, 'Inactivo'),
     ]
     student = models.ForeignKey('Student', on_delete=models.CASCADE,
-                                   verbose_name='Alumno')
+                                verbose_name='Alumno')
     teaching_year = models.IntegerField(choices=year_choices(), null=False,
                                         default=datetime.date.today().year,
                                         verbose_name='Año Lectivo')
@@ -158,9 +158,9 @@ class Matriculation(models.Model):
 
     def __str__(self):
         return '{} {} - {} - {}'.format(self.student.names,
-                                     self.student.last_name,
-                                     self.teaching_year,
-                                     self.school_year)
+                                        self.student.last_name,
+                                        self.teaching_year,
+                                        self.school_year)
 
     class Meta:
         verbose_name = 'Matricula'
@@ -219,7 +219,7 @@ class Grade(models.Model):
 
 class PaperCenter(models.Model):
     matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
-                                  verbose_name='Matricula')
+                                      verbose_name='Matricula')
     academic_notes = models.BooleanField(default=False,
                                          verbose_name='¿Entrego boletin de notas?')
     diploma = models.BooleanField(default=False,
@@ -241,23 +241,23 @@ class PaperCenter(models.Model):
 
 class Note(models.Model):
     matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
-                                 verbose_name='Matricula')
+                                      verbose_name='Matricula')
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
-                           verbose_name='Asignatura')
+                               verbose_name='Asignatura')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Bimensual I')
     bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
-                                             verbose_name='Bimensual II')
+                                               verbose_name='Bimensual II')
     biannual_I = models.PositiveIntegerField(null=True, blank=True,
                                              verbose_name='Semestral I')
     bimonthly_III = models.PositiveIntegerField(null=True, blank=True,
-                                             verbose_name='Bimensual III')
+                                                verbose_name='Bimensual III')
     bimonthly_IV = models.PositiveIntegerField(null=True, blank=True,
-                                             verbose_name='Bimensual IV')
+                                               verbose_name='Bimensual IV')
     biannual_II = models.PositiveIntegerField(null=True, blank=True,
-                                             verbose_name='Semestral II')
+                                              verbose_name='Semestral II')
     final = models.PositiveIntegerField(null=True, blank=True,
-                                             verbose_name='Final')
+                                        verbose_name='Final')
 
     def __str__(self):
         return '{} {}'.format(self.course.name, self.matriculation)
@@ -266,3 +266,14 @@ class Note(models.Model):
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
 
+
+class Section(models.Model):
+    name = models.CharField(max_length=1, verbose_name='Seccion')
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = 'Seccion'
+        verbose_name_plural = 'Secciones'

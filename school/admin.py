@@ -2,7 +2,7 @@ from django.contrib import admin
 from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
-                           PaperCenter, Note)
+                           PaperCenter, Note, Section)
 
 
 # Admin Class for Catalogs
@@ -22,3 +22,4 @@ admin.site.register(Family)
 admin.site.register(Matriculation)
 admin.site.register(PaperCenter)
 admin.site.register(Note)
+admin.site.register(Section)
