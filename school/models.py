@@ -68,6 +68,28 @@ class Course(models.Model):
         verbose_name_plural = 'Asignaturas'
 
 
+class GradeSection(models.Model):
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE,
+                              verbose_name='Grado')
+    section = models.ForeignKey(Section, on_delete=models.CASCADE,
+                                verbose_name='Seccion')
+
+    class Meta:
+        verbose_name = 'Grado Seccion'
+        verbose_name_plural = 'Grados Secciones'
+
+
+class CourseGradeSection(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               verbose_name='Asignatura')
+    grade_section = models.ForeignKey(GradeSection, on_delete=models.CASCADE,
+                                      verbose_name='Grado Seccion')
+
+    class Meta:
+        verbose_name = 'Asignatura Grado Seccion'
+        verbose_name_plural = 'Asignaturas Grados Secciones'
+
+
 class Profile(models.Model):
     VOCATIONAL_CHOICES = [
         ('P', 'Primaria'),
