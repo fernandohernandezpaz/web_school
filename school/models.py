@@ -4,10 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-def year_choices():
-    return [(r, r) for r in range(2020, datetime.date.today().year)]
-
-
 # Create your models here.
 class Nationality(models.Model):
     name = models.CharField(max_length=50, verbose_name='País')
@@ -22,7 +18,6 @@ class Nationality(models.Model):
 
 
 class Gender(models.Model):
-    id = models.CharField(primary_key=True, max_length=1, verbose_name='ID')
     name = models.CharField(max_length=20, verbose_name='Nombre')
     active = models.BooleanField(default=True)
 
@@ -32,6 +27,45 @@ class Gender(models.Model):
     class Meta:
         verbose_name = 'Género'
         verbose_name_plural = 'Géneros'
+
+
+class Section(models.Model):
+    name = models.CharField(max_length=1, verbose_name='Seccion')
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = 'Seccion'
+        verbose_name_plural = 'Secciones'
+
+
+class Grade(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Grado')
+    active = models.BooleanField(default=True, verbose_name='Activo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Grado'
+        verbose_name_plural = 'Grados'
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=50, null=True,
+                            blank=True,
+                            verbose_name='Nombre')
+    active = models.BooleanField(default=True,
+                                 verbose_name='Activo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Asignatura'
+        verbose_name_plural = 'Asignaturas'
 
 
 class Profile(models.Model):
@@ -54,8 +88,6 @@ class Profile(models.Model):
     address = models.TextField(max_length=200, null=True,
                                blank=True,
                                verbose_name='Dirección')
-    courses = models.ManyToManyField('Course',
-                                     verbose_name='Asignaturas')
 
     def __str__(self):
         return "%s" % self.user
@@ -64,48 +96,6 @@ class Profile(models.Model):
         ordering = ['user']
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfiles'
-
-
-class Course(models.Model):
-    name = models.CharField(max_length=50, null=True,
-                            blank=True,
-                            verbose_name='Nombre')
-    active = models.BooleanField(default=True,
-                                 verbose_name='Activo')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Asignatura'
-        verbose_name_plural = 'Asignaturas'
-
-
-class PersonalFile(models.Model):
-    YES_OR_NOT_CHOICES = ((True, 'Si'), (False, 'No'))
-    student = models.OneToOneField('Student', on_delete=models.CASCADE,
-                                   verbose_name='Estudiante')
-    have_brothers_center = models.BooleanField(choices=YES_OR_NOT_CHOICES, null=False,
-                                               verbose_name='¿Tiene hermanos en el centro?')
-    how_many = models.PositiveSmallIntegerField(null=True, blank=True,
-                                                verbose_name='¿Cuántos?')
-    religion = models.CharField(max_length=20, null=True, blank=False,
-                                verbose_name='Religión')
-    origin_center = models.CharField(max_length=50, null=True, blank=False,
-                                     verbose_name='Centro de Procedencia')
-    year_taken_origin_center = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True, blank=True,
-                                                 verbose_name='Año cursado del centro de procedencia')
-    diseases = models.CharField(max_length=350, null=True, blank=True,
-                                verbose_name='Enfermedades')
-    in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
-                                           verbose_name='En caso de emergencias llamar a')
-
-    def __str__(self):
-        return '{} {}'.format(self.student.names, self.student.last_name)
-
-    class Meta:
-        verbose_name = 'Expediente Personal'
-        verbose_name_plural = 'Expedientes Personales'
 
 
 class Family(models.Model):
@@ -139,35 +129,6 @@ class Family(models.Model):
         verbose_name_plural = 'Familiares'
 
 
-class Matriculation(models.Model):
-    STUDENT_STATUS_CHOICE = [
-        (1, 'Activo'),
-        (2, 'Inactivo'),
-    ]
-    student = models.ForeignKey('Student', on_delete=models.CASCADE,
-                                verbose_name='Alumno')
-    teaching_year = models.IntegerField(choices=year_choices(), null=False,
-                                        default=datetime.date.today().year,
-                                        verbose_name='Año Lectivo')
-    school_year = models.ForeignKey('Grade', on_delete=models.SET_NULL, null=True,
-                                    blank=True, verbose_name='Año Escolar(A cursar)')
-    registration_date = models.DateTimeField(auto_now_add=True,
-                                             verbose_name='Fecha de Matricula')
-    status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
-                                      verbose_name='Estado')
-
-    def __str__(self):
-        return '{} {} - {} - {}'.format(self.student.names,
-                                        self.student.last_name,
-                                        self.teaching_year,
-                                        self.school_year)
-
-    class Meta:
-        verbose_name = 'Matricula'
-        verbose_name_plural = 'Matriculas'
-        unique_together = [['student', 'teaching_year']]
-
-
 class Student(models.Model):
     STUDENT_STATUS_CHOICE = [
         (1, 'Nuevo'),
@@ -181,8 +142,6 @@ class Student(models.Model):
                                  verbose_name='Apellidos')
     birthday = models.DateField(null=False,
                                 verbose_name='Fecha Nacimiento')
-    gender = models.ForeignKey(Gender, on_delete=models.CASCADE,
-                               verbose_name='Género')
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
@@ -204,17 +163,56 @@ class Student(models.Model):
         verbose_name_plural = 'Estudiantes'
 
 
-class Grade(models.Model):
-    id = models.CharField(primary_key=True, max_length=4, verbose_name='ID')
-    name = models.CharField(max_length=50, verbose_name='Grado')
-    active = models.BooleanField(default=True, verbose_name='Activo')
+class PersonalFile(models.Model):
+    YES_OR_NOT_CHOICES = ((True, 'Si'), (False, 'No'))
+    student = models.OneToOneField(Student, on_delete=models.CASCADE,
+                                   verbose_name='Estudiante')
+    have_brothers_center = models.BooleanField(choices=YES_OR_NOT_CHOICES, null=False,
+                                               verbose_name='¿Tiene hermanos en el centro?')
+    how_many = models.PositiveSmallIntegerField(null=True, blank=True,
+                                                verbose_name='¿Cuántos?')
+    religion = models.CharField(max_length=20, null=True, blank=False,
+                                verbose_name='Religión')
+    origin_center = models.CharField(max_length=50, null=True, blank=False,
+                                     verbose_name='Centro de Procedencia')
+    diseases = models.CharField(max_length=350, null=True, blank=True,
+                                verbose_name='Enfermedades')
+    in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
+                                           verbose_name='En caso de emergencias llamar a')
 
     def __str__(self):
-        return self.name
+        return '{} {}'.format(self.student.names, self.student.last_name)
 
     class Meta:
-        verbose_name = 'Grado'
-        verbose_name_plural = 'Grados'
+        verbose_name = 'Expediente Personal'
+        verbose_name_plural = 'Expedientes Personales'
+
+
+class Matriculation(models.Model):
+    STUDENT_STATUS_CHOICE = [
+        (1, 'Activo'),
+        (2, 'Inactivo'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE,
+                                verbose_name='Alumno')
+    teaching_year = models.IntegerField(null=False,
+                                        default=datetime.date.today().year,
+                                        verbose_name='Año Lectivo')
+    registration_date = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='Fecha de Matricula')
+    status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
+                                      verbose_name='Estado')
+
+    def __str__(self):
+        return '{} {} - {} - {}'.format(self.student.names,
+                                        self.student.last_name,
+                                        self.teaching_year,
+                                        self.school_year)
+
+    class Meta:
+        verbose_name = 'Matricula'
+        verbose_name_plural = 'Matriculas'
+        unique_together = [['student', 'teaching_year']]
 
 
 class PaperCenter(models.Model):
@@ -240,8 +238,6 @@ class PaperCenter(models.Model):
 
 
 class Note(models.Model):
-    matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
-                                      verbose_name='Matricula')
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='Asignatura')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
@@ -265,15 +261,3 @@ class Note(models.Model):
     class Meta:
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
-
-
-class Section(models.Model):
-    name = models.CharField(max_length=1, verbose_name='Seccion')
-    active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = 'Seccion'
-        verbose_name_plural = 'Secciones'
