@@ -142,6 +142,8 @@ class Student(models.Model):
                                  verbose_name='Apellidos')
     birthday = models.DateField(null=False,
                                 verbose_name='Fecha Nacimiento')
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE,
+                               verbose_name='Género')
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
@@ -175,6 +177,9 @@ class PersonalFile(models.Model):
                                 verbose_name='Religión')
     origin_center = models.CharField(max_length=50, null=True, blank=False,
                                      verbose_name='Centro de Procedencia')
+    year_taken_origin_center = models.ForeignKey(Grade, on_delete=models.SET_NULL,
+                                                 null=True, blank=True,
+                                                 verbose_name='Año cursado del centro de procedencia')
     diseases = models.CharField(max_length=350, null=True, blank=True,
                                 verbose_name='Enfermedades')
     in_emergencies_call = models.CharField(max_length=350, null=True, blank=True,
@@ -196,7 +201,7 @@ class Matriculation(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
                                 verbose_name='Alumno')
     teaching_year = models.IntegerField(null=False,
-                                        default=datetime.date.today().year,
+                                        default=int(datetime.date.today().year),
                                         verbose_name='Año Lectivo')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
@@ -206,8 +211,7 @@ class Matriculation(models.Model):
     def __str__(self):
         return '{} {} - {} - {}'.format(self.student.names,
                                         self.student.last_name,
-                                        self.teaching_year,
-                                        self.school_year)
+                                        self.teaching_year)
 
     class Meta:
         verbose_name = 'Matricula'
