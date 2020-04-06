@@ -283,6 +283,8 @@ class MatriculationGradeSection(models.Model):
 class Note(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='Asignatura')
+    matrigradesection = models.ForeignKey(MatriculationGradeSection, on_delete=models.CASCADE,
+                                          verbose_name='Matricula Grado Seccion')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Bimensual I')
     bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
@@ -297,9 +299,11 @@ class Note(models.Model):
                                               verbose_name='Semestral II')
     final = models.PositiveIntegerField(null=True, blank=True,
                                         verbose_name='Final')
+    registration_date = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='Fecha de Registro')
 
     def __str__(self):
-        return '{} {}'.format(self.course.name, self.matriculation)
+        return '{} {}'.format(self.course.name, self.matrigradesection)
 
     class Meta:
         verbose_name = 'Nota'
