@@ -110,6 +110,9 @@ class Profile(models.Model):
     address = models.TextField(max_length=200, null=True,
                                blank=True,
                                verbose_name='Dirección')
+    coursesgradesection = models.ManyToManyField(CourseGradeSection,
+                                                 blank=True,
+                                                 verbose_name='Projects')
 
     def __str__(self):
         return "%s" % self.user
@@ -283,8 +286,11 @@ class MatriculationGradeSection(models.Model):
 class Note(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='Asignatura')
-    matrigradesection = models.ForeignKey(MatriculationGradeSection, on_delete=models.CASCADE,
+    matrigradesection = models.ForeignKey(MatriculationGradeSection,
+                                          on_delete=models.CASCADE,
                                           verbose_name='Matricula Grado Seccion')
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE,
+                                verbose_name='Docente')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Bimensual I')
     bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
