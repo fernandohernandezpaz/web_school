@@ -74,6 +74,9 @@ class GradeSection(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE,
                                 verbose_name='Seccion')
 
+    def __str__(self):
+        return '{} {}'.format(self.grade, self.section)
+
     class Meta:
         verbose_name = 'Grado Seccion'
         verbose_name_plural = 'Grados Secciones'
@@ -84,6 +87,9 @@ class CourseGradeSection(models.Model):
                                verbose_name='Asignatura')
     grade_section = models.ForeignKey(GradeSection, on_delete=models.CASCADE,
                                       verbose_name='Grado Seccion')
+
+    def __str__(self):
+        return '{} {}'.format(self.course, self.grade_section)
 
     class Meta:
         verbose_name = 'Asignatura Grado Seccion'
