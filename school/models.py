@@ -314,3 +314,19 @@ class Note(models.Model):
     class Meta:
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
+
+
+class NoteControlEdition(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE,
+                             verbose_name='Nota')
+    edit_field = models.CharField(max_length=10, verbose_name='Campo Edición')
+    value_edit_field = models.IntegerField(verbose_name='Valor')
+    supervisor = models.ForeignKey(User, on_delete=models.CASCADE,
+                                   null=True, blank=True,
+                                   verbose_name='Supervisor')
+    registration_date = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='Fecha de Registro')
+
+    class Meta:
+        verbose_name = 'Nota Control Edición'
+        verbose_name_plural = 'Notas Control Edición'
