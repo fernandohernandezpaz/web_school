@@ -289,6 +289,8 @@ class Note(models.Model):
     matrigradesection = models.ForeignKey(MatriculationGradeSection,
                                           on_delete=models.CASCADE,
                                           verbose_name='Matricula Grado Seccion')
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE,
+                                verbose_name='Docente')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
                                               verbose_name='Bimensual I')
     bimonthly_II = models.PositiveIntegerField(null=True, blank=True,
