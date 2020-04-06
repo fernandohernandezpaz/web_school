@@ -231,9 +231,9 @@ class Matriculation(models.Model):
                                       verbose_name='Estado')
 
     def __str__(self):
-        return '{} {} - {} - {}'.format(self.student.names,
-                                        self.student.last_name,
-                                        self.teaching_year)
+        return '{} {} - {}'.format(self.student.names,
+                                   self.student.last_name,
+                                   self.teaching_year)
 
     class Meta:
         verbose_name = 'Matricula'
@@ -261,6 +261,23 @@ class PaperCenter(models.Model):
     class Meta:
         verbose_name = 'Papeles para el Centro'
         verbose_name_plural = 'Papeles para el Centro'
+
+
+class MatriculationGradeSection(models.Model):
+    matriculation = models.ForeignKey(Matriculation,
+                                      on_delete=models.CASCADE,
+                                      verbose_name='Matricula')
+    gradesection = models.ForeignKey(GradeSection,
+                                     on_delete=models.CASCADE,
+                                     verbose_name='Grado y Sección')
+
+    def __str__(self):
+        return '{} {}'.format(self.matriculation,
+                              self.gradesection)
+
+    class Meta:
+        verbose_name = 'Matrícula grado sección'
+        verbose_name_plural = 'Matrículas grados secciones'
 
 
 class Note(models.Model):
