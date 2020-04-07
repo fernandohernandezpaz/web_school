@@ -118,7 +118,7 @@ class Profile(models.Model):
                                verbose_name='Dirección')
     coursesgradesection = models.ManyToManyField(CourseGradeSection,
                                                  blank=True,
-                                                 verbose_name='Projects')
+                                                 verbose_name='Asignaturas')
 
     def __str__(self):
         return "%s" % self.user
@@ -287,6 +287,7 @@ class MatriculationGradeSection(models.Model):
     class Meta:
         verbose_name = 'Matrícula grado sección'
         verbose_name_plural = 'Matrículas grados secciones'
+        unique_together = [['matriculation', 'gradesection']]
 
 
 class Note(models.Model):
@@ -320,6 +321,7 @@ class Note(models.Model):
     class Meta:
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
+        unique_together = [['matrigradesection', 'course']]
 
 
 class NoteControlEdition(models.Model):
