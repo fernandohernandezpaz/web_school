@@ -287,6 +287,7 @@ class MatriculationGradeSection(models.Model):
     class Meta:
         verbose_name = 'Matrícula grado sección'
         verbose_name_plural = 'Matrículas grados secciones'
+        unique_together = [['matriculation', 'gradesection']]
 
 
 class Note(models.Model):
