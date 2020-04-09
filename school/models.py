@@ -226,8 +226,10 @@ class PersonalFile(models.Model):
 
 class Matriculation(models.Model):
     STUDENT_STATUS_CHOICE = [
+        (0, 'Inactivo'),
         (1, 'Activo'),
-        (2, 'Inactivo'),
+        (2, 'Finalizo Satisfactoriamente'),
+        (3, 'Finaliza Insatisfactoriamente'),
     ]
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
                                 verbose_name='Alumno')
@@ -236,10 +238,11 @@ class Matriculation(models.Model):
                                         verbose_name='Año Lectivo')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
-    gradesection = models.ForeignKey(GradeSection,
+    grade_section = models.ForeignKey(GradeSection,
                                      on_delete=models.CASCADE,
                                      verbose_name='Grado y Sección')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
+                                      default=1,
                                       verbose_name='Estado')
 
     def __str__(self):
@@ -273,7 +276,6 @@ class PaperCenter(models.Model):
     class Meta:
         verbose_name = 'Papeles para el Centro'
         verbose_name_plural = 'Papeles para el Centro'
-
 
 
 class Note(models.Model):
