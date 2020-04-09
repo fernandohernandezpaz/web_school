@@ -236,6 +236,9 @@ class Matriculation(models.Model):
                                         verbose_name='Año Lectivo')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
+    gradesection = models.ForeignKey(GradeSection,
+                                     on_delete=models.CASCADE,
+                                     verbose_name='Grado y Sección')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
                                       verbose_name='Estado')
 
@@ -272,30 +275,13 @@ class PaperCenter(models.Model):
         verbose_name_plural = 'Papeles para el Centro'
 
 
-class MatriculationGradeSection(models.Model):
-    matriculation = models.ForeignKey(Matriculation,
-                                      on_delete=models.CASCADE,
-                                      verbose_name='Matricula')
-    gradesection = models.ForeignKey(GradeSection,
-                                     on_delete=models.CASCADE,
-                                     verbose_name='Grado y Sección')
-
-    def __str__(self):
-        return '{} {}'.format(self.matriculation,
-                              self.gradesection)
-
-    class Meta:
-        verbose_name = 'Matrícula grado sección'
-        verbose_name_plural = 'Matrículas grados secciones'
-        unique_together = [['matriculation', 'gradesection']]
-
 
 class Note(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='Asignatura')
-    matrigradesection = models.ForeignKey(MatriculationGradeSection,
+    matriculation = models.ForeignKey(Matriculation,
                                           on_delete=models.CASCADE,
-                                          verbose_name='Matricula Grado Seccion')
+                                          verbose_name='Matricula')
     teacher = models.ForeignKey(User, on_delete=models.CASCADE,
                                 verbose_name='Docente')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
@@ -316,12 +302,12 @@ class Note(models.Model):
                                              verbose_name='Fecha de Registro')
 
     def __str__(self):
-        return '{} {}'.format(self.course.name, self.matrigradesection)
+        return '{} {}'.format(self.course.name, self.matriculation)
 
     class Meta:
         verbose_name = 'Nota'
         verbose_name_plural = 'Notas'
-        unique_together = [['matrigradesection', 'course']]
+        unique_together = [['matriculation', 'course']]
 
 
 class NoteControlEdition(models.Model):
