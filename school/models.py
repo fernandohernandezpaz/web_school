@@ -80,6 +80,7 @@ class GradeSection(models.Model):
     class Meta:
         verbose_name = 'Grado Seccion'
         verbose_name_plural = 'Grados Secciones'
+        unique_together = [['grade', 'section']]
 
 
 class CourseGradeSection(models.Model):
@@ -239,8 +240,8 @@ class Matriculation(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')
     grade_section = models.ForeignKey(GradeSection,
-                                     on_delete=models.CASCADE,
-                                     verbose_name='Grado y Sección')
+                                      on_delete=models.CASCADE,
+                                      verbose_name='Grado y Sección')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
                                       default=1,
                                       verbose_name='Estado')
@@ -282,8 +283,8 @@ class Note(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='Asignatura')
     matriculation = models.ForeignKey(Matriculation,
-                                          on_delete=models.CASCADE,
-                                          verbose_name='Matricula')
+                                      on_delete=models.CASCADE,
+                                      verbose_name='Matricula')
     teacher = models.ForeignKey(User, on_delete=models.CASCADE,
                                 verbose_name='Docente')
     bimonthly_I = models.PositiveIntegerField(null=True, blank=True,
