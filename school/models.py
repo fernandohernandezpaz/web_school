@@ -95,6 +95,7 @@ class CourseGradeSection(models.Model):
     class Meta:
         verbose_name = 'Asignatura Grado Seccion'
         verbose_name_plural = 'Asignaturas Grados Secciones'
+        unique_together = [['course', 'grade_section']]
 
 
 class Profile(models.Model):
