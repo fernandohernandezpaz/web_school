@@ -3,8 +3,8 @@ from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
                            PaperCenter, Note, Section,
-                           GradeSection, MatriculationGradeSection,
-                           CourseGradeSection, NoteControlEdition)
+                           GradeSection, CourseGradeSection,
+                           NoteControlEdition)
 
 
 # Admin Class for Catalogs
@@ -30,6 +30,5 @@ admin.site.register(Matriculation, MatriculationAdmin)
 admin.site.register(PaperCenter)
 admin.site.register(Note)
 admin.site.register(GradeSection)
-admin.site.register(MatriculationGradeSection)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)
