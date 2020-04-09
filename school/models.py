@@ -229,7 +229,7 @@ class Matriculation(models.Model):
         (0, 'Inactivo'),
         (1, 'Activo'),
         (2, 'Finalizo Satisfactoriamente'),
-        (3, 'Finaliza Insatisfactoriamente'),
+        (3, 'Reprobado'),
     ]
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
                                 verbose_name='Alumno')
