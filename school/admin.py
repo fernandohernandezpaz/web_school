@@ -1,10 +1,16 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
                            PaperCenter, Note, Section,
                            GradeSection, CourseGradeSection,
                            NoteControlEdition)
+
+
+class ProfileInline(admin.TabularInline):
+    model = Profile
 
 
 # Admin Class for Catalogs
@@ -15,6 +21,13 @@ class CatalogsAdmin(admin.ModelAdmin):
 class MatriculationAdmin(admin.ModelAdmin):
     readonly_fields = ['teaching_year']
 
+
+class MyUserAdmin(UserAdmin):
+    inlines = [ProfileInline]
+
+
+# Unregister Models
+admin.site.unregister(User)
 
 # Register your models here.
 admin.site.register(Nationality, CatalogsAdmin)
@@ -32,3 +45,4 @@ admin.site.register(Note)
 admin.site.register(GradeSection)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)
+admin.site.register(User, UserAdmin)
