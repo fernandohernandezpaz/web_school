@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from jet.admin import CompactInline
 from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
@@ -9,8 +10,22 @@ from school.models import (Nationality, Profile, Course,
                            NoteControlEdition)
 
 
+# Inlines
 class ProfileInline(admin.TabularInline):
     model = Profile
+
+
+class PersonalFileInline(admin.StackedInline):
+    model = PersonalFile
+
+
+class MatriculationInline(CompactInline):
+    model = Matriculation
+    readonly_fields = ('teaching_year',)
+
+
+class PaperCenterInline(admin.StackedInline):
+    model = PaperCenter
 
 
 # Admin Class for Catalogs
@@ -20,6 +35,17 @@ class CatalogsAdmin(admin.ModelAdmin):
 
 class MatriculationAdmin(admin.ModelAdmin):
     readonly_fields = ['teaching_year']
+
+
+class StudentAdmin(admin.ModelAdmin):
+    inlines = [
+        PersonalFileInline,
+        MatriculationInline,
+        PaperCenterInline
+    ]
+
+    class Media:
+        js = ('js/validations_registration_student.js',)
 
 
 class MyUserAdmin(UserAdmin):
@@ -37,7 +63,7 @@ admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
 admin.site.register(PersonalFile)
-admin.site.register(Student)
+admin.site.register(Student, StudentAdmin)
 admin.site.register(Family)
 admin.site.register(Matriculation, MatriculationAdmin)
 admin.site.register(PaperCenter)

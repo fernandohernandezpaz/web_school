@@ -125,7 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static/web_school')
 
 # JET dashboard custumization
 JET_INDEX_DASHBOARD = 'school.admin_dashboard.CustomIndexDashboard'
