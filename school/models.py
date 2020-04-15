@@ -100,6 +100,7 @@ class CourseGradeSection(models.Model):
 
 class Profile(models.Model):
     VOCATIONAL_CHOICES = [
+        ('PE', 'Pre-Escolar'),
         ('P', 'Primaria'),
         ('S', 'Secundaria'),
     ]
