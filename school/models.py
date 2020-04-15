@@ -206,9 +206,9 @@ class PersonalFile(models.Model):
                                                verbose_name='¿Tiene hermanos en el centro?')
     how_many = models.PositiveSmallIntegerField(null=True, blank=True,
                                                 verbose_name='¿Cuántos?')
-    religion = models.CharField(max_length=20, null=True, blank=False,
+    religion = models.CharField(max_length=20, null=True, blank=True,
                                 verbose_name='Religión')
-    origin_center = models.CharField(max_length=50, null=True, blank=False,
+    origin_center = models.CharField(max_length=50, null=True, blank=True,
                                      verbose_name='Centro de Procedencia')
     year_taken_origin_center = models.ForeignKey(Grade, on_delete=models.SET_NULL,
                                                  null=True, blank=True,
@@ -259,8 +259,8 @@ class Matriculation(models.Model):
 
 
 class PaperCenter(models.Model):
-    matriculation = models.ForeignKey(Matriculation, on_delete=models.CASCADE,
-                                      verbose_name='Matricula')
+    student = models.OneToOneField(Student, on_delete=models.CASCADE,
+                                      verbose_name='Estudiante')
     academic_notes = models.BooleanField(default=False,
                                          verbose_name='¿Entrego boletin de notas?')
     diploma = models.BooleanField(default=False,
@@ -273,7 +273,7 @@ class PaperCenter(models.Model):
                                     verbose_name='Observaciones')
 
     def __str__(self):
-        return '{}'.format(self.matriculation)
+        return '{}'.format(self.student)
 
     class Meta:
         verbose_name = 'Papeles para el Centro'
