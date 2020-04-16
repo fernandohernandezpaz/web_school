@@ -1,0 +1,3 @@
+input#id_mobile, input#id_cellphone {
+    width: 160px !important;
+}
