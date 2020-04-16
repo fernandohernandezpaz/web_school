@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from .validations import validateQuantityDigits
 
 
 # Create your models here.
@@ -148,8 +149,10 @@ class Family(models.Model):
     family_role = models.CharField(max_length=20, choices=FAMILY_ROLE_CHOICES,
                                    null=False, verbose_name='Rol Familiar')
     mobile = models.PositiveIntegerField(null=True, blank=True,
+                                         validators=validateQuantityDigits('Celular', 8),
                                          verbose_name='Celular')
     cellphone = models.PositiveIntegerField(null=True, blank=True,
+                                            validators=validateQuantityDigits('Teléfono', 8),
                                             verbose_name='Teléfono')
     tutor = models.BooleanField(default=False, verbose_name='Tutor')
     occupation = models.CharField(max_length=30, blank=True,
@@ -261,7 +264,7 @@ class Matriculation(models.Model):
 
 class PaperCenter(models.Model):
     student = models.OneToOneField(Student, on_delete=models.CASCADE,
-                                      verbose_name='Estudiante')
+                                   verbose_name='Estudiante')
     academic_notes = models.BooleanField(default=False,
                                          verbose_name='¿Entrego boletin de notas?')
     diploma = models.BooleanField(default=False,

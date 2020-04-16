@@ -48,6 +48,15 @@ class StudentAdmin(admin.ModelAdmin):
         js = ('js/validations_registration_student.js',)
 
 
+class FamilyAdmin(admin.ModelAdmin):
+    pass
+
+    class Media:
+        css = {
+            'all': ('css/own_styles.css',),
+        }
+
+
 class MyUserAdmin(UserAdmin):
     inlines = [ProfileInline]
 
@@ -64,7 +73,7 @@ admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
 admin.site.register(PersonalFile)
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Family)
+admin.site.register(Family, FamilyAdmin)
 admin.site.register(Matriculation, MatriculationAdmin)
 admin.site.register(PaperCenter)
 admin.site.register(Note)
