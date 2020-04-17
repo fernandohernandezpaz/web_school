@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('school', '0059_auto_20200415_0224'),
     ]
@@ -14,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='papercenter',
             name='student',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='school.Student', verbose_name='Estudiante'),
+            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, to='school.Student',
+                                       verbose_name='Estudiante'),
         ),
     ]

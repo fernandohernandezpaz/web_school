@@ -6,7 +6,6 @@ class CustomIndexDashboard(Dashboard):
     columns = 3
 
     def init_with_context(self, context):
-
         self.children.append(modules.AppList(
             'REGISTRO PARA UN NUEVO ESTUDIANTE',
             models=('school.Student', 'school.PersonalFile',
@@ -17,11 +16,25 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         self.children.append(modules.AppList(
+            'REGISTRO PARA UN ESTUDIANTE DE REINGRESO',
+            models='school.Matriculation',
+            column=0,
+            order=1
+        ))
+
+        self.children.append(modules.AppList(
+            'REGISTRO PARA UNA NOTA',
+            models='school.Note',
+            column=1,
+            order=0
+        ))
+
+        self.children.append(modules.AppList(
             'CATALOGOS',
             models=('school.Gender', 'school.Section',
                     'school.Grade', 'school.Course',
                     'school.Nationality', 'school.GradeSection'),
-            column=0,
+            column=2,
             order=0
         ))
         #  self.children.append(modules.AppList(
