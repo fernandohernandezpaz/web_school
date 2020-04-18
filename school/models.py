@@ -190,9 +190,10 @@ class Student(models.Model):
     family_members = models.ManyToManyField(Family, blank=True,
                                             verbose_name='Familiares')
 
-    def age(self):
+    def calculate_age(self):
         import datetime
         return int((datetime.datetime.now() - self.birthday).days / 365.25)
+    age = property(calculate_age)
 
     def __str__(self):
         return '{} {}'.format(self.names, self.last_name)
