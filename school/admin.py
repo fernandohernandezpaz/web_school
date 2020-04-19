@@ -8,6 +8,7 @@ from school.models import (Nationality, Profile, Course,
                            PaperCenter, Note, Section,
                            GradeSection, CourseGradeSection,
                            NoteControlEdition)
+from constance.admin import ConstanceAdmin, ConstanceForm, Config
 
 
 # Inlines
@@ -95,8 +96,13 @@ class MyUserAdmin(UserAdmin):
     inlines = [ProfileInline]
 
 
+class ConfigAdmin(ConstanceAdmin):
+    pass
+
+
 # Unregister Models
 admin.site.unregister(User)
+admin.site.unregister([Config])
 
 # Register your models here.
 admin.site.register(Nationality, CatalogsAdmin)
@@ -114,3 +120,4 @@ admin.site.register(GradeSection)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)
 admin.site.register(User, MyUserAdmin)
+admin.site.register([Config], ConfigAdmin)

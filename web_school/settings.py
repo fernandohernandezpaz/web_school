@@ -40,12 +40,16 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'jet.dashboard',
     'jet',
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third apps
+    'constance',
+    'constance.backends.database',
     # my app
     'school'
 ]
@@ -89,6 +93,11 @@ DATABASES = {
     'readonly': env.db('DATABASE_URL')
 }
 
+# Cache
+CACHES = {
+    'default': env.cache(),
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -129,3 +138,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, '../static/web_school')
 
 # JET dashboard custumization
 JET_INDEX_DASHBOARD = 'school.admin_dashboard.CustomIndexDashboard'
+
+# Django Constance Dynamic settings
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+# optional constance settings
+try:
+    from .constance_settings import *
+except ImportError:
+    pass
