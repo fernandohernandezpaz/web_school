@@ -173,6 +173,8 @@ class Student(models.Model):
         (3, 'Inactivo'),
     ]
 
+    code_mined = models.CharField(max_length=20, blank=True,
+                                  verbose_name='Codigo MINED')
     names = models.CharField(max_length=50,
                              verbose_name='Nombres')
     last_name = models.CharField(max_length=50,
@@ -193,6 +195,7 @@ class Student(models.Model):
     def calculate_age(self):
         import datetime
         return int((datetime.datetime.now() - self.birthday).days / 365.25)
+
     age = property(calculate_age)
 
     def __str__(self):

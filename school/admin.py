@@ -50,7 +50,7 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('fullname', 'gender', 'nationality', 'status')
     # quantity of register per page
     list_per_page = 20
-    # order the registar by
+    # order the registrar by
     ordering = ['-names']
     # convert field to link to go the change form.
     # can be the same fields fo list_display
@@ -68,7 +68,8 @@ class StudentAdmin(admin.ModelAdmin):
         ('Información General del Estudiante',
          {'fields': ['names', 'last_name', 'birthday',
                      'gender', 'nationality',
-                     'status', 'family_members']}),
+                     'status', 'family_members',
+                     'code_mined']}),
     ]
 
     # method to concat names and last_name field
@@ -83,8 +84,40 @@ class StudentAdmin(admin.ModelAdmin):
         js = ('js/validations_registration_student.js',)
 
 
+@admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
     pass
+    # show the importants field of the model
+    list_display = ('full_name', 'family_role', 'tutor')
+    # quantity of register per page
+    list_per_page = 20
+    # order the registrar by
+    ordering = ['-full_name']
+    # convert field to link to go the change form.
+    # can be the same fields fo list_display
+    list_display_links = ('full_name',)
+    # searchible fields
+    search_fields = ['full_name', 'family_role']
+    # define the fields that can be selects
+    list_filter = [
+        'family_role',
+        'tutor',
+
+    ]
+    # define the distribution and order of the fields of the model
+    fieldsets = [
+        ('Información General del Familiar',
+         {'fields': ['full_name', 'document', 'family_role',
+                     'mobile', 'cellphone',
+                     'tutor', 'occupation']}),
+    ]
+
+    # method to concat names and last_name field
+    def full_name(self, family):
+        return u'{full_name}'.format(full_name=family.full_name)
+
+    # method.short_description, you define a label
+    full_name.short_description = 'Nombre Completo del Familiar'
 
     class Media:
         css = {
@@ -112,7 +145,7 @@ admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
 admin.site.register(PersonalFile)
-admin.site.register(Family, FamilyAdmin)
+# admin.site.register(Family, FamilyAdmin)
 admin.site.register(Matriculation, MatriculationAdmin)
 admin.site.register(PaperCenter)
 admin.site.register(Note)
