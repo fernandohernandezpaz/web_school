@@ -8,7 +8,7 @@ from school.models import (Nationality, Profile, Course,
                            PaperCenter, Note, Section,
                            GradeSection, CourseGradeSection,
                            NoteControlEdition)
-from constance.admin import ConstanceAdmin, ConstanceForm, Config
+from constance.admin import ConstanceAdmin, Config
 
 
 # Inlines
@@ -86,19 +86,11 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
-    pass
-    # show the importants field of the model
     list_display = ('full_name', 'family_role', 'tutor')
-    # quantity of register per page
     list_per_page = 20
-    # order the registrar by
     ordering = ['-full_name']
-    # convert field to link to go the change form.
-    # can be the same fields fo list_display
     list_display_links = ('full_name',)
-    # searchible fields
     search_fields = ['full_name', 'family_role']
-    # define the fields that can be selects
     list_filter = [
         'family_role',
         'tutor',
@@ -112,17 +104,49 @@ class FamilyAdmin(admin.ModelAdmin):
                      'tutor', 'occupation']}),
     ]
 
-    # method to concat names and last_name field
-    def full_name(self, family):
-        return u'{full_name}'.format(full_name=family.full_name)
-
-    # method.short_description, you define a label
-    full_name.short_description = 'Nombre Completo del Familiar'
-
     class Media:
         css = {
             'all': ('css/own_styles.css',),
         }
+
+
+@admin.register(PersonalFile)
+class PersonalFileAdmin(admin.ModelAdmin):
+    list_display = ('student', 'religion', 'origin_center')
+    list_per_page = 20
+    ordering = ['-student']
+    list_display_links = ('student',)
+    search_fields = ['student__names', 'student__last_name']
+    list_filter = [
+        'religion',
+        'origin_center',
+
+    ]
+    fieldsets = [
+        ('Información General de los Expedientes',
+         {'fields': ['student', 'have_brothers_center', 'how_many',
+                     'religion', 'origin_center',
+                     'year_taken_origin_center', 'diseases', 'in_emergencies_call']}),
+    ]
+
+
+@admin.register(PaperCenter)
+class PaperCenterAdmin(admin.ModelAdmin):
+    list_display = ('student', 'diploma', 'birth_certificate')
+    list_per_page = 20
+    ordering = ['-student']
+    list_display_links = ('student',)
+    search_fields = ['student__names', 'student__last_name']
+    list_filter = [
+        'diploma',
+        'birth_certificate',
+    ]
+    fieldsets = [
+        ('Información General de los Papeles del Centro',
+         {'fields': ['student', 'academic_notes', 'diploma',
+                     'birth_certificate', 'conduct_certificate',
+                     'observations']}),
+    ]
 
 
 class MyUserAdmin(UserAdmin):
@@ -144,10 +168,7 @@ admin.site.register(Gender, CatalogsAdmin)
 admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
-admin.site.register(PersonalFile)
-# admin.site.register(Family, FamilyAdmin)
 admin.site.register(Matriculation, MatriculationAdmin)
-admin.site.register(PaperCenter)
 admin.site.register(Note)
 admin.site.register(GradeSection)
 admin.site.register(CourseGradeSection)
