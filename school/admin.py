@@ -7,12 +7,12 @@ from school.models import (Nationality, Profile, Course,
                            Family, Gender, Matriculation,
                            PaperCenter, Note, Section,
                            GradeSection, CourseGradeSection,
-                           NoteControlEdition)
+                           NoteControlEdition, UserCoursesByYear)
 from constance.admin import ConstanceAdmin, Config
 
 
 # Inlines
-class ProfileInline(admin.TabularInline):
+class ProfileInline(admin.StackedInline):
     model = Profile
 
 
@@ -27,6 +27,11 @@ class MatriculationInline(CompactInline):
 
 class PaperCenterInline(admin.StackedInline):
     model = PaperCenter
+
+
+class UserCoursesByYearInline(CompactInline):
+    model = UserCoursesByYear
+    readonly_fields = ('year',)
 
 
 # Admin Class for Catalogs
@@ -150,11 +155,26 @@ class PaperCenterAdmin(admin.ModelAdmin):
 
 
 class MyUserAdmin(UserAdmin):
-    inlines = [ProfileInline]
+    inlines = [
+        ProfileInline,
+        UserCoursesByYearInline
+    ]
 
 
 class ConfigAdmin(ConstanceAdmin):
     pass
+
+
+@admin.register(UserCoursesByYear)
+class UserCoursesByYear(admin.ModelAdmin):
+    list_display = ['user', 'year']
+    list_display_link = ['user', 'year']
+    list_per_page = 20
+    ordering = ['-year']
+    search_fields = ['user']
+    list_filter = [
+        'year',
+    ]
 
 
 # Unregister Models

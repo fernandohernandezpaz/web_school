@@ -120,9 +120,6 @@ class Profile(models.Model):
     address = models.TextField(max_length=200, null=True,
                                blank=True,
                                verbose_name='Dirección')
-    coursesgradesection = models.ManyToManyField(CourseGradeSection,
-                                                 blank=True,
-                                                 verbose_name='Asignaturas')
 
     def __str__(self):
         return "%s" % self.user
@@ -131,6 +128,26 @@ class Profile(models.Model):
         ordering = ['user']
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfiles'
+
+
+class UserCoursesByYear(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                                verbose_name='Docente')
+    coursesgradesection = models.ManyToManyField(CourseGradeSection,
+                                                 blank=True,
+                                                 verbose_name='Asignaturas que impartira')
+    year = models.IntegerField(null=False,
+                                        default=int(datetime.date.today().year),
+                                        verbose_name='Año Lectivo')
+
+    def __str__(self):
+        return '{} {}'.format(self.user.first_name,
+                                   self.user.last_name,)
+
+    class Meta:
+        verbose_name = 'Asignatura por año'
+        verbose_name_plural = 'Asignaturas por año'
+        unique_together = [['user', 'year']]
 
 
 class Family(models.Model):
