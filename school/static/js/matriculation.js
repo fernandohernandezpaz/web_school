@@ -1,9 +1,13 @@
 let list_students = [];
-$(function () {
+let quantity_school_space = 0;
+$(function ($) {
 
     let student_input = $('#student_input_search');
+    let select_grade_section = $('#grade_seccion_select');
+    let select_status = $('#status_select');
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let table_students = $('#students_rows');
+    let message_space = $('#message_space');
 
     $('body')
         .on('click', '#search_student', function () {
@@ -41,6 +45,24 @@ $(function () {
 
             load_data_student_HTML(student);
             $('.close-modal').trigger('click');
+        })
+        .on('change', '#grade_seccion_select', function () {
+            let data = {
+                'csrfmiddlewaretoken': input_tocken,
+                'id': parseInt($(this).val())
+            };
+            $.ajax({
+                url: URLS_API.school_space,
+                data: data,
+                dataType: 'json',
+                type: 'POST',
+                success: function (response) {
+                    quantity_school_space = response.school_space;
+                    message_space
+                        .html(response.message)
+                        .fadeIn('fast');
+                }
+            })
         });
 
 
@@ -123,7 +145,9 @@ $(function () {
                 $(`#${key}`).html(student[key]);
             }
         }
-         $('#data-student').fadeIn(3000);
+        $('#data-student').fadeIn(3000);
+        select_grade_section.removeAttr('disabled');
+        select_status.removeAttr('disabled');
     }
 
     function search_and_get_student(value, key_search) {
@@ -150,8 +174,8 @@ $(function () {
                         load_data_student_table(students);
 
                         $('#ModalTable').modal({
-                            fadeDuration: 1000,
-                            fadeDelay: 0.50
+                            fadeDuration: 500,
+                            fadeDelay: 0.3
                         });
                     }
                 }

@@ -7,36 +7,42 @@ from web_school.constance_settings import CONSTANCE_CONFIG
 
 
 def get_school_space(request):
-    quantity_students = CONSTANCE_CONFIG['CANTIDAD_ALUMNOS_POR_AULA'][0]
-    filters = {
-        'teaching_year': get_current_year
-    }
+    try:
+        quantity_students = CONSTANCE_CONFIG['CANTIDAD_ALUMNOS_POR_AULA'][0]
+        year = get_current_year()
+        filters = {
+            'teaching_year': year
+        }
 
-    if request.GET.get('id'):
-        filters['grade_section__id'] = request.GET.get('id')
+        id = request.POST.get('id')
 
-    count_student_maculation = Matriculation.objects. \
-        filter(**filters). \
-        count()
+        if id:
+            filters['grade_section__id'] = id
 
-    nombre_grado_seccion = GradeSection.objects. \
-        get(id=request.GET.get('id'))
+        count_student_maculation = Matriculation.objects. \
+            filter(**filters). \
+            count()
 
-    school_space = quantity_students - count_student_maculation
+        nombre_grado_seccion = GradeSection.objects. \
+            get(id=id)
 
-    if school_space > 0:
-        mensaje = 'Aun tenemos cupos diponibles para el aula {gradoseccion}'. \
-            format(gradoseccion=nombre_grado_seccion)
-    else:
-        mensaje = 'No hay cupos disponibles para el aula {gradoseccion}'. \
-            format(gradoseccion=nombre_grado_seccion)
+        school_space = quantity_students - count_student_maculation
 
-    response = {
-        'school_space': school_space,
-        'mensaje': mensaje
-    }
+        if school_space > 0:
+            mensaje = 'Aun tenemos {spaces} cupos diponibles para el aula {gradoseccion}'. \
+                format(spaces=school_space, gradoseccion=nombre_grado_seccion)
+        else:
+            mensaje = 'No hay cupos disponibles para el aula {gradoseccion}'. \
+                format(gradoseccion=nombre_grado_seccion)
 
-    return JsonResponse(response)
+        response = {
+            'school_space': school_space,
+            'message': mensaje
+        }
+
+        return JsonResponse(response)
+    except:
+        return JsonResponse({})
 
 
 def get_students(request):
@@ -71,10 +77,10 @@ def get_students(request):
         row['family'] = []
         if Family.objects.filter(student__id=row['id']).exists():
             row['family'] = list(Student.objects.
-                                    filter(id=row['id']).
-                                    values(name=F('family_members__full_name'),
-                                           rol=F('family_members__family_role'),
-                                           tutor=F('family_members__tutor')))
+                                 filter(id=row['id']).
+                                 values(name=F('family_members__full_name'),
+                                        rol=F('family_members__family_role'),
+                                        tutor=F('family_members__tutor')))
 
     response = {
         'students': list(students),

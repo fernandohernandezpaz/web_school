@@ -138,7 +138,7 @@ class UserCoursesByYear(models.Model):
                                                  blank=True,
                                                  verbose_name='Asignaturas que impartira')
     year = models.IntegerField(null=False,
-                                        default=get_current_year,
+                                        default=get_current_year(),
                                         verbose_name='Año Lectivo')
 
     def __str__(self):
@@ -262,7 +262,7 @@ class Matriculation(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
                                 verbose_name='Alumno')
     teaching_year = models.IntegerField(null=False,
-                                        default=get_current_year,
+                                        default=get_current_year(),
                                         verbose_name='Año Lectivo')
     registration_date = models.DateTimeField(auto_now_add=True,
                                              verbose_name='Fecha de Matricula')

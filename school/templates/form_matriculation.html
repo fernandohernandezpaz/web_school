@@ -1,8 +1,9 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
-{% block content %}
+
+{% block extrastyle %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
     <style>
         #data-student {
             border: 1px #354052 solid;
@@ -19,7 +20,39 @@
         #students_rows {
             cursor: pointer;
         }
+
+        #message_space {
+            display: none;
+        }
+
+        p.no-space {
+            color: red !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+        }
+
+        p.space {
+            color: red !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+        }
     </style>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script>
+        var URLS_API = {
+            'school_space': '{% url 'school:api_school_space' %}',
+            'students_data': '{% url 'school:api_students' %}'
+        }
+    </script>
+    <script src="{% static 'js/matriculation.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+
+
+{% endblock %}
+{% block content %}
     <div id="content-main">
         <form action="post">
             {% csrf_token %}
@@ -70,12 +103,12 @@
                 <div class="form-row">
                     <div>
                         <label for="grade_seccion_select">
-                            {{ form.grade_seccion.label }}
+                            Grado Sección
                         </label>
                         <div class="related-widget-wrapper">
                             {{ form.grade_seccion }}
                         </div>
-                        p
+                        <p id="message_space">lorem</p>
                     </div>
                 </div>
 
@@ -118,21 +151,6 @@
 
             </div>
         </form>
-
-        <script
-                src="https://code.jquery.com/jquery-3.5.0.min.js"
-                integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
-                crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-
-        <script>
-            var URLS_API = {
-                'school_space': '{% url 'school:api_school_space' %}',
-                'students_data': '{% url 'school:api_students' %}'
-            }
-        </script>
-        <script src="{% static 'js/matriculation.js' %}"></script>
     </div>
 {% endblock %}
 

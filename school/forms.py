@@ -30,6 +30,7 @@ class MatriculationForm(forms.ModelForm):
         widget=forms.ModelChoiceField.widget(
             attrs={
                 'id': 'grade_seccion_select',
+                'disabled': True,
                 'placeholder': 'Seleccione el grado sección'
             }
         )
@@ -51,6 +52,8 @@ class MatriculationForm(forms.ModelForm):
             attrs={
                 'id': 'status_select',
                 'style': global_style,
+                'disabled': True,
+                'value': Matriculation.STUDENT_STATUS_CHOICE[1][0]
             }
         ),
         choices=CHOICES,

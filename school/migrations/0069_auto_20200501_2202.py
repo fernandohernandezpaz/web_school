@@ -5,7 +5,6 @@ import school.commons
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('school', '0068_auto_20200427_0201'),
     ]
@@ -14,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='matriculation',
             name='teaching_year',
-            field=models.IntegerField(default=school.commons.get_current_year, verbose_name='Año Lectivo'),
+            field=models.IntegerField(default=school.commons.get_current_year(), verbose_name='Año Lectivo'),
         ),
         migrations.AlterField(
             model_name='usercoursesbyyear',
             name='year',
-            field=models.IntegerField(default=school.commons.get_current_year, verbose_name='Año Lectivo'),
+            field=models.IntegerField(default=school.commons.get_current_year(), verbose_name='Año Lectivo'),
         ),
     ]
