@@ -1,6 +1,5 @@
 $(function ($) {
     let input_cantidad_hermanos = $('#id_personalfile-0-how_many');
-    let select_tiene_hermanos = $('#id_personalfile-0-have_brothers_center');
 
     // NOTE: validamos si existe el input de cuantos hermanos y lo deshabilitamos
     if (input_cantidad_hermanos.length > 0) {

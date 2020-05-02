@@ -1,0 +1,138 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+{% block content %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+    <style>
+        #data-student {
+            border: 1px #354052 solid;
+            height: 200px;
+            width: 50%
+        }
+
+        #ModalTable {
+            width: 950px;
+            max-width: 950px;
+            height: 500px;
+        }
+
+        #students_rows {
+            cursor: pointer;
+        }
+    </style>
+    <div id="content-main">
+        <form action="post">
+            {% csrf_token %}
+            <fieldset class="module aligned  module_0 initialized">
+                <h1>Registro de Matricula de estudiante</h1>
+                <div class="form-row">
+                    <div>
+                        <label for="student_input_search">
+                            {{ form.student.label }}
+                        </label>
+
+                        {{ form.student }}
+
+                        <button id="search_student" type="button">
+                            <i class="fa fa-search"></i> buscar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="form-row" id="data-student" style="display: none">
+                    <h2><u>Datos del estudiante</u>:</h2>
+                    <input type="hidden" id="id" value="">
+                    <table style="width: 70%">
+                        <tbody>
+                        <tr>
+                            <th>Código MINED:</th>
+                            <td id="code_mined">lorem</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre completo del estudiante:</th>
+                            <td id="fullname">lorem</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha Nacimiento:</th>
+                            <td id="birthday">lorem</td>
+                        </tr>
+                        <tr>
+                            <th>Familiares:</th>
+                            <td id="family">lorem</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="grade_seccion_select">
+                            {{ form.grade_seccion.label }}
+                        </label>
+                        <div class="related-widget-wrapper">
+                            {{ form.grade_seccion }}
+                        </div>
+                        p
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="teaching_year_input">
+                            {{ form.teaching_year.label }}
+                        </label>
+                        {{ form.teaching_year }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="status_select">
+                            {{ form.status.label }}
+                        </label>
+                        <div class="related-widget-wrapper">
+                            {{ form.status }}
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <div id="ModalTable" class="modal">
+                <h3>Lista de Estudiantes</h3>
+                <p>haz doble click en el estudiante que desea para crear su matricula</p>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>Código MINED</th>
+                        <th>Nombre del estudiante</th>
+                        <th>Fecha nacimiento</th>
+                        <th>Familiares</th>
+                    </tr>
+                    </thead>
+                    <tbody id="students_rows"></tbody>
+                </table>
+
+            </div>
+        </form>
+
+        <script
+                src="https://code.jquery.com/jquery-3.5.0.min.js"
+                integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+        <script>
+            var URLS_API = {
+                'school_space': '{% url 'school:api_school_space' %}',
+                'students_data': '{% url 'school:api_students' %}'
+            }
+        </script>
+        <script src="{% static 'js/matriculation.js' %}"></script>
+    </div>
+{% endblock %}
+

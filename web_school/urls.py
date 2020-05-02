@@ -21,4 +21,5 @@ urlpatterns = [
     url('jet/', include('jet.urls', 'jet')),
     url('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
+    path('school/', include('school.urls')),
 ]
