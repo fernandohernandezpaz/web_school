@@ -41,7 +41,10 @@
     <script>
         var URLS_API = {
             'school_space': '{% url 'school:api_school_space' %}',
-            'students_data': '{% url 'school:api_students' %}'
+            'students_data': '{% url 'school:api_students' %}',
+            'save': '{% url 'school:api_save' %}',
+            'current_page': '{% url 'school:new_form_matriculation' %}',
+            'back_url': '/admin/school/matriculation/',
         }
     </script>
     <script src="{% static 'js/matriculation.js' %}"></script>
@@ -50,11 +53,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <script src="{% static 'admin/js/jquery.init.js' %}"></script>
 
-
 {% endblock %}
 {% block content %}
     <div id="content-main">
-        <form action="post">
+        <form action="post" id="form_matricula" data-continue="false">
             {% csrf_token %}
             <fieldset class="module aligned  module_0 initialized">
                 <h1>Registro de Matricula de estudiante</h1>
@@ -76,7 +78,7 @@
 
                 <div class="form-row" id="data-student" style="display: none">
                     <h2><u>Datos del estudiante</u>:</h2>
-                    <input type="hidden" id="id" value="">
+                    <input type="hidden" id="id" name="student_id" value="">
                     <table style="width: 70%">
                         <tbody>
                         <tr>
@@ -102,11 +104,11 @@
 
                 <div class="form-row">
                     <div>
-                        <label for="grade_seccion_select">
+                        <label for="grade_section_select">
                             Grado Sección
                         </label>
                         <div class="related-widget-wrapper">
-                            {{ form.grade_seccion }}
+                            {{ form.grade_section }}
                         </div>
                         <p id="message_space">lorem</p>
                     </div>
@@ -133,6 +135,17 @@
                 </div>
 
             </fieldset>
+
+            <div class="submit-row">
+
+                <input type="submit" value="Guardar" data-continue="false" class="default save" name="_save">
+
+                <p class="deletelink-box"><a href="/admin/school/matriculation/" class="deletelink">Cancelar</a></p>
+
+                <input type="submit" class="save" data-continue="true" value="Grabar y añadir otro" name="_addanother">
+
+
+            </div>
 
             <div id="ModalTable" class="modal">
                 <h3>Lista de Estudiantes</h3>

@@ -3,7 +3,7 @@ let quantity_school_space = 0;
 $(function ($) {
 
     let student_input = $('#student_input_search');
-    let select_grade_section = $('#grade_seccion_select');
+    let select_grade_section = $('#grade_section_select');
     let select_status = $('#status_select');
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let table_students = $('#students_rows');
@@ -46,7 +46,7 @@ $(function ($) {
             load_data_student_HTML(student);
             $('.close-modal').trigger('click');
         })
-        .on('change', '#grade_seccion_select', function () {
+        .on('change', '#grade_section_select', function () {
             let data = {
                 'csrfmiddlewaretoken': input_tocken,
                 'id': parseInt($(this).val())
@@ -63,8 +63,33 @@ $(function ($) {
                         .fadeIn('fast');
                 }
             })
-        });
+        })
+        .on('submit', '#form_matricula', function (e) {
+            e.preventDefault();
+            const reload_page = $(this).data('continue');
+            $.ajax({
+                url: URLS_API.save,
+                data: $('#form_matricula').serialize(),
+                dataType: 'json',
+                type: 'POST',
+                success: function (response) {
+                    alert_message(response.message, title = '¡Informe!',
+                        icon = 'success');
 
+                    setTimeout(() => {
+                        if (reload_page) {
+                            window.location = URLS_API.current_page;
+                        } else {
+                            window.location = URLS_API.back_url;
+                        }
+                    }, 2600);
+                }
+            });
+        })
+        .on('click', '.save', function () {
+            const flag_continue = Boolean($(this).data('continue'));
+            $('#form_matricula').attr('data-continue', flag_continue);
+        });
 
     function check_if_fullname_or_code(str) {
         let contains_signs = str.includes('-');
@@ -98,7 +123,7 @@ $(function ($) {
                            icon = 'error', confirm_button_label = 'Ok') {
         Swal.fire({
             title: title,
-            text: object['message'],
+            text: message,
             icon: icon,
             confirmButtonText: confirm_button_label
         });
@@ -145,9 +170,15 @@ $(function ($) {
                 $(`#${key}`).html(student[key]);
             }
         }
-        $('#data-student').fadeIn(3000);
-        select_grade_section.removeAttr('disabled');
+        $('#data-student').fadeIn('fast');
+
+        select_status.val(1).trigger('change');
+        $('#select2-status_select-container')
+            .attr('title', 'Activo')
+            .html('Activo');
         select_status.removeAttr('disabled');
+
+        select_grade_section.removeAttr('disabled');
     }
 
     function search_and_get_student(value, key_search) {
@@ -168,7 +199,6 @@ $(function ($) {
                     alert_message(students['message']);
                 } else {
                     if (students.length === 1) {
-                        console.log(1);
                         load_data_student_HTML(students[0]);
                     } else {
                         load_data_student_table(students);

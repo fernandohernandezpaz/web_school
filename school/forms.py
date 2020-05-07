@@ -17,19 +17,20 @@ class MatriculationForm(forms.ModelForm):
             attrs={
                 'id': 'student_input_search',
                 'placeholder': u'Buscar Estudiante por Nombre Completo ó Codigo MINED',
-                'style': global_style
+                'style': global_style,
+                'autocomplete': 'off'
             }
         ),
         help_text='Ingrese el nombre completo ó codigo MINED del estudiante.'
     )
 
-    grade_seccion = forms.ModelChoiceField(
+    grade_section = forms.ModelChoiceField(
         label='Grado Sección',
         queryset=GradeSection.objects.all(),
         required=True,
         widget=forms.ModelChoiceField.widget(
             attrs={
-                'id': 'grade_seccion_select',
+                'id': 'grade_section_select',
                 'disabled': True,
                 'placeholder': 'Seleccione el grado sección'
             }
@@ -48,12 +49,12 @@ class MatriculationForm(forms.ModelForm):
     )
 
     status = forms.ChoiceField(
+        label=u'Estado de la matrícula',
         widget=forms.ChoiceField.widget(
             attrs={
                 'id': 'status_select',
                 'style': global_style,
-                'disabled': True,
-                'value': Matriculation.STUDENT_STATUS_CHOICE[1][0]
+                'disabled': True
             }
         ),
         choices=CHOICES,

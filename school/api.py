@@ -91,3 +91,46 @@ def get_students(request):
             format(search_field)
 
     return JsonResponse(response)
+
+
+def guardar_formulario(request):
+    try:
+        student_id = int(request.POST.get('student_id'))
+        grade_section_id = int(request.POST.get('grade_section'))
+        teaching_year = int(request.POST.get('teaching_year'))
+        status = int(request.POST.get('teaching_year'))
+
+        matriculation_exist = Matriculation.objects.filter(
+            student_id=student_id,
+            teaching_year=teaching_year,
+        ).first()
+
+        flag_continue = True
+        if matriculation_exist:
+            if matriculation_exist.grade_section_id == grade_section_id:
+                message = 'No se puede crear una nueva' \
+                          ' matricula para el estudiante {}'.format(matriculation_exist.student)
+                flag_continue = False
+            else:
+                message = 'Matricula actualizada exitosamente'
+        else:
+            message = 'Matricula guardada exitosamente'
+
+        if flag_continue:
+            matriculation = Matriculation()
+            matriculation.student_id = student_id
+            matriculation.grade_section_id = grade_section_id
+            matriculation.status = status
+            matriculation.save()
+
+        response = {
+            'message': message,
+            'status': flag_continue
+        }
+    except:
+        response = {
+            'status': False,
+            'message': 'Error al guardar'
+        }
+
+    return JsonResponse(response)
