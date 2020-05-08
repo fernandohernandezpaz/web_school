@@ -39,8 +39,20 @@ class CatalogsAdmin(admin.ModelAdmin):
     list_display = ('name', 'active')
 
 
+@admin.register(Matriculation)
 class MatriculationAdmin(admin.ModelAdmin):
     readonly_fields = ['teaching_year']
+    list_display = ('student', 'teaching_year',
+                    'grade_section', 'status')
+    ordering = ['teaching_year']
+    search_fields = ['student__names', 'student__last_name']
+    list_filter = [
+        'teaching_year',
+        'grade_section'
+    ]
+    list_per_page = 20
+    list_editable = ('status',)
+    change_list_template = 'admin/matriculation/change_list.html'
 
 
 @admin.register(Student)
@@ -99,7 +111,6 @@ class FamilyAdmin(admin.ModelAdmin):
     list_filter = [
         'family_role',
         'tutor',
-
     ]
     # define the distribution and order of the fields of the model
     fieldsets = [
@@ -129,9 +140,10 @@ class PersonalFileAdmin(admin.ModelAdmin):
     ]
     fieldsets = [
         ('Información General de los Expedientes',
-         {'fields': ['student', 'have_brothers_center', 'how_many',
-                     'religion', 'origin_center',
-                     'year_taken_origin_center', 'diseases', 'in_emergencies_call']}),
+         {'fields': ['student', 'have_brothers_center',
+                     'how_many', 'religion', 'origin_center',
+                     'year_taken_origin_center', 'diseases',
+                     'in_emergencies_call']}),
     ]
 
 
@@ -188,7 +200,6 @@ admin.site.register(Gender, CatalogsAdmin)
 admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
-admin.site.register(Matriculation, MatriculationAdmin)
 admin.site.register(Note)
 admin.site.register(GradeSection)
 admin.site.register(CourseGradeSection)
