@@ -61,30 +61,43 @@ $(function ($) {
                     message_space
                         .html(response.message)
                         .fadeIn('fast');
+                    if (quantity_school_space <= 0) {
+                        $('.save').hide()
+                    } else {
+                        $('.save').show()
+                    }
                 }
             })
         })
         .on('submit', '#form_matricula', function (e) {
             e.preventDefault();
-            const reload_page = $(this).data('continue');
-            $.ajax({
-                url: URLS_API.save,
-                data: $('#form_matricula').serialize(),
-                dataType: 'json',
-                type: 'POST',
-                success: function (response) {
-                    alert_message(response.message, title = '¡Informe!',
-                        icon = 'success');
+            if (quantity_school_space > 0) {
+                const reload_page = $(this).data('continue');
+                $.ajax({
+                    url: URLS_API.save,
+                    data: $('#form_matricula').serialize(),
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (response) {
 
-                    setTimeout(() => {
-                        if (reload_page) {
-                            window.location = URLS_API.current_page;
+                        if (response.status) {
+                            alert_message(response.message, title = '¡Informe!',
+                                icon = 'success');
+                            setTimeout(() => {
+                                if (reload_page) {
+                                    window.location = URLS_API.current_page;
+                                } else {
+                                    window.location = URLS_API.back_url;
+                                }
+                            }, 2600);
                         } else {
-                            window.location = URLS_API.back_url;
+                            alert_message(response.message);
                         }
-                    }, 2600);
-                }
-            });
+                    }
+                });
+            } else {
+                alert_message('No hay cupos disponibles');
+            }
         })
         .on('click', '.save', function () {
             const flag_continue = Boolean($(this).data('continue'));
