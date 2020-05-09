@@ -149,7 +149,7 @@ class PersonalFileAdmin(admin.ModelAdmin):
 
 @admin.register(GradeSection)
 class GradeSectionAdmin(admin.ModelAdmin):
-    list_display = ('grade', 'section', 'order')
+    list_display = ('grade', 'section', )
     ordering = ['order']
 
 
