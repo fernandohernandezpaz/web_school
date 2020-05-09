@@ -75,9 +75,11 @@ class GradeSection(models.Model):
                               verbose_name='Grado')
     section = models.ForeignKey(Section, on_delete=models.CASCADE,
                                 verbose_name='Seccion')
+    order = models.PositiveIntegerField(null=True, blank=True,
+                                        verbose_name='Orden')
 
     def __str__(self):
-        return '{} {}'.format(self.grade, self.section)
+        return '{} {}'.format(self.grade, self.section, self.order)
 
     class Meta:
         verbose_name = 'Grado Seccion'
@@ -133,17 +135,17 @@ class Profile(models.Model):
 
 class UserCoursesByYear(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
-                                verbose_name='Docente')
+                             verbose_name='Docente')
     coursesgradesection = models.ManyToManyField(CourseGradeSection,
                                                  blank=True,
                                                  verbose_name='Asignaturas que impartira')
     year = models.IntegerField(null=False,
-                                        default=get_current_year(),
-                                        verbose_name='Año Lectivo')
+                               default=get_current_year(),
+                               verbose_name='Año Lectivo')
 
     def __str__(self):
         return '{} {}'.format(self.user.first_name,
-                                   self.user.last_name,)
+                              self.user.last_name, )
 
     class Meta:
         verbose_name = 'Asignatura por año'
