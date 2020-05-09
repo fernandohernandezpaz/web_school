@@ -147,6 +147,12 @@ class PersonalFileAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(GradeSection)
+class GradeSectionAdmin(admin.ModelAdmin):
+    list_display = ('grade', 'section', 'order')
+    ordering = ['order']
+
+
 @admin.register(PaperCenter)
 class PaperCenterAdmin(admin.ModelAdmin):
     list_display = ('student', 'diploma', 'birth_certificate')
@@ -201,7 +207,6 @@ admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
 admin.site.register(Profile)
 admin.site.register(Note)
-admin.site.register(GradeSection)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)
 admin.site.register(User, MyUserAdmin)
