@@ -4,39 +4,7 @@
 {% block extrastyle %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
-    <style>
-        #data-student {
-            border: 1px #354052 solid;
-            height: 200px;
-            width: 50%
-        }
-
-        #ModalTable {
-            width: 950px;
-            max-width: 950px;
-            height: 500px;
-        }
-
-        #students_rows {
-            cursor: pointer;
-        }
-
-        #message_space {
-            display: none;
-        }
-
-        p.no-space {
-            color: red !important;
-            font-size: 12px !important;
-            font-weight: bold !important;
-        }
-
-        p.space {
-            color: red !important;
-            font-size: 12px !important;
-            font-weight: bold !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/matriculation.css' %}">
     <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
     <script>
         var URLS_API = {
@@ -45,7 +13,25 @@
             'save': '{% url 'school:api_save' %}',
             'current_page': '{% url 'school:new_form_matriculation' %}',
             'back_url': '/admin/school/matriculation/',
-        }
+        };
+
+        {% if request.resolver_match.url_name == 'matriculation_detail' %}
+            var matriculacion = {
+                id: {{ matriculacion.id }},
+                grade_seccion: {{ matriculacion.grade_section_id }},
+                grade_seccion_name: '{{ matriculacion.grade_section }}',
+                status: {{ matriculacion.status }},
+                teaching_year: {{ matriculacion.teaching_year }},
+                status_name: '{{ matriculacion.STUDENT_STATUS_CHOICE.0.1 }}'
+            };
+            var student_data = {
+                id: {{ student.id }},
+                code_mined: '{{ student.code_mined }}',
+                fullname: '{{ matriculacion.student }}',
+                birthday: '{{ student.birthday }}',
+                family: {{ family|safe }}
+            };
+        {% endif %}
     </script>
     <script src="{% static 'js/matriculation.js' %}"></script>
 
@@ -60,21 +46,23 @@
             {% csrf_token %}
             <fieldset class="module aligned  module_0 initialized">
                 <h1>Registro de Matricula de estudiante</h1>
-                <div class="form-row">
-                    <div>
-                        <label for="student_input_search">
-                            {{ form.student.label }}
-                        </label>
+                {% if request.resolver_match.url_name == 'new_form_matriculation' %}
+                    <div class="form-row">
+                        <div>
+                            <label for="student_input_search">
+                                {{ form.student.label }}
+                            </label>
 
-                        {{ form.student }}
+                            {{ form.student }}
 
-                        <button id="search_student" type="button">
-                            <i class="fa fa-search"></i> buscar
-                        </button>
+                            <button id="search_student" type="button">
+                                <i class="fa fa-search"></i> buscar
+                            </button>
+
+                        </div>
 
                     </div>
-
-                </div>
+                {% endif %}
 
                 <div class="form-row" id="data-student" style="display: none">
                     <h2><u>Datos del estudiante</u>:</h2>
