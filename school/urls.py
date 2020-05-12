@@ -12,5 +12,5 @@ urlpatterns = [
     path('matricula/<int:id>', NewMatriculationFormView.as_view(), name='matriculation_detail'),
     path('school_space', api.get_school_space, name='api_school_space'),
     path('students', api.get_students, name='api_students'),
-    path('matricula/guardar', api.guardar_formulario, name='api_save'),
+    path('matricula/guardar', api.save_form, name='api_save'),
 ]
