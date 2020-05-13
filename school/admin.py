@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from jet.admin import CompactInline
@@ -42,7 +43,7 @@ class CatalogsAdmin(admin.ModelAdmin):
 @admin.register(Matriculation)
 class MatriculationAdmin(admin.ModelAdmin):
     readonly_fields = ['teaching_year']
-    list_display = ('student', 'teaching_year',
+    list_display = ('link_edit_matriculation', 'teaching_year',
                     'grade_section', 'status')
     ordering = ['teaching_year']
     search_fields = ['student__names', 'student__last_name']
@@ -53,6 +54,15 @@ class MatriculationAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_editable = ('status',)
     change_list_template = 'admin/matriculation/change_list.html'
+
+    def link_edit_matriculation(self, obj):
+        from django.urls import reverse
+        url = reverse('school:matriculation_detail', args=(obj.id,))
+        return format_html('<a href="{url}">{student_fullname}</a>'.
+                           format(url=url,
+                                  student_fullname=obj.student))
+
+    link_edit_matriculation.short_description = 'Alumno'
 
 
 @admin.register(Student)
@@ -149,7 +159,7 @@ class PersonalFileAdmin(admin.ModelAdmin):
 
 @admin.register(GradeSection)
 class GradeSectionAdmin(admin.ModelAdmin):
-    list_display = ('grade', 'section', )
+    list_display = ('grade', 'section',)
     ordering = ['order']
 
 
