@@ -4,6 +4,7 @@ $(function ($) {
 
     let student_input = $('#student_input_search');
     let select_grade_section = $('#grade_section_select');
+    let teaching_year_input = $('#teaching_year_input');
     let select_status = $('#status_select');
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let table_students = $('#students_rows');
@@ -39,7 +40,7 @@ $(function ($) {
         })
         .on('dblclick', '.select_row_student', function () {
             let student_id = $(this).data('student_id');
-            student = list_students.find(student => {
+            const student = list_students.find(student => {
                 return student.id === student_id
             });
 
@@ -104,6 +105,21 @@ $(function ($) {
             $('#form_matricula').attr('data-continue', flag_continue);
         });
 
+
+    if (typeof (student_data) !== 'undefined' && typeof (matriculacion) !== 'undefined') {
+        const status = {
+            id: matriculacion.status,
+            label: matriculacion.status_name
+        };
+        load_data_student_HTML(student_data, status);
+        teaching_year_input.val(matriculacion.teaching_year);
+        select_grade_section.val(matriculacion.grade_seccion).trigger('change');
+        $('#select2-grade_section_select-container')
+            .attr('title', matriculacion.grade_seccion_name)
+            .html(matriculacion.grade_seccion_name);
+
+    }
+
     function check_if_fullname_or_code(str) {
         let contains_signs = str.includes('-');
         let length_str = str.length;
@@ -162,17 +178,16 @@ $(function ($) {
                 <td>${family}</td>
                 </tr>`);
         }
-
     }
 
-    function load_data_student_HTML(student) {
+    function load_data_student_HTML(student, status = {id: 1, label: 'Activo'}) {
         for (const key in student) {
             if (key === 'id') {
                 $(`#${key}`).val(student[key]);
             } else if (key === 'family') {
                 let family = 'Ningun Familiar Registrado';
                 if (student[key].length > 0) {
-
+                    family = '';
                     for (const familiar of student[key]) {
                         let tutor = familiar.tutor ? '(Tutor)' : '';
                         family += `${familiar.name} (${familiar.rol})${tutor}<br>`;
@@ -185,10 +200,10 @@ $(function ($) {
         }
         $('#data-student').fadeIn('fast');
 
-        select_status.val(1).trigger('change');
+        select_status.val(status.id).trigger('change');
         $('#select2-status_select-container')
-            .attr('title', 'Activo')
-            .html('Activo');
+            .attr('title', status.label)
+            .html(status.label);
         select_status.removeAttr('disabled');
 
         select_grade_section.removeAttr('disabled');

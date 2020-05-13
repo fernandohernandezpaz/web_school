@@ -26,7 +26,7 @@ class MatriculationForm(forms.ModelForm):
 
     grade_section = forms.ModelChoiceField(
         label='Grado Sección',
-        queryset=GradeSection.objects.all(),
+        queryset=GradeSection.objects.order_by('order').all(),
         required=True,
         widget=forms.ModelChoiceField.widget(
             attrs={

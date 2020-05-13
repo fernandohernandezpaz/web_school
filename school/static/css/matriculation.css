@@ -1,0 +1,31 @@
+#data-student {
+    border: 1px #354052 solid;
+    height: 200px;
+    width: 50%
+}
+
+#ModalTable {
+    width: 950px;
+    max-width: 950px;
+    height: 500px;
+}
+
+#students_rows {
+    cursor: pointer;
+}
+
+#message_space {
+    display: none;
+}
+
+p.no-space {
+    color: red !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
+
+p.space {
+    color: red !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
