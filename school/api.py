@@ -3,12 +3,12 @@ from django.db.models import Value, F
 from django.db.models.functions import Concat
 from .models import Matriculation, GradeSection, Student
 from .commons import (get_current_year, convert_date)
-from web_school.constance_settings import CONSTANCE_CONFIG
+from constance import config
 
 
 def get_school_space(request):
     try:
-        quantity_students = CONSTANCE_CONFIG['CANTIDAD_ALUMNOS_POR_AULA'][0]
+        quantity_students = config.CANTIDAD_ALUMNOS_POR_AULA
         year = get_current_year()
         filters = {
             'teaching_year': year
@@ -19,14 +19,14 @@ def get_school_space(request):
         if id:
             filters['grade_section__id'] = id
 
-        count_student_maculation = Matriculation.objects. \
+        count_student_matriculation = Matriculation.objects. \
             filter(**filters). \
             count()
 
         nombre_grado_seccion = GradeSection.objects. \
             get(id=id)
 
-        school_space = quantity_students - count_student_maculation
+        school_space = quantity_students - count_student_matriculation
 
         if school_space > 0:
             mensaje = 'Aun tenemos {spaces} cupos diponibles para el aula {gradoseccion}'. \
