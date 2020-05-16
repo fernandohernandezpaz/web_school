@@ -2,8 +2,9 @@
 {% load static i18n %}
 
 {% block extrastyle %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery-modal/jquery.modal.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/matriculation.css' %}">
     <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
     <script>
@@ -35,8 +36,8 @@
     </script>
     <script src="{% static 'js/matriculation.js' %}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'jquery-modal/jquery.modal.min.js' %}"></script>
     <script src="{% static 'admin/js/jquery.init.js' %}"></script>
 
 {% endblock %}
