@@ -70,3 +70,6 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+
+# package.json
+node_modules
