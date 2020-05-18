@@ -2,8 +2,10 @@ import json
 
 from django.views.generic import FormView
 from .forms import MatriculationForm
-from .models import Matriculation, Student, Family
+from .models import Matriculation, Student, Family, UserCoursesByYear
 from django.db.models import F
+from django.views.generic.list import ListView
+from .commons import get_current_year
 
 
 # Create your views here.
@@ -32,3 +34,27 @@ class NewMatriculationFormView(FormView):
             context['family'] = json.dumps(family)
 
         return context
+
+
+class NewViewCourseGradeSectionList(ListView):
+    model = UserCoursesByYear
+    paginate_by = 15
+    template_name = 'listview_coursesgradesection.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        queryset = UserCoursesByYear.objects. \
+            filter(year=get_current_year()). \
+            values(curso=F('coursesgradesection__course__name'),
+                   curso_id=F('coursesgradesection__course_id'),
+                   grado=F('coursesgradesection__grade_section__grade__name'),
+                   grado_id=F('coursesgradesection__grade_section__grade_id'),
+                   seccion=F('coursesgradesection__grade_section__section__name'),
+                   seccion_id=F('coursesgradesection__grade_section__section_id'),
+                   grado_seccion=F('coursesgradesection__grade_section'),
+                   grado_seccion_id=F('coursesgradesection__grade_section__id'))
+
+        return queryset
