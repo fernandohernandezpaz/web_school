@@ -2,10 +2,12 @@ import json
 
 from django.views.generic import FormView
 from .forms import MatriculationForm
-from .models import Matriculation, Student, Family, UserCoursesByYear
+from .models import Matriculation, Student, Family, UserCoursesByYear, CourseGradeSection
 from django.db.models import F
 from django.views.generic.list import ListView
 from .commons import get_current_year
+from django.views.generic import TemplateView
+from django.shortcuts import render
 
 
 # Create your views here.
@@ -55,6 +57,24 @@ class NewViewCourseGradeSectionList(ListView):
                    seccion=F('coursesgradesection__grade_section__section__name'),
                    seccion_id=F('coursesgradesection__grade_section__section_id'),
                    grado_seccion=F('coursesgradesection__grade_section'),
-                   grado_seccion_id=F('coursesgradesection__grade_section__id'))
+                   grado_seccion_id=F('coursesgradesection__grade_section__id'),
+                   grado_seccion_curso_id=F('coursesgradesection__id'))
 
         return queryset
+
+
+class NewRegisterNote(TemplateView):
+    template_name = 'form_registernote.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        grado_seccion_curso = CourseGradeSection.objects.get(pk=kwargs['id'])
+        queryset = Matriculation.objects. \
+            filter(teaching_year=get_current_year(),
+                   grade_section__id=grado_seccion_curso.grade_section_id). \
+            values('student__code_mined',
+                   'student__names',
+                   'student__last_name')
+        context['students'] = queryset
+        context['grade_section_course'] = grado_seccion_curso
+        return context

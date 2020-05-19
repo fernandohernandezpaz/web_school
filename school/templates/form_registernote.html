@@ -1,0 +1,53 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block content %}
+    <div id="content-main">
+        <form action="post" id="form_registernote" data-continue="false">
+            <fieldset class="module aligned  module_0 initialized">
+                <h1>
+                    {{ grade_section_course }}
+                </h1>
+                <div class="results">
+                    <table style="width:100%" id="result_list">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>C&oacute;digo Mined</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th style="text-align: center">IB</th>
+                            <th style="text-align: center">IIB</th>
+                            <th style="text-align: center">IS</th>
+                            <th style="text-align: center">IIIB</th>
+                            <th style="text-align: center">IVB</th>
+                            <th style="text-align: center">IIS</th>
+                            <th style="text-align: center">NF</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for student in students %}
+                        <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                           {{ student.student__code_mined }}
+                        </td>
+                        <td>
+                            {{ student.student__names }}
+                        </td>
+                        <td>
+                            {{ student.student__last_name }}
+                        </td>
+                        </tr>
+                        {% endfor %}
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+
