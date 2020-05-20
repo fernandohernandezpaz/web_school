@@ -1,6 +1,13 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
 
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'js/note_register.js' %}">
+    </script>
+{% endblock %}
 {% block content %}
     <div id="content-main">
         <form action="post" id="form_registernote" data-continue="false">
@@ -27,22 +34,50 @@
                         </thead>
                         <tbody>
                         {% for student in students %}
-                        <tr>
-                        <td>
-                            {{forloop.counter}}
-                        </td>
-                        <td>
-                           {{ student.student__code_mined }}
-                        </td>
-                        <td>
-                            {{ student.student__names }}
-                        </td>
-                        <td>
-                            {{ student.student__last_name }}
-                        </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <td>
+                                    {{ student.student__code_mined }}
+                                </td>
+                                <td>
+                                    {{ student.student__names }}
+                                </td>
+                                <td>
+                                    {{ student.student__last_name }}
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="ibimensual"
+                                           class="validar_maxymin" pattern="^[0-9]+">
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="iibimensual"
+                                           class="validar_maxymin" pattern="^[0-9]+">
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="isemestre"
+                                           readonly>
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="iiibimensual"
+                                           class="validar_maxymin" pattern="^[0-9]+">
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="ivbimensual"
+                                           class="validar_maxymin" pattern="^[0-9]+">
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="iisemestre"
+                                           readonly>
+                                </td>
+                                <td style="width: 75px">
+                                    <input type="number" min="0" max="100" style="width: 100%" name="notafinal"
+                                           readonly>
+                                </td>
+                            </tr>
                         {% endfor %}
-                        
+
                         </tbody>
                     </table>
                 </div>
