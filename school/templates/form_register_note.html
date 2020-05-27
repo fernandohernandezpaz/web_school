@@ -48,24 +48,38 @@
                                     {{ student.student__last_name }}
                                 </td>
                                 <td style="width: 75px">
-                                    <input type="number" min="0" max="100" style="width: 100%" name="ibimensual"
-                                           class="validar_maxymin" pattern="^[0-9]+">
+                                    <input data-span="isemestre_input_span{{ forloop.counter }}"
+                                           data-input="isemestre_input{{ forloop.counter }}"
+                                           data-value1="ibimensual{{ forloop.counter }}"
+                                           data-value2="iibimensual{{ forloop.counter }}"
+                                           id="ibimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                           style="width: 100%" name="ibimensual"
+                                           class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px">
-                                    <input type="number" min="0" max="100" style="width: 100%" name="iibimensual"
-                                           class="validar_maxymin" pattern="^[0-9]+">
+                                    <input data-span="isemestre_input_span{{ forloop.counter }}"
+                                           data-input="isemestre_input{{ forloop.counter }}"
+                                           data-value1="ibimensual{{ forloop.counter }}"
+                                           data-value2="iibimensual{{ forloop.counter }}"
+                                           id="iibimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                           style="width: 100%" name="iibimensual"
+                                           class="validar_maxymin">
                                 </td>
-                                <td style="width: 75px">
-                                    <input type="number" min="0" max="100" style="width: 100%" name="isemestre"
+                                <td style="width: 75px;text-align: center">
+                                    <span id="isemestre_input_span{{ forloop.counter }}"></span>
+                                    <input id="isemestre_input{{ forloop.counter }}" type="hidden" min="0" max="100"
+                                           style="width: 100%" name="isemestre"
                                            readonly>
                                 </td>
                                 <td style="width: 75px">
                                     <input type="number" min="0" max="100" style="width: 100%" name="iiibimensual"
-                                           class="validar_maxymin" pattern="^[0-9]+">
+                                           class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px">
                                     <input type="number" min="0" max="100" style="width: 100%" name="ivbimensual"
-                                           class="validar_maxymin" pattern="^[0-9]+">
+                                           class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px">
                                     <input type="number" min="0" max="100" style="width: 100%" name="iisemestre"

@@ -64,7 +64,7 @@ class NewViewCourseGradeSectionList(ListView):
 
 
 class NewRegisterNote(TemplateView):
-    template_name = 'form_registernote.html'
+    template_name = 'form_register_note.html'
 
     def get_context_data(self, **kwargs):
         context = {}
