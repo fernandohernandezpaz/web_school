@@ -15,18 +15,22 @@ $(function ($) {
                 });
             }
         })
-        .on('focus', '.validar_maxymin', function () {
+        .on('input', '.validar_maxymin', function () {
             const object_data_element = {
                 span_id: $(this).data('span'),
                 input_id: $(this).data('input'),
                 value_1_id: $(this).data('value1'),
                 value_2_id: $(this).data('value2'),
             };
-            const value_1 = $('#' + object_data_element.value_1_id).val();
-            const value_2 = $('#' + object_data_element.value_2_id).val();
-            calculating_semestre(value_1, value_2,
-                object_data_element.input_id,
-                object_data_element.span_id);
+            const value_1 = $(`#${object_data_element.value_1_id}`).val();
+            const value_2 = $(`#${object_data_element.value_2_id}`).val();
+            if (validate_no_empties_inputs(value_1, value_2)) {
+                calculating_semestre(value_1, value_2,
+                    object_data_element.input_id,
+                    object_data_element.span_id);
+
+                calculate_semestre_final(object_data_element.input_id);
+            }
         });
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {
@@ -45,5 +49,26 @@ $(function ($) {
             return 0;
 
         return Number(value);
+    }
+
+    function calculate_semestre_final(input_id) {
+        const input = $(`#${input_id}`);
+        const object_data_element = {
+            span_id: input.data('span'),
+            input_id: input.data('input'),
+            value_1_id: input.data('value1'),
+            value_2_id: input.data('value2'),
+        };
+        const value_1 = $(`#${object_data_element.value_1_id}`).val();
+        const value_2 = $(`#${object_data_element.value_2_id}`).val();
+        if (validate_no_empties_inputs(value_1, value_2)) {
+            calculating_semestre(value_1, value_2,
+                object_data_element.input_id,
+                object_data_element.span_id);
+        }
+    }
+
+    function validate_no_empties_inputs(value_1, value_2) {
+        return value_1 !== '' && value_2 !== '';
     }
 });

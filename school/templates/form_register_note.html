@@ -69,7 +69,12 @@
                                 </td>
                                 <td style="width: 75px;text-align: center">
                                     <span id="isemestre_input_span{{ forloop.counter }}"></span>
-                                    <input id="isemestre_input{{ forloop.counter }}" type="hidden" min="0" max="100"
+                                    <input id="isemestre_input{{ forloop.counter }}"
+                                           data-span="notafinal_input_span{{ forloop.counter }}"
+                                           data-input="notafinal_input{{ forloop.counter }}"
+                                           data-value1="isemestre_input{{ forloop.counter }}"
+                                           data-value2="iisemestre_input{{ forloop.counter }}"
+                                           type="hidden" min="0" max="100"
                                            style="width: 100%" name="isemestre"
                                            readonly>
                                 </td>
@@ -95,12 +100,22 @@
                                 </td>
                                 <td style="width: 75px;text-align: center">
                                     <span id="iisemestre_input_span{{ forloop.counter }}"></span>
-                                    <input id="iisemestre_input{{ forloop.counter }}" type="hidden" min="0" max="100"
+                                    <input id="iisemestre_input{{ forloop.counter }}"
+                                           data-span="notafinal_input_span{{ forloop.counter }}"
+                                           data-input="notafinal_input{{ forloop.counter }}"
+                                           data-value1="isemestre_input{{ forloop.counter }}"
+                                           data-value2="iisemestre_input{{ forloop.counter }}"
+                                           type="hidden" min="0" max="100"
                                            style="width: 100%" name="iisemestre"
                                            readonly>
                                 </td>
-                                <td style="width: 75px">
-                                    <input type="number" min="0" max="100" style="width: 100%" name="notafinal"
+                                <td style="width: 75px;text-align: center">
+                                    <span id="notafinal_input_span{{ forloop.counter }}"></span>
+                                    <input id="notafinal_input{{ forloop.counter }}"
+                                           type="hidden"
+                                           min="0" max="100"
+                                           style="width: 100%"
+                                           name="notafinal"
                                            readonly>
                                 </td>
                             </tr>
