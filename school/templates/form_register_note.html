@@ -16,34 +16,36 @@
                     {{ grade_section_course }}
                 </h1>
                 <div class="results">
-                    <table style="width:100%">
-                        <tr>
-                            <th width="10%"><u>Datos Generales</u></th>
-                            <th width="10%"></th>
-                            <th width="15%"><u>Fecha Limite Para Registrar Notas</u></th>
-                            <th width="40%"></th>
-                        </tr>
+                    <table style="width:100%; margin-bottom: 10px">
                         <tbody>
+                        <tr>
+                            <th style="width: 10%;font-size: 15px"><u>Datos Generales</u></th>
+                            <th style="width: 10%"></th>
+                            <th style="width: 15%;font-size: 15px"><u>Fecha Limite Para Registrar Notas</u></th>
+                            <th style="width: 40%"></th>
+                        </tr>
                         <tr>
                             <th>Asignatura:</th>
                             <td>{{ grade_section_course.course }}</td>
                             <th>I Bimensual:</th>
-                            <td>aqui va mi fecha limite mamalona</td>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL }}</td>
                         <tr>
                             <th>Grado:</th>
                             <td>{{ grade_section_course.grade_section.grade }}</td>
                             <th>II Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL }}</td>
                         </tr>
                         <tr>
                             <th>Seccion:</th>
                             <td>{{ grade_section_course.grade_section.section }}</td>
                             <th>III Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL }}</td>
                         </tr>
                         <tr>
                             <th>Estudiantes Registrados:</th>
                             <td>{{ students|length }}</td>
                             <th>IV Bimensual:</th>
-                        </tr>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL }}</td>
                         </tr>
                         </tbody>
                     </table>

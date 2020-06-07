@@ -7,7 +7,7 @@ from django.db.models import F
 from django.views.generic.list import ListView
 from .commons import get_current_year
 from django.views.generic import TemplateView
-from django.shortcuts import render
+from constance import config
 
 
 # Create your views here.
@@ -77,4 +77,5 @@ class NewRegisterNote(TemplateView):
                    'student__last_name')
         context['students'] = queryset
         context['grade_section_course'] = grado_seccion_curso
+        context['config'] = config
         return context
