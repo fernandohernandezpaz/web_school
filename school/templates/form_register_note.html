@@ -1,5 +1,6 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
+{% load own_context_processor %}
 
 {% block extrastyle %}
     <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
@@ -88,6 +89,9 @@
                                            id="ibimensual{{ forloop.counter }}"
                                            type="number" min="0" max="100"
                                            style="width: 100%" name="ibimensual"
+                                           {% if config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
                                            class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px">
@@ -97,6 +101,9 @@
                                            data-value2="iibimensual{{ forloop.counter }}"
                                            id="iibimensual{{ forloop.counter }}"
                                            type="number" min="0" max="100"
+                                            {% if config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
                                            style="width: 100%" name="iibimensual"
                                            class="validar_maxymin">
                                 </td>
@@ -118,6 +125,9 @@
                                            data-value2="ivbimensual{{ forloop.counter }}"
                                            id="iiibimensual{{ forloop.counter }}"
                                            type="number" min="0" max="100"
+                                           {% if config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
                                            style="width: 100%" name="iiibimensual"
                                            class="validar_maxymin">
                                 </td>
@@ -128,6 +138,9 @@
                                            data-value2="ivbimensual{{ forloop.counter }}"
                                            id="ivbimensual{{ forloop.counter }}"
                                            type="number" min="0" max="100"
+                                           {% if config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
                                            style="width: 100%" name="ivbimensual"
                                            class="validar_maxymin">
                                 </td>
@@ -160,7 +173,8 @@
             </fieldset>
             <div class="submit-row">
 
-                <p class="deletelink-box"><a href="/school/asignaturas_grado_seccion" class="deletelink">Cancelar</a></p>
+                <p class="deletelink-box"><a href="/school/asignaturas_grado_seccion" class="deletelink">Cancelar</a>
+                </p>
 
                 <input type="submit" value="Guardar" data-continue="false" class="default save" name="_save">
 
