@@ -71,7 +71,8 @@ class NewRegisterNote(TemplateView):
         grado_seccion_curso = CourseGradeSection.objects.get(pk=kwargs['id'])
         queryset = Matriculation.objects. \
             filter(teaching_year=get_current_year(),
-                   grade_section__id=grado_seccion_curso.grade_section_id). \
+                   grade_section__id=grado_seccion_curso.grade_section_id,
+                   status=1). \
             values('student__code_mined',
                    'student__names',
                    'student__last_name')
