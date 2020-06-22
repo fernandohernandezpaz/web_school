@@ -80,3 +80,7 @@ class NewRegisterNote(TemplateView):
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
         return context
+
+
+class NewRegisterNoteAdmin(TemplateView):
+    template_name = 'from_register_note_admin.html'

@@ -4,7 +4,7 @@ monitoring URL Configuration. Included as root ''
 from django.urls import path
 from .views import (NewMatriculationFormView,
                     NewViewCourseGradeSectionList,
-                    NewRegisterNote)
+                    NewRegisterNote, NewRegisterNoteAdmin)
 from . import api
 
 app_name = 'school'
@@ -19,4 +19,5 @@ urlpatterns = [
     path('grado_seccion_asignatura/<int:id>/registro_de_notas',
          NewRegisterNote.as_view(),
          name='lista_de_alumnos_por_asignatura'),
+    path('admin_notas_docentes', NewRegisterNoteAdmin.as_view(), name='lista de docentes'),
 ]
