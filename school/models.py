@@ -129,8 +129,8 @@ class Profile(models.Model):
 
     class Meta:
         ordering = ['user']
-        verbose_name = 'Perfil'
-        verbose_name_plural = 'Perfiles'
+        verbose_name = 'Docente'
+        verbose_name_plural = 'Docentes'
 
 
 class UserCoursesByYear(models.Model):
