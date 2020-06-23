@@ -19,5 +19,4 @@ urlpatterns = [
     path('grado_seccion_asignatura/<int:id>/registro_de_notas',
          NewRegisterNote.as_view(),
          name='lista_de_alumnos_por_asignatura'),
-    path('admin_notas_docentes', NewRegisterNoteAdmin.as_view(), name='lista de docentes'),
 ]

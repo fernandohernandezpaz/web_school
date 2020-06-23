@@ -82,5 +82,3 @@ class NewRegisterNote(TemplateView):
         return context
 
 
-class NewRegisterNoteAdmin(TemplateView):
-    template_name = 'from_register_note_admin.html'
