@@ -18,17 +18,17 @@
 
         {% if request.resolver_match.url_name == 'matriculation_detail' %}
             var matriculacion = {
-                id: {{ matriculacion.id }},
-                grade_seccion: {{ matriculacion.grade_section_id }},
-                grade_seccion_name: '{{ matriculacion.grade_section }}',
-                status: {{ matriculacion.status }},
-                teaching_year: {{ matriculacion.teaching_year }},
-                status_name: '{{ matriculacion.STUDENT_STATUS_CHOICE.0.1 }}'
+                id: {{ matriculation.id }},
+                grade_seccion: {{ matriculation.grade_section_id }},
+                grade_seccion_name: '{{ matriculation.grade_section }}',
+                status: {{ matriculation.status }},
+                teaching_year: {{ matriculation.teaching_year }},
+                status_name: '{{ matriculation.status_name }}'
             };
             var student_data = {
                 id: {{ student.id }},
                 code_mined: '{{ student.code_mined }}',
-                fullname: '{{ matriculacion.student }}',
+                fullname: '{{ matriculation.student }}',
                 birthday: '{{ student.birthday }}',
                 family: {{ family|safe }}
             };

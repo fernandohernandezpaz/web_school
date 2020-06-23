@@ -20,10 +20,12 @@ class NewMatriculationFormView(FormView):
         context = super(NewMatriculationFormView, self).get_context_data(**kwargs)
         id = self.kwargs.get('id')
         if id:
-            matriculacion = Matriculation.objects. \
+            matriculation = Matriculation.objects. \
                 get(id=id)
+            matriculation_status_dict = dict((key, value) for key, value in Matriculation.STUDENT_STATUS_CHOICE)
+            matriculation.status_name = matriculation_status_dict[matriculation.status]
             student = Student.objects. \
-                get(id=matriculacion.student_id)
+                get(id=matriculation.student_id)
             family = list({})
             if Family.objects.filter(student__id=student.id).exists():
                 family = list(Student.objects.filter(id=student.id).
@@ -31,7 +33,7 @@ class NewMatriculationFormView(FormView):
                                      rol=F('family_members__family_role'),
                                      tutor=F('family_members__tutor')))
 
-            context['matriculacion'] = matriculacion
+            context['matriculation'] = matriculation
             context['student'] = student
             context['family'] = json.dumps(family)
 
