@@ -182,6 +182,24 @@ class PaperCenterAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('fullname', 'document', 'vocation', 'cellphone', 'link_ver_asignatura')
+    ordering = ['user']
+
+    def fullname(self, user):
+        return u'{first_names} {last_names}'.format(first_names=user.user.first_name,
+                                                    last_names=user.user.last_name)
+
+    fullname.short_description = 'Nombre Completo del Docente'
+
+    def link_ver_asignatura(self, obj):
+        return format_html('<a href="{url}">VER ASIGNATURA</a>'.
+                           format(url='', ))
+
+    link_ver_asignatura.short_description = 'Asignatura'
+
+
 class MyUserAdmin(UserAdmin):
     inlines = [
         ProfileInline,
@@ -215,7 +233,6 @@ admin.site.register(Course, CatalogsAdmin)
 admin.site.register(Gender, CatalogsAdmin)
 admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
-admin.site.register(Profile)
 admin.site.register(Note)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)

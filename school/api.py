@@ -11,7 +11,8 @@ def get_school_space(request):
         quantity_students = config.CANTIDAD_ALUMNOS_POR_AULA
         year = get_current_year()
         filters = {
-            'teaching_year': year
+            'teaching_year': year,
+            'status': 1
         }
 
         id = request.POST.get('id')

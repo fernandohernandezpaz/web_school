@@ -1,0 +1,185 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+{% load own_context_processor %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'js/note_register.js' %}">
+    </script>
+{% endblock %}
+{% block content %}
+    <div id="content-main">
+        <form action="post" id="form_registernote" data-continue="false">
+            <fieldset class="module aligned  module_0 initialized">
+                <h1>
+                    {{ grade_section_course }}
+                </h1>
+                <div class="results">
+                    <table style="width:100%; margin-bottom: 10px">
+                        <tbody>
+                        <tr>
+                            <th style="width: 10%;font-size: 15px"><u>Datos Generales</u></th>
+                            <th style="width: 10%"></th>
+                            <th style="width: 15%;font-size: 15px"><u>Fecha Limite Para Registrar Notas</u></th>
+                            <th style="width: 40%"></th>
+                        </tr>
+                        <tr>
+                            <th>Asignatura:</th>
+                            <td>{{ grade_section_course.course }}</td>
+                            <th>I Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL }}</td>
+                        <tr>
+                            <th>Grado:</th>
+                            <td>{{ grade_section_course.grade_section.grade }}</td>
+                            <th>II Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL }}</td>
+                        </tr>
+                        <tr>
+                            <th>Seccion:</th>
+                            <td>{{ grade_section_course.grade_section.section }}</td>
+                            <th>III Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL }}</td>
+                        </tr>
+                        <tr>
+                            <th>Estudiantes Registrados:</th>
+                            <td>{{ students|length }}</td>
+                            <th>IV Bimensual:</th>
+                            <td>{{ config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table style="width:100%" id="result_list">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>C&oacute;digo Mined</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th style="text-align: center">IB</th>
+                            <th style="text-align: center">IIB</th>
+                            <th style="text-align: center">IS</th>
+                            <th style="text-align: center">IIIB</th>
+                            <th style="text-align: center">IVB</th>
+                            <th style="text-align: center">IIS</th>
+                            <th style="text-align: center">NF</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <td>
+                                    {{ student.student__code_mined }}
+                                </td>
+                                <td>
+                                    {{ student.student__names }}
+                                </td>
+                                <td>
+                                    {{ student.student__last_name }}
+                                </td>
+                                <td style="width: 75px">
+                                    <input data-span="isemestre_input_span{{ forloop.counter }}"
+                                           data-input="isemestre_input{{ forloop.counter }}"
+                                           data-value1="ibimensual{{ forloop.counter }}"
+                                           data-value2="iibimensual{{ forloop.counter }}"
+                                           id="ibimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                           style="width: 100%" name="ibimensual"
+                                           {% if config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
+                                           class="validar_maxymin">
+                                </td>
+                                <td style="width: 75px">
+                                    <input data-span="isemestre_input_span{{ forloop.counter }}"
+                                           data-input="isemestre_input{{ forloop.counter }}"
+                                           data-value1="ibimensual{{ forloop.counter }}"
+                                           data-value2="iibimensual{{ forloop.counter }}"
+                                           id="iibimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                            {% if config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
+                                           style="width: 100%" name="iibimensual"
+                                           class="validar_maxymin">
+                                </td>
+                                <td style="width: 75px;text-align: center">
+                                    <span id="isemestre_input_span{{ forloop.counter }}"></span>
+                                    <input id="isemestre_input{{ forloop.counter }}"
+                                           data-span="notafinal_input_span{{ forloop.counter }}"
+                                           data-input="notafinal_input{{ forloop.counter }}"
+                                           data-value1="isemestre_input{{ forloop.counter }}"
+                                           data-value2="iisemestre_input{{ forloop.counter }}"
+                                           type="hidden" min="0" max="100"
+                                           style="width: 100%" name="isemestre"
+                                           readonly>
+                                </td>
+                                <td style="width: 75px">
+                                    <input data-span="iisemestre_input_span{{ forloop.counter }}"
+                                           data-input="iisemestre_input{{ forloop.counter }}"
+                                           data-value1="iiibimensual{{ forloop.counter }}"
+                                           data-value2="ivbimensual{{ forloop.counter }}"
+                                           id="iiibimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                           {% if config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
+                                           style="width: 100%" name="iiibimensual"
+                                           class="validar_maxymin">
+                                </td>
+                                <td style="width: 75px">
+                                    <input data-span="iisemestre_input_span{{ forloop.counter }}"
+                                           data-input="iisemestre_input{{ forloop.counter }}"
+                                           data-value1="iiibimensual{{ forloop.counter }}"
+                                           data-value2="ivbimensual{{ forloop.counter }}"
+                                           id="ivbimensual{{ forloop.counter }}"
+                                           type="number" min="0" max="100"
+                                           {% if config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL|greater_than_today %}
+                                               disabled
+                                           {% endif %}
+                                           style="width: 100%" name="ivbimensual"
+                                           class="validar_maxymin">
+                                </td>
+                                <td style="width: 75px;text-align: center">
+                                    <span id="iisemestre_input_span{{ forloop.counter }}"></span>
+                                    <input id="iisemestre_input{{ forloop.counter }}"
+                                           data-span="notafinal_input_span{{ forloop.counter }}"
+                                           data-input="notafinal_input{{ forloop.counter }}"
+                                           data-value1="isemestre_input{{ forloop.counter }}"
+                                           data-value2="iisemestre_input{{ forloop.counter }}"
+                                           type="hidden" min="0" max="100"
+                                           style="width: 100%" name="iisemestre"
+                                           readonly>
+                                </td>
+                                <td style="width: 75px;text-align: center">
+                                    <span id="notafinal_input_span{{ forloop.counter }}"></span>
+                                    <input id="notafinal_input{{ forloop.counter }}"
+                                           type="hidden"
+                                           min="0" max="100"
+                                           style="width: 100%"
+                                           name="notafinal"
+                                           readonly>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <div class="submit-row">
+
+                <p class="deletelink-box"><a href="/school/asignaturas_grado_seccion" class="deletelink">Regresar</a>
+                </p>
+
+                <input type="submit" value="Guardar" data-continue="false" class="default save" name="_save">
+
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

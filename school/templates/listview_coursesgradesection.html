@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block content %}
+    <div id="content-main">
+        <div id="changelist" class="module filtered initialized">
+            <form id="changelist-form" method="post" action="">
+                {% csrf_token %}
+                <div class="results">
+                    <table id="result_list">
+                        <thead>
+                        <tr>
+                            <th>Asignaturas</th>
+                            <th style="text-align: center">Grado</th>
+                            <th style="text-align: center">Secci&oacute;n</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for registro in object_list %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'school:lista_de_alumnos_por_asignatura' id=registro.grado_seccion_curso_id %}">{{ registro.curso }}</a>
+                                </td>
+                                <td style="text-align: center">{{ registro.grado }} </td>
+                                <td style="text-align: center">{{ registro.seccion }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
