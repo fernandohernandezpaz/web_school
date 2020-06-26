@@ -5,13 +5,13 @@ from .forms import MatriculationForm
 from .models import Matriculation, Student, Family, UserCoursesByYear, CourseGradeSection
 from django.db.models import F
 from django.views.generic.list import ListView
-from .commons import get_current_year
+from .commons import get_current_year, CheckIsLoggin
 from django.views.generic import TemplateView
 from constance import config
 
 
 # Create your views here.
-class NewMatriculationFormView(FormView):
+class NewMatriculationFormView(CheckIsLoggin, FormView):
     template_name = 'form_matriculation.html'
     form_class = MatriculationForm
     form = MatriculationForm
@@ -40,7 +40,7 @@ class NewMatriculationFormView(FormView):
         return context
 
 
-class NewViewCourseGradeSectionList(ListView):
+class NewViewCourseGradeSectionList(CheckIsLoggin, ListView):
     model = UserCoursesByYear
     paginate_by = 15
     template_name = 'listview_coursesgradesection.html'
@@ -65,7 +65,7 @@ class NewViewCourseGradeSectionList(ListView):
         return queryset
 
 
-class NewRegisterNote(TemplateView):
+class NewRegisterNote(CheckIsLoggin, TemplateView):
     template_name = 'form_register_note.html'
 
     def get_context_data(self, **kwargs):
