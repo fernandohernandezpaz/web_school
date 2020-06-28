@@ -47,11 +47,13 @@ class NewViewCourseGradeSectionList(CheckIsLoggin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['teacher_id'] = self.kwargs['teacher_id']
         return context
 
     def get_queryset(self):
         queryset = UserCoursesByYear.objects. \
-            filter(year=get_current_year()). \
+            filter(year=get_current_year(),
+                   user_id=self.kwargs['teacher_id']). \
             values(curso=F('coursesgradesection__course__name'),
                    curso_id=F('coursesgradesection__course_id'),
                    grado=F('coursesgradesection__grade_section__grade__name'),
@@ -78,6 +80,8 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
             values('student__code_mined',
                    'student__names',
                    'student__last_name')
+
+        context['teacher_id'] = kwargs['teacher_id']
         context['students'] = queryset
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config

@@ -173,7 +173,8 @@
             </fieldset>
             <div class="submit-row">
 
-                <p class="deletelink-box"><a href="/school/asignaturas_grado_seccion" class="deletelink">Regresar</a>
+                <p class="deletelink-box">
+                    <a href="{% url 'school:lista_de_asignaturas_por_seccion' teacher_id=teacher_id %}" class="deletelink">Regresar</a>
                 </p>
 
                 <input type="submit" value="Guardar" data-continue="false" class="default save" name="_save">
