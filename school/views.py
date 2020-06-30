@@ -2,12 +2,30 @@ import json
 
 from django.views.generic import FormView
 from .forms import MatriculationForm
-from .models import Matriculation, Student, Family, UserCoursesByYear, CourseGradeSection
+from .models import (Matriculation, Student, Family,
+                     UserCoursesByYear, CourseGradeSection,
+                     Note)
 from django.db.models import F
+from django.forms.models import model_to_dict
 from django.views.generic.list import ListView
 from .commons import get_current_year, CheckIsLoggin
 from django.views.generic import TemplateView
 from constance import config
+
+
+def fill_with_data_from_db_or_empty(student, notes):
+    keys = {'note_id': 'id', 'bi_i': 'bimonthly_I',
+            'bi_ii': 'bimonthly_II', 'semestral_i': 'biannual_I',
+            'bi_iii': 'bimonthly_III', 'bi_iv': 'bimonthly_IV',
+            'semestral_ii': 'biannual_II', 'final': 'final'}
+    if notes:
+        notes_dict = model_to_dict(notes)
+        for key in keys:
+            key_db = keys[key]
+            student[key] = notes_dict[key_db]
+    else:
+        for key in keys:
+            student[key] = ''
 
 
 # Create your views here.
@@ -73,18 +91,29 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         grado_seccion_curso = CourseGradeSection.objects.get(pk=kwargs['id'])
-        queryset = Matriculation.objects. \
+        # getting a list of students with matriculation active and
+        # they are registered in a specific course
+        students = Matriculation.objects. \
             filter(teaching_year=get_current_year(),
                    grade_section__id=grado_seccion_curso.grade_section_id,
                    status=1). \
-            values('student__code_mined',
+            values('id',  # id of matriculation
+                   'student_id',
+                   'student__code_mined',
                    'student__names',
                    'student__last_name')
 
+        # creating keys of each note for each student
+        for student in students:
+            notes = Note.objects.filter(
+                teacher_id=kwargs['teacher_id'],
+                matriculation_id=student['id'],  # id of matriculation
+                course_id=grado_seccion_curso.course_id
+            ).first()
+            fill_with_data_from_db_or_empty(student, notes)
+
         context['teacher_id'] = kwargs['teacher_id']
-        context['students'] = queryset
+        context['students'] = students
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
         return context
-
-
