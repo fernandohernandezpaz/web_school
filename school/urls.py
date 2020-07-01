@@ -20,4 +20,5 @@ urlpatterns = [
     path('<int:teacher_id>/grado_seccion_asignatura/<int:id>/registro_de_notas',
          NewRegisterNote.as_view(),
          name='lista_de_alumnos_por_asignatura'),
+    path('guardar/nota', api.save_note, name='api_save_note'),
 ]

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.db.models import Value, F
 from django.db.models.functions import Concat
-from .models import Matriculation, GradeSection, Student
+from .models import Matriculation, GradeSection, Student, Note
 from .commons import (get_current_year, convert_date)
 from constance import config
 
@@ -131,3 +131,41 @@ def save_form(request):
         }
 
     return JsonResponse(response)
+
+
+def save_note(request):
+    try:
+        ibimensual = int(request.POST.get('ibimesual'))
+        iibimensual = int(request.POST.get('iibimensual'))
+        isemestre = int(request.POST.get('isemestre'))
+        iiibimensual = int(request.POST.get('iiibimensual'))
+        ivbimensual = int(request.POST.get('ivbimensual'))
+        iisemestre = int(request.POST.get('iisemestre'))
+        notafinal = int(request.POST.get('notafinal'))
+
+        note_exist = Note.objects.filter(
+            ibimensual=ibimensual,
+        ).first()
+
+        if note_exist:
+            note_exist.bimonthly_I = ibimensual
+            note_exist.bimonthly_II = iibimensual
+            note_exist.biannual_I = isemestre
+            note_exist.bimonthly_III = iiibimensual
+            note_exist.bimonthly_IV = ivbimensual
+            note_exist.biannual_II = iisemestre
+            note_exist.final = notafinal
+            note_exist.save()
+        else:
+            note = Note()
+            note.bimonthly_I = ibimensual
+            note.bimonthly_II = iibimensual
+            note.biannual_I = isemestre
+            note.bimonthly_III = iiibimensual
+            note.bimonthly_IV = ivbimensual
+            note.biannual_II = iisemestre
+            note.final = notafinal
+            note.save()
+
+    except:
+        return JsonResponse({})
