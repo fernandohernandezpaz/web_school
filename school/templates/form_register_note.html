@@ -10,7 +10,7 @@
         var keys_note = ['ibimensual', 'iibimensual',
             'iiibimensual', 'ivbimensual'];
         var URLS_API = {
-            'save': '{% url 'school:api_save_note' %}',
+            'save': '{% url 'school:api_save_note' %}'
         };
     </script>
     <script src="{% static 'js/note_register.js' %}">
@@ -19,6 +19,7 @@
 {% block content %}
     <div id="content-main">
         <form action="post" id="form_register_note" data-continue="false">
+            <input type="hidden" name="course" id="course" value="{{ grade_section_course.course_id }}">
             <fieldset class="module aligned  module_0 initialized">
                 <h1>
                     {{ grade_section_course }}
@@ -100,9 +101,9 @@
                                            value="{{ student.bi_i }}"
                                            type="number" min="0" max="100"
                                            style="width: 100%" name="ibimensual"
-                                            {#                                            {% if config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL|greater_than_today %}#}
-                                            {#                                           disabled#}
-                                            {#                                            {% endif %}#}
+                                            {% if config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL|greater_than_today %}
+                                           disabled
+                                            {% endif %}
                                            class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px">

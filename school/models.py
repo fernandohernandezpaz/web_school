@@ -361,7 +361,7 @@ class Note(models.Model):
 class NoteControlEdition(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE,
                              verbose_name='Nota')
-    edit_field = models.CharField(max_length=10, verbose_name='Campo Edición')
+    edit_field = models.CharField(max_length=15, verbose_name='Campo Edición')
     value_edit_field = models.IntegerField(verbose_name='Valor')
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE,
                                    null=True, blank=True,

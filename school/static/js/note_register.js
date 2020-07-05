@@ -4,9 +4,14 @@ $(function ($) {
     let typingTimer;               // timer identifier
     let doneTypingInterval = 500; // time in ms
     const data_form = [];          // array to save the student with note edited
+    let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
+    let input_course = $('#course').val();
 
 
     $('body')
+        .on('change', '.validar_maxymin', function () {
+            collect_data_by_input_edit($(this));
+        })
         .on('input', '.validar_maxymin', function () {
             let valor_nota = $(this).val();
             valor_nota = valor_nota.replace(/'+'/g, '');
@@ -48,9 +53,27 @@ $(function ($) {
         .on('submit', '#form_register_note', function (e) {
             e.preventDefault();
 
-            $()
-
-
+            const data = {
+                'csrfmiddlewaretoken': input_tocken,
+                'course_id': input_course,
+                'students_notes': JSON.stringify(data_form)
+            };
+            $.ajax({
+                url: URLS_API.save,
+                data: data,
+                dataType: 'json',
+                type: 'POST',
+                success: function (response) {
+                    if (response.status) {
+                        Swal.fire({
+                            title: 'Guardado exitoso',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+            });
         })
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {
@@ -96,14 +119,14 @@ $(function ($) {
     function collect_data_by_input_edit(input_edited) {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(() => {
-                if (input_edited.val() <= 100) {
+                if (input_edited.val() <= 100 && input_edited.val() !== '') {
                     const row_contain_input = input_edited.parent().parent();
                     const matriculation_input = row_contain_input.find('td:eq(0)')
                         .find('.matriculation_id');
-                    const matriculatrion_id = convert_to_zero_if_empty(matriculation_input.val());
+                    const matriculation_id = convert_to_zero_if_empty(matriculation_input.val());
 
                     const student_note = data_form.find(student => {
-                        return student.matricula_id === matriculatrion_id;
+                        return student.matriculation_id === matriculation_id;
                     });
 
                     let id_input = input_edited.attr('id')
@@ -113,16 +136,10 @@ $(function ($) {
                         student_note[id_input] = Number(input_edited.val())
                     } else {
                         const student_note = {
-                            matricula_id: matriculatrion_id,
+                            matriculation_id: matriculation_id,
                             note_id: convert_to_zero_if_empty(matriculation_input.data('note_id'))
                         };
-                        for (const key of keys_note) {
-                            if (id_input === key) {
-                                student_note[key] = Number(input_edited.val())
-                            } else {
-                                student_note[key] = null;
-                            }
-                        }
+                        student_note[id_input] = Number(input_edited.val())
                         data_form.push(
                             student_note
                         );

@@ -134,38 +134,79 @@ def save_form(request):
 
 
 def save_note(request):
-    try:
-        ibimensual = int(request.POST.get('ibimesual'))
-        iibimensual = int(request.POST.get('iibimensual'))
-        isemestre = int(request.POST.get('isemestre'))
-        iiibimensual = int(request.POST.get('iiibimensual'))
-        ivbimensual = int(request.POST.get('ivbimensual'))
-        iisemestre = int(request.POST.get('iisemestre'))
-        notafinal = int(request.POST.get('notafinal'))
+    import json
+    from datetime import date
+    from .commons import calculate_note, control_edition_note
+    course_id = request.POST.get('course_id')
+    students_notes = request.POST.get('students_notes')
+    students_notes = list(json.loads(students_notes))
 
-        note_exist = Note.objects.filter(
-            ibimensual=ibimensual,
-        ).first()
+    for student_note in students_notes:
+        control_fields_edited = []
+        note_from_student = Note.objects. \
+            filter(matriculation_id=student_note['matriculation_id'],
+                   course_id=course_id).first()
 
-        if note_exist:
-            note_exist.bimonthly_I = ibimensual
-            note_exist.bimonthly_II = iibimensual
-            note_exist.biannual_I = isemestre
-            note_exist.bimonthly_III = iiibimensual
-            note_exist.bimonthly_IV = ivbimensual
-            note_exist.biannual_II = iisemestre
-            note_exist.final = notafinal
-            note_exist.save()
-        else:
-            note = Note()
-            note.bimonthly_I = ibimensual
-            note.bimonthly_II = iibimensual
-            note.biannual_I = isemestre
-            note.bimonthly_III = iiibimensual
-            note.bimonthly_IV = ivbimensual
-            note.biannual_II = iisemestre
-            note.final = notafinal
-            note.save()
+        # if no exists note from the student we create a instance of Note
+        if not note_from_student:
+            note_from_student = Note()
+            note_from_student.course_id = course_id
+            note_from_student.matriculation_id = student_note.get('matriculation_id')
+            note_from_student.teacher_id = request.user.id
 
-    except:
-        return JsonResponse({})
+        if student_note.get('ibimensual') and note_from_student.bimonthly_I is None:
+            note_from_student.bimonthly_I = int(student_note.get('ibimensual'))
+            note_from_student.bimonthly_I_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'bimonthly_I',
+                'value': int(student_note.get('ibimensual'))
+            })
+
+        if student_note.get('iibimensual') and note_from_student.bimonthly_II is None:
+            note_from_student.bimonthly_II = int(student_note.get('iibimensual'))
+            note_from_student.bimonthly_II_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'bimonthly_II',
+                'value': int(student_note.get('iibimensual'))
+            })
+
+        if note_from_student.bimonthly_I is not None and note_from_student.bimonthly_II is not None:
+            first_semestral = calculate_note(note_from_student.bimonthly_I, note_from_student.bimonthly_II)
+            note_from_student.biannual_I = round(first_semestral)
+            note_from_student.biannual_I_date_register = date.today()
+
+        if student_note.get('iiibimensual') and note_from_student.bimonthly_III is None:
+            note_from_student.bimonthly_III = int(student_note.get('iiibimensual'))
+            note_from_student.bimonthly_III_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'bimonthly_III',
+                'value': int(student_note.get('iiibimensual'))
+            })
+
+        if student_note.get('ivbimensual') and note_from_student.bimonthly_IV is None:
+            note_from_student.bimonthly_IV = int(student_note.get('ivbimensual'))
+            note_from_student.bimonthly_IV_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'bimonthly_IV',
+                'value': int(student_note.get('ivbimensual'))
+            })
+
+        if note_from_student.bimonthly_III is not None and note_from_student.bimonthly_IV is not None:
+            second_semestral = calculate_note(note_from_student.bimonthly_III, note_from_student.bimonthly_IV)
+            note_from_student.biannual_II = round(second_semestral)
+            note_from_student.biannual_II_date_register = date.today()
+
+        if note_from_student.biannual_I is not None and note_from_student.biannual_II is not None:
+            final = calculate_note(note_from_student.biannual_I, note_from_student.biannual_II)
+            note_from_student.final = round(final)
+
+        note_from_student.save()
+
+        control_edition_note(control_fields_edited, note_from_student.id)
+
+    response = {
+        'status': True,
+        'message': 'Notas guardadas exitosamente'
+    }
+
+    return JsonResponse(response)
