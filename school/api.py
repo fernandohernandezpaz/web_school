@@ -154,7 +154,7 @@ def save_note(request):
             note_from_student.matriculation_id = student_note.get('matriculation_id')
             note_from_student.teacher_id = request.user.id
 
-        if student_note.get('ibimensual') and note_from_student.bimonthly_I is None:
+        if student_note.get('ibimensual'):
             note_from_student.bimonthly_I = int(student_note.get('ibimensual'))
             note_from_student.bimonthly_I_date_register = date.today()
             control_fields_edited.append({
@@ -162,7 +162,7 @@ def save_note(request):
                 'value': int(student_note.get('ibimensual'))
             })
 
-        if student_note.get('iibimensual') and note_from_student.bimonthly_II is None:
+        if student_note.get('iibimensual'):
             note_from_student.bimonthly_II = int(student_note.get('iibimensual'))
             note_from_student.bimonthly_II_date_register = date.today()
             control_fields_edited.append({
@@ -175,7 +175,7 @@ def save_note(request):
             note_from_student.biannual_I = round(first_semestral)
             note_from_student.biannual_I_date_register = date.today()
 
-        if student_note.get('iiibimensual') and note_from_student.bimonthly_III is None:
+        if student_note.get('iiibimensual'):
             note_from_student.bimonthly_III = int(student_note.get('iiibimensual'))
             note_from_student.bimonthly_III_date_register = date.today()
             control_fields_edited.append({
@@ -183,7 +183,7 @@ def save_note(request):
                 'value': int(student_note.get('iiibimensual'))
             })
 
-        if student_note.get('ivbimensual') and note_from_student.bimonthly_IV is None:
+        if student_note.get('ivbimensual'):
             note_from_student.bimonthly_IV = int(student_note.get('ivbimensual'))
             note_from_student.bimonthly_IV_date_register = date.today()
             control_fields_edited.append({

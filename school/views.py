@@ -18,14 +18,32 @@ def fill_with_data_from_db_or_empty(student, notes):
             'bi_ii': 'bimonthly_II', 'semestral_i': 'biannual_I',
             'bi_iii': 'bimonthly_III', 'bi_iv': 'bimonthly_IV',
             'semestral_ii': 'biannual_II', 'final': 'final'}
+
+    general_key_edition = '{}_quantity_edition'
+
     if notes:
+        from .models import NoteControlEdition
         notes_dict = model_to_dict(notes)
+
+        control_edition_note = NoteControlEdition.objects. \
+            filter(note_id=notes_dict.get('id')). \
+            values()
+
         for key in keys:
             key_db = keys[key]
             student[key] = notes_dict[key_db]
+
+            if key_db != 'id':
+                quantity_editing = list(filter(lambda f: f['edit_field'] == key_db, control_edition_note))
+                key_bimonthly_edition = general_key_edition.format(key)
+                student[key_bimonthly_edition] = len(quantity_editing)
     else:
         for key in keys:
             student[key] = ''
+            key_db = keys[key]
+            if key_db != 'id':
+                key_bimonthly_edition = general_key_edition.format(key)
+                student[key_bimonthly_edition] = 0
 
 
 # Create your views here.
