@@ -114,7 +114,7 @@
                                            id="iibimensual{{ forloop.counter }}"
                                            value="{{ student.bi_ii }}"
                                            type="number" min="0" max="100"
-                                            {% if config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL|greater_than_today %}
+                                            {% if config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL|between_the_period:config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL %}
                                            disabled
                                             {% endif %}
                                            style="width: 100%" name="iibimensual"
@@ -142,7 +142,7 @@
                                            id="iiibimensual{{ forloop.counter }}"
                                            value="{{ student.bi_iii }}"
                                            type="number" min="0" max="100"
-                                            {% if config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL|greater_than_today %}
+                                            {% if config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL|between_the_period:config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL %}
                                            disabled
                                             {% endif %}
                                            style="width: 100%" name="iiibimensual"
@@ -156,7 +156,7 @@
                                            id="ivbimensual{{ forloop.counter }}"
                                            value="{{ student.bi_iv }}"
                                            type="number" min="0" max="100"
-                                            {% if config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL|greater_than_today %}
+                                            {% if config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL|between_the_period:config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL %}
                                            disabled
                                             {% endif %}
                                            style="width: 100%" name="ivbimensual"
