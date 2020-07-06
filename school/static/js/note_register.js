@@ -25,6 +25,9 @@ $(function ($) {
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
+                setTimeout(() => {
+                    btn_save.attr('disabled', 'disabled');
+                }, 100)
             } else {
                 btn_save.prop('disabled', false);
                 const object_data_element = {
@@ -65,12 +68,19 @@ $(function ($) {
                 type: 'POST',
                 success: function (response) {
                     if (response.status) {
+                        setTimeout(() => {
+                            btn_save.attr('disabled', 'disabled');
+
+                        }, 100);
                         Swal.fire({
                             title: 'Guardado exitoso',
                             text: response.message,
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        setTimeout(() => {
+                            Location.reload();
+                        }, 300);
                     }
                 }
             });
