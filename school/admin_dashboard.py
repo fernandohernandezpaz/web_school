@@ -27,7 +27,9 @@ class CustomIndexDashboard(Dashboard):
             'CATALOGOS',
             models=('school.Gender', 'school.Section',
                     'school.Grade', 'school.Course',
-                    'school.Nationality', 'school.GradeSection'),
+                    'school.Nationality', 'school.GradeSection',
+                    'school.Profile','school.<int:teacher_id>/asignaturas_grado_seccion'),
+
             column=2,
             order=0
         ))

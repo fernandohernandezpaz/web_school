@@ -79,7 +79,7 @@ $(function ($) {
                             confirmButtonText: 'OK'
                         });
                         setTimeout(() => {
-                            Location.reload();
+                            location.reload();
                         }, 300);
                     }
                 }
