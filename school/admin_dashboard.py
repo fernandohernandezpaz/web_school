@@ -7,32 +7,33 @@ class CustomIndexDashboard(Dashboard):
     columns = 3
 
     def init_with_context(self, context):
-        self.children.append(modules.AppList(
-            'REGISTRO PARA UN NUEVO ESTUDIANTE',
-            models=('school.Student', 'school.PersonalFile',
-                    'school.Family', 'school.PaperCenter',
-                    'school.Matriculation'),
-            column=0,
-            order=0
-        ))
+        if context.request.user.is_superuser:
+            self.children.append(modules.AppList(
+                'REGISTRO PARA UN NUEVO ESTUDIANTE',
+                models=('school.Student', 'school.PersonalFile',
+                        'school.Family', 'school.PaperCenter',
+                        'school.Matriculation'),
+                column=0,
+                order=0
+            ))
+        if context.request.user.is_superuser:
+            self.children.append(modules.AppList(
+                'REGISTRO PARA UN ESTUDIANTE DE REINGRESO',
+                models='school.Matriculation',
+                column=0,
+                order=1
+            ))
+        if context.request.user.is_superuser:
+            self.children.append(modules.AppList(
+                'CATALOGOS',
+                models=('school.Gender', 'school.Section',
+                        'school.Grade', 'school.Course',
+                        'school.Nationality', 'school.GradeSection',
+                        'school.Profile'),
 
-        self.children.append(modules.AppList(
-            'REGISTRO PARA UN ESTUDIANTE DE REINGRESO',
-            models='school.Matriculation',
-            column=0,
-            order=1
-        ))
-
-        self.children.append(modules.AppList(
-            'CATALOGOS',
-            models=('school.Gender', 'school.Section',
-                    'school.Grade', 'school.Course',
-                    'school.Nationality', 'school.GradeSection',
-                    'school.Profile'),
-
-            column=2,
-            order=0
-        ))
+                column=2,
+                order=0
+            ))
 
         is_teacher = Profile.objects. \
             filter(user_id=context.request.user.id). \
@@ -52,7 +53,7 @@ class CustomIndexDashboard(Dashboard):
                         'external': False
                     }
                 ],
-                column=1,
+                column=0,
                 order=0
             ))
 
