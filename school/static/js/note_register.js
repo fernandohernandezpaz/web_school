@@ -6,6 +6,7 @@ $(function ($) {
     const data_form = [];          // array to save the student with note edited
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let input_course = $('#course').val();
+    let input_teacher = $('#teacher').val();
 
 
     $('body')
@@ -18,7 +19,6 @@ $(function ($) {
             valor_nota = valor_nota.replace(/'-'/g, '');
             $(this).val(valor_nota);
             if (valor_nota > 100) {
-                $(this).val('');
                 Swal.fire({
                     title: 'ERROR',
                     text: 'El valor ingresado no puede ser mayor a 100',
@@ -26,6 +26,10 @@ $(function ($) {
                     confirmButtonText: 'OK'
                 });
                 setTimeout(() => {
+                    btn_save.attr('disabled', 'disabled');
+                }, 100)
+            } else if (valor_nota.length === 0) {
+                 setTimeout(() => {
                     btn_save.attr('disabled', 'disabled');
                 }, 100)
             } else {
@@ -59,6 +63,7 @@ $(function ($) {
             const data = {
                 'csrfmiddlewaretoken': input_tocken,
                 'course_id': input_course,
+                'teacher_id': input_teacher,
                 'students_notes': JSON.stringify(data_form)
             };
             $.ajax({
@@ -70,7 +75,6 @@ $(function ($) {
                     if (response.status) {
                         setTimeout(() => {
                             btn_save.attr('disabled', 'disabled');
-
                         }, 100);
                         Swal.fire({
                             title: 'Guardado exitoso',
@@ -84,6 +88,16 @@ $(function ($) {
                     }
                 }
             });
+        })
+        .on('click', '#enabled_inputs', function () {
+            Swal.fire({
+                title: 'Aviso',
+                text: 'Formulario habilitado para editar las notas',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+            $('.validar_maxymin').prop('disabled', false);
+
         })
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {

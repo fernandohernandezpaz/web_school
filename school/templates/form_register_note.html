@@ -4,6 +4,8 @@
 
 {% block extrastyle %}
     <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/own_styles.css' %}">
     <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
     <script>
@@ -20,6 +22,7 @@
     <div id="content-main">
         <form action="post" id="form_register_note" data-continue="false">
             <input type="hidden" name="course" id="course" value="{{ grade_section_course.course_id }}">
+            <input type="hidden" name="teacher_id" id="teacher" value="{{ teacher_id }}">
             <fieldset class="module aligned  module_0 initialized">
                 <h1>
                     {{ grade_section_course }}
@@ -205,7 +208,14 @@
                 <input type="submit" id="btn_save" value="Guardar" data-continue="false" class="default save"
                        name="_save"
                        disabled>
-
+                {% if request.user.groups.first %}
+                    {% if request.user.groups.first.name|lower == 'secretaria'|lower or request.user.is_superuser %}
+                        <button type="button" id="enabled_inputs" class="btn">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Habilitar formulario
+                        </button>
+                    {% endif %}
+                {% endif %}
             </div>
         </form>
     </div>

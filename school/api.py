@@ -138,6 +138,7 @@ def save_note(request):
     from datetime import date
     from .commons import calculate_note, control_edition_note
     course_id = request.POST.get('course_id')
+    teacher_id = request.POST.get('teacher_id')
     students_notes = request.POST.get('students_notes')
     students_notes = list(json.loads(students_notes))
 
@@ -152,7 +153,7 @@ def save_note(request):
             note_from_student = Note()
             note_from_student.course_id = course_id
             note_from_student.matriculation_id = student_note.get('matriculation_id')
-            note_from_student.teacher_id = request.user.id
+            note_from_student.teacher_id = teacher_id
 
         if student_note.get('ibimensual'):
             note_from_student.bimonthly_I = int(student_note.get('ibimensual'))
@@ -202,7 +203,12 @@ def save_note(request):
 
         note_from_student.save()
 
-        control_edition_note(control_fields_edited, note_from_student.id)
+        supervisor_id = None
+        group = request.user.groups.first()
+        if group and group.name.lower() != 'docente'.lower():
+            supervisor_id = request.user.id
+
+        control_edition_note(control_fields_edited, note_from_student.id, supervisor_id)
 
     response = {
         'status': True,
