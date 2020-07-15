@@ -36,7 +36,12 @@ def fill_with_data_from_db_or_empty(student, notes):
             if key_db != 'id':
                 quantity_editing = list(filter(lambda f: f['edit_field'] == key_db, control_edition_note))
                 key_bimonthly_edition = general_key_edition.format(key)
-                student[key_bimonthly_edition] = len(quantity_editing)
+                quantity_editing = len(quantity_editing)
+                supervisor_register = list(filter(lambda f: f['supervisor_id'], control_edition_note))
+                if supervisor_register:
+                    quantity_editing += 1
+
+                student[key_bimonthly_edition] = quantity_editing
     else:
         for key in keys:
             student[key] = ''
