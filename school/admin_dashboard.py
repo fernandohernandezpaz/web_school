@@ -7,6 +7,8 @@ class CustomIndexDashboard(Dashboard):
     columns = 3
 
     def init_with_context(self, context):
+        group = context.request.user.groups.first()
+
         if context.request.user.is_superuser:
             self.children.append(modules.AppList(
                 'REGISTRO PARA UN NUEVO ESTUDIANTE',
@@ -23,7 +25,7 @@ class CustomIndexDashboard(Dashboard):
                 column=0,
                 order=1
             ))
-        if context.request.user.is_superuser:
+        if context.request.user.is_superuser or group and group.name.lower() == 'secretaria'.lower():
             self.children.append(modules.AppList(
                 'CATALOGOS',
                 models=('school.Gender', 'school.Section',
