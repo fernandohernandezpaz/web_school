@@ -12,6 +12,7 @@ $(function ($) {
     $('body')
         .on('change', '.validar_maxymin', function () {
             collect_data_by_input_edit($(this));
+            add_bad_note_class($(this));
         })
         .on('input', '.validar_maxymin', function () {
             let valor_nota = $(this).val();
@@ -29,10 +30,12 @@ $(function ($) {
                     btn_save.attr('disabled', 'disabled');
                 }, 100)
             } else if (valor_nota.length === 0) {
-                 setTimeout(() => {
+                setTimeout(() => {
                     btn_save.attr('disabled', 'disabled');
-                }, 100)
+                }, 100);
+                add_bad_note_class($(this))
             } else {
+                add_bad_note_class($(this));
                 btn_save.prop('disabled', false);
                 const object_data_element = {
                     span_id: $(this).data('span'),
@@ -98,7 +101,22 @@ $(function ($) {
             });
             $('.validar_maxymin').prop('disabled', false);
 
-        })
+        });
+
+    function add_bad_note_class(element) {
+        var note_red = element.val();
+        if (note_red < 60) {
+            element.parent('td')
+                .addClass('red-cell');
+        } else {
+            element.parent('td')
+                .removeClass('red-cell');
+        }
+        if (note_red.length === 0) {
+            element.parent('td')
+                .removeClass('red-cell');
+        }
+    }
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {
         value_1 = convert_to_zero_if_empty(value_1);
@@ -138,7 +156,6 @@ $(function ($) {
     function validate_no_empties_inputs(value_1, value_2) {
         return value_1 !== '' && value_2 !== '';
     }
-
 
     function collect_data_by_input_edit(input_edited) {
         clearTimeout(typingTimer);
