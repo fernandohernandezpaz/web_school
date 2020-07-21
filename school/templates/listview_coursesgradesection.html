@@ -19,7 +19,7 @@
                         {% for registro in object_list %}
                             <tr>
                                 <td>
-                                    <a href="{% url 'school:lista_de_alumnos_por_asignatura' id=registro.grado_seccion_curso_id %}">{{ registro.curso }}</a>
+                                    <a href="{% url 'school:lista_de_alumnos_por_asignatura' teacher_id=teacher_id id=registro.grado_seccion_curso_id %}">{{ registro.curso }}</a>
                                 </td>
                                 <td style="text-align: center">{{ registro.grado }} </td>
                                 <td style="text-align: center">{{ registro.seccion }}</td>

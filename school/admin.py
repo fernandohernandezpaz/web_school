@@ -194,8 +194,10 @@ class ProfileAdmin(admin.ModelAdmin):
     fullname.short_description = 'Nombre Completo del Docente'
 
     def link_ver_asignatura(self, obj):
+        from django.urls import reverse
+        url = reverse('school:lista_de_asignaturas_por_seccion', args=(obj.user_id,))
         return format_html('<a href="{url}">VER ASIGNATURA</a>'.
-                           format(url='', ))
+                           format(url=url))
 
     link_ver_asignatura.short_description = 'Asignatura'
 

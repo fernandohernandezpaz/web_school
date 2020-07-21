@@ -2,16 +2,57 @@ import json
 
 from django.views.generic import FormView
 from .forms import MatriculationForm
-from .models import Matriculation, Student, Family, UserCoursesByYear, CourseGradeSection
+from .models import (Matriculation, Student, Family,
+                     UserCoursesByYear, CourseGradeSection,
+                     Note)
 from django.db.models import F
+from django.forms.models import model_to_dict
 from django.views.generic.list import ListView
-from .commons import get_current_year
+from .commons import get_current_year, CheckIsLoggin
 from django.views.generic import TemplateView
 from constance import config
 
 
+def fill_with_data_from_db_or_empty(student, notes):
+    keys = {'note_id': 'id', 'bi_i': 'bimonthly_I',
+            'bi_ii': 'bimonthly_II', 'semestral_i': 'biannual_I',
+            'bi_iii': 'bimonthly_III', 'bi_iv': 'bimonthly_IV',
+            'semestral_ii': 'biannual_II', 'final': 'final'}
+
+    general_key_edition = '{}_quantity_edition'
+
+    if notes:
+        from .models import NoteControlEdition
+        notes_dict = model_to_dict(notes)
+
+        control_edition_note = NoteControlEdition.objects. \
+            filter(note_id=notes_dict.get('id')). \
+            values()
+
+        for key in keys:
+            key_db = keys[key]
+            student[key] = notes_dict[key_db]
+
+            if key_db != 'id':
+                quantity_editing = list(filter(lambda f: f['edit_field'] == key_db, control_edition_note))
+                key_bimonthly_edition = general_key_edition.format(key)
+                quantity_editing = len(quantity_editing)
+                supervisor_register = list(filter(lambda f: f['supervisor_id'], control_edition_note))
+                if supervisor_register:
+                    quantity_editing += 1
+
+                student[key_bimonthly_edition] = quantity_editing
+    else:
+        for key in keys:
+            student[key] = ''
+            key_db = keys[key]
+            if key_db != 'id':
+                key_bimonthly_edition = general_key_edition.format(key)
+                student[key_bimonthly_edition] = 0
+
+
 # Create your views here.
-class NewMatriculationFormView(FormView):
+class NewMatriculationFormView(CheckIsLoggin, FormView):
     template_name = 'form_matriculation.html'
     form_class = MatriculationForm
     form = MatriculationForm
@@ -40,18 +81,20 @@ class NewMatriculationFormView(FormView):
         return context
 
 
-class NewViewCourseGradeSectionList(ListView):
+class NewViewCourseGradeSectionList(CheckIsLoggin, ListView):
     model = UserCoursesByYear
     paginate_by = 15
     template_name = 'listview_coursesgradesection.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['teacher_id'] = self.kwargs['teacher_id']
         return context
 
     def get_queryset(self):
         queryset = UserCoursesByYear.objects. \
-            filter(year=get_current_year()). \
+            filter(year=get_current_year(),
+                   user_id=self.kwargs['teacher_id']). \
             values(curso=F('coursesgradesection__course__name'),
                    curso_id=F('coursesgradesection__course_id'),
                    grado=F('coursesgradesection__grade_section__grade__name'),
@@ -65,22 +108,35 @@ class NewViewCourseGradeSectionList(ListView):
         return queryset
 
 
-class NewRegisterNote(TemplateView):
+class NewRegisterNote(CheckIsLoggin, TemplateView):
     template_name = 'form_register_note.html'
 
     def get_context_data(self, **kwargs):
         context = {}
         grado_seccion_curso = CourseGradeSection.objects.get(pk=kwargs['id'])
-        queryset = Matriculation.objects. \
+        # getting a list of students with matriculation active and
+        # they are registered in a specific course
+        students = Matriculation.objects. \
             filter(teaching_year=get_current_year(),
                    grade_section__id=grado_seccion_curso.grade_section_id,
                    status=1). \
-            values('student__code_mined',
+            values('id',  # id of matriculation
+                   'student_id',
+                   'student__code_mined',
                    'student__names',
                    'student__last_name')
-        context['students'] = queryset
+
+        # creating keys of each note for each student
+        for student in students:
+            notes = Note.objects.filter(
+                teacher_id=kwargs['teacher_id'],
+                matriculation_id=student['id'],  # id of matriculation
+                course_id=grado_seccion_curso.course_id
+            ).first()
+            fill_with_data_from_db_or_empty(student, notes)
+
+        context['teacher_id'] = kwargs['teacher_id']
+        context['students'] = students
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
         return context
-
-

@@ -330,8 +330,24 @@ class Note(models.Model):
                                               verbose_name='Semestral II')
     final = models.PositiveIntegerField(null=True, blank=True,
                                         verbose_name='Final')
-    registration_date = models.DateTimeField(auto_now_add=True,
-                                             verbose_name='Fecha de Registro')
+
+    # date fields to save when it was registered the note
+    bimonthly_I_date_register = models.DateField(null=True, blank=True,
+                                            verbose_name='Fecha de creación del Bimensual I')
+    bimonthly_II_date_register = models.DateField(null=True, blank=True,
+                                             verbose_name='Fecha de creación del Bimensual II')
+    biannual_I_date_register = models.DateField(null=True, blank=True,
+                                             verbose_name='Fecha de creación del Semestral I')
+    bimonthly_III_date_register = models.DateField(null=True, blank=True,
+                                           verbose_name='Fecha de creación del Bimensual III')
+    bimonthly_IV_date_register = models.DateField(null=True, blank=True,
+                                              verbose_name='Fecha de creación del Bimensual IV')
+    biannual_II_date_register = models.DateField(null=True, blank=True,
+                                           verbose_name='Fecha de creación del Semestral II')
+
+    # date created of the register in the db
+    create_at = models.DateTimeField(auto_now_add=True,
+                                             verbose_name='Fecha de creación')
 
     def __str__(self):
         return '{} {}'.format(self.course.name, self.matriculation)
@@ -345,7 +361,7 @@ class Note(models.Model):
 class NoteControlEdition(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE,
                              verbose_name='Nota')
-    edit_field = models.CharField(max_length=10, verbose_name='Campo Edición')
+    edit_field = models.CharField(max_length=15, verbose_name='Campo Edición')
     value_edit_field = models.IntegerField(verbose_name='Valor')
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE,
                                    null=True, blank=True,
