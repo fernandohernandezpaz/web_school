@@ -24,6 +24,18 @@ def build_django_jet_menu():
             ]
         },
         {
+            'label': 'Variables de sistema',
+            'permissions': [
+                'request.user.is_superuser'
+            ],
+            'items': [
+                {
+                    'name': 'constance.config',
+                    'label': 'Variables',
+                }
+            ]
+        },
+        {
             'label': 'Catalogos',
             'permissions': [],
             'items': [

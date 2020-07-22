@@ -152,7 +152,7 @@ JET_INDEX_DASHBOARD = 'school.admin_dashboard.CustomIndexDashboard'
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 # Jet Menu Settings
-# JET_SIDE_MENU_COMPACT = True ## TODO check which better compact or not compact
+JET_SIDE_MENU_COMPACT = True
 JET_SIDE_MENU_ITEMS = build_django_jet_menu()
 
 # optional constance settings
