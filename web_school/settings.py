@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
+from .sidebar_django_jet import build_django_jet_menu
 
 # Env basic configuration
 env = environ.Env(
@@ -149,6 +150,10 @@ JET_INDEX_DASHBOARD = 'school.admin_dashboard.CustomIndexDashboard'
 
 # Django Constance Dynamic settings
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+# Jet Menu Settings
+# JET_SIDE_MENU_COMPACT = True ## TODO check which better compact or not compact
+JET_SIDE_MENU_ITEMS = build_django_jet_menu()
 
 # optional constance settings
 try:

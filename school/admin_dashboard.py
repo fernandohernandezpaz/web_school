@@ -18,13 +18,26 @@ class CustomIndexDashboard(Dashboard):
                 column=0,
                 order=0
             ))
-        if context.request.user.is_superuser:
             self.children.append(modules.AppList(
                 'REGISTRO PARA UN ESTUDIANTE DE REINGRESO',
                 models='school.Matriculation',
                 column=0,
                 order=1
             ))
+            self.children.append(modules.AppList(
+                'USUARIOS Y ROLES',
+                models=('auth.*',),
+                column=1,
+                order=3
+            ))
+
+            self.children.append(modules.RecentActions(
+                'Acciones recientes',
+                10,
+                column=2,
+                order=1
+            ))
+
         if context.request.user.is_superuser or group and group.name.lower() == 'secretaria'.lower():
             self.children.append(modules.AppList(
                 'CATALOGOS',
@@ -57,12 +70,4 @@ class CustomIndexDashboard(Dashboard):
                 ],
                 column=0,
                 order=0
-            ))
-
-        if context.request.user.is_superuser:
-            self.children.append(modules.RecentActions(
-                'Acciones recientes',
-                10,
-                column=2,
-                order=1
             ))

@@ -6,7 +6,7 @@ from jet.admin import CompactInline
 from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
-                           PaperCenter, Note, Section,
+                           PaperCenter, Section,
                            GradeSection, CourseGradeSection,
                            NoteControlEdition, UserCoursesByYear)
 from constance.admin import ConstanceAdmin, Config
@@ -235,7 +235,6 @@ admin.site.register(Course, CatalogsAdmin)
 admin.site.register(Gender, CatalogsAdmin)
 admin.site.register(Grade, CatalogsAdmin)
 admin.site.register(Section, CatalogsAdmin)
-admin.site.register(Note)
 admin.site.register(CourseGradeSection)
 admin.site.register(NoteControlEdition)
 admin.site.register(User, MyUserAdmin)
