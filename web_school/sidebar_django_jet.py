@@ -88,6 +88,13 @@ def build_django_jet_menu():
                         'school.view_gradesection'
                     ]
                 },
+                {
+                    'name': 'school.coursegradesection',
+                    'label': 'Asignaturas Grados Secciones',
+                    'permissions': [
+                        'school.view_coursegradesection'
+                    ]
+                },
 
             ]
         },

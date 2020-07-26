@@ -44,7 +44,7 @@ class CustomIndexDashboard(Dashboard):
                 models=('school.Gender', 'school.Section',
                         'school.Grade', 'school.Course',
                         'school.Nationality', 'school.GradeSection',
-                        'school.Profile'),
+                        'school.Profile', 'school.CourseGradeSection'),
 
                 column=2,
                 order=0
