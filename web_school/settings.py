@@ -142,8 +142,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'node_modules'),
 ]
-
-STATIC_ROOT = os.path.join(BASE_DIR, '../static_web_school/')
+# localhost
+#STATIC_ROOT = os.path.join(BASE_DIR, '../static_web_school/')
+# server
+STATIC_ROOT = os.path.join(BASE_DIR, '../static/')
 
 # JET dashboard custumization
 JET_INDEX_DASHBOARD = 'school.admin_dashboard.CustomIndexDashboard'
