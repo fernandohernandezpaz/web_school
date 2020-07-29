@@ -21,9 +21,18 @@ class PersonalFileInline(admin.StackedInline):
     model = PersonalFile
 
 
-class MatriculationInline(CompactInline):
+class MatriculationInline(admin.TabularInline):
     model = Matriculation
-    readonly_fields = ('teaching_year',)
+    readonly_fields = ('teaching_year', 'grade_section', 'status')
+    show_change_link = False
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 class PaperCenterInline(admin.StackedInline):
