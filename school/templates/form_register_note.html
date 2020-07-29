@@ -31,33 +31,43 @@
                     <table style="width:100%; margin-bottom: 10px">
                         <tbody>
                         <tr>
-                            <th style="width: 10%;font-size: 15px"><u>Datos Generales</u></th>
+                            <th style="width: 20%;font-size: 13px"><u>Datos Generales</u></th>
                             <th style="width: 10%"></th>
-                            <th style="width: 15%;font-size: 15px"><u>Fecha Limite Para Registrar Notas</u></th>
-                            <th style="width: 40%"></th>
+                            <th style="width: 20%;font-size: 13px"><u>Fecha Limite Para Registrar Notas</u></th>
+                            <th style="width: 15%"></th>
+                            <th style="width: 20%;font-size: 13px"><u>Escalas de Calificaciones</u><th>
+                            <th style="width: 15%"></th>
                         </tr>
                         <tr>
                             <th>Asignatura:</th>
                             <td>{{ grade_section_course.course }}</td>
                             <th>I Bimensual:</th>
                             <td>{{ config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL }}</td>
+                            <th>Aprendizaje Avanzado AA</th>
+                            <th>90 a 100</th>
                         <tr>
                             <th>Grado:</th>
                             <td>{{ grade_section_course.grade_section.grade }}</td>
                             <th>II Bimensual:</th>
                             <td>{{ config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL }}</td>
+                            <th>Aprendizaje Sastifactorio AS</th>
+                            <th>76 a 89</th>
                         </tr>
                         <tr>
                             <th>Seccion:</th>
                             <td>{{ grade_section_course.grade_section.section }}</td>
                             <th>III Bimensual:</th>
                             <td>{{ config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL }}</td>
+                            <th>Aprendizaje Elemental AE</th>
+                            <th>60 a 75</th>
                         </tr>
                         <tr>
                             <th>Estudiantes Registrados:</th>
                             <td>{{ students|length }}</td>
                             <th>IV Bimensual:</th>
                             <td>{{ config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL }}</td>
+                            <th>Aprendizaje Inicial AI</th>
+                            <th>Menos de 59</th>
                         </tr>
                         </tbody>
                     </table>
