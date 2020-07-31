@@ -21,9 +21,18 @@ class PersonalFileInline(admin.StackedInline):
     model = PersonalFile
 
 
-class MatriculationInline(CompactInline):
+class MatriculationInline(admin.TabularInline):
     model = Matriculation
-    readonly_fields = ('teaching_year',)
+    readonly_fields = ('teaching_year', 'grade_section', 'status')
+    show_change_link = False
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 class PaperCenterInline(admin.StackedInline):
@@ -38,6 +47,7 @@ class UserCoursesByYearInline(CompactInline):
 # Admin Class for Catalogs
 class CatalogsAdmin(admin.ModelAdmin):
     list_display = ('name', 'active')
+    list_per_page = 15
 
 
 @admin.register(Matriculation)
@@ -186,6 +196,7 @@ class PaperCenterAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('fullname', 'document', 'vocation', 'cellphone', 'link_ver_asignatura')
     ordering = ['user']
+    list_per_page = 15
 
     def fullname(self, user):
         return u'{first_names} {last_names}'.format(first_names=user.user.first_name,

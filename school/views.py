@@ -5,6 +5,7 @@ from .forms import MatriculationForm
 from .models import (Matriculation, Student, Family,
                      UserCoursesByYear, CourseGradeSection,
                      Note)
+from django.contrib.auth.models import User
 from django.db.models import F
 from django.forms.models import model_to_dict
 from django.views.generic.list import ListView
@@ -89,6 +90,9 @@ class NewViewCourseGradeSectionList(CheckIsLoggin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['teacher_id'] = self.kwargs['teacher_id']
+        context['teacher'] = User.objects. \
+            filter(id=self.kwargs['teacher_id']). \
+            first()
         return context
 
     def get_queryset(self):
