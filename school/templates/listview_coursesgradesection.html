@@ -8,6 +8,9 @@
                 {% csrf_token %}
                 <div class="results">
                     <table id="result_list">
+                        <caption>
+                            <h1><strong>Docente:</strong> <u>{{ teacher.first_name }} {{ teacher.last_name }}</u></h1>
+                        </caption>
                         <thead>
                         <tr>
                             <th>Asignaturas</th>
