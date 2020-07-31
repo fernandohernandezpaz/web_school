@@ -47,6 +47,7 @@ class UserCoursesByYearInline(CompactInline):
 # Admin Class for Catalogs
 class CatalogsAdmin(admin.ModelAdmin):
     list_display = ('name', 'active')
+    list_per_page = 15
 
 
 @admin.register(Matriculation)
@@ -195,6 +196,7 @@ class PaperCenterAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('fullname', 'document', 'vocation', 'cellphone', 'link_ver_asignatura')
     ordering = ['user']
+    list_per_page = 15
 
     def fullname(self, user):
         return u'{first_names} {last_names}'.format(first_names=user.user.first_name,
