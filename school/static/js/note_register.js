@@ -84,10 +84,11 @@ $(function ($) {
                             text: response.message,
                             icon: 'success',
                             confirmButtonText: 'OK'
+                        }).then(result => {
+                                if (result.value){
+                                        location.reload()
+                                }
                         });
-                        setTimeout(() => {
-                            location.reload();
-                        }, 300);
                     }
                 }
             });
