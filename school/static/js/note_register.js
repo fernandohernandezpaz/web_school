@@ -105,7 +105,7 @@ $(function ($) {
 
     function add_bad_note_class(element) {
         var note_red = element.val();
-        if (note_red < 60) {
+        if (note_red < NOTA_MINIMA_APROBADO) {
             element.parent('td')
                 .addClass('red-cell');
         } else {
