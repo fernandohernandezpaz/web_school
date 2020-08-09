@@ -96,6 +96,8 @@ def get_students(request):
 
 def save_form(request):
     try:
+        from django.contrib.admin.models import LogEntry
+        import json
         student_id = int(request.POST.get('student_id'))
         grade_section_id = int(request.POST.get('grade_section'))
         teaching_year = int(request.POST.get('teaching_year'))
@@ -106,11 +108,18 @@ def save_form(request):
             teaching_year=teaching_year,
         ).first()
 
+        django_log_entry = LogEntry()
         if matriculation_exist:
             matriculation_exist.student_id = student_id
             matriculation_exist.grade_section_id = grade_section_id
             matriculation_exist.status = status
             matriculation_exist.save()
+
+            django_log_entry.action_flag = 2
+            key_message = 'changed'
+            django_log_entry.object_id = matriculation_exist.id
+            django_log_entry.object_repr = matriculation_exist.__str__()
+
             message = 'Matrícula actualizada exitosamente'
         else:
             matriculation = Matriculation()
@@ -118,7 +127,25 @@ def save_form(request):
             matriculation.grade_section_id = grade_section_id
             matriculation.status = status
             matriculation.save()
+
+            django_log_entry.action_flag = 1
+            key_message = 'added'
+            django_log_entry.object_id = matriculation.id
+            django_log_entry.object_repr = matriculation.__str__()
+
             message = 'Matrícula guardada exitosamente'
+
+        change_message = {
+            key_message: {
+                'fields': ['estudiante', 'grado y sección', 'estado']
+            }
+        }
+
+        django_log_entry.change_message = json.dumps([change_message])
+        django_log_entry.content_type_id = 17  # django contenttype_id of note
+        django_log_entry.user_id = request.user.id
+
+        django_log_entry.save()
 
         response = {
             'message': message,
@@ -175,6 +202,10 @@ def save_note(request):
             first_semestral = calculate_note(note_from_student.bimonthly_I, note_from_student.bimonthly_II)
             note_from_student.biannual_I = round(first_semestral)
             note_from_student.biannual_I_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'biannual_I',
+                'value': note_from_student.biannual_I
+            })
 
         if student_note.get('iiibimensual'):
             note_from_student.bimonthly_III = int(student_note.get('iiibimensual'))
@@ -196,10 +227,18 @@ def save_note(request):
             second_semestral = calculate_note(note_from_student.bimonthly_III, note_from_student.bimonthly_IV)
             note_from_student.biannual_II = round(second_semestral)
             note_from_student.biannual_II_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'biannual_II',
+                'value': note_from_student.biannual_II
+            })
 
         if note_from_student.biannual_I is not None and note_from_student.biannual_II is not None:
             final = calculate_note(note_from_student.biannual_I, note_from_student.biannual_II)
             note_from_student.final = round(final)
+            control_fields_edited.append({
+                'field_name': 'final',
+                'value': note_from_student.final
+            })
 
         note_from_student.save()
 
@@ -207,8 +246,11 @@ def save_note(request):
         group = request.user.groups.first()
         if group and group.name.lower() != 'docente'.lower():
             supervisor_id = request.user.id
+        else:
+            if request.user.is_superuser:
+                supervisor_id = request.user.id
 
-        control_edition_note(control_fields_edited, note_from_student.id, supervisor_id)
+        control_edition_note(control_fields_edited, note_from_student, teacher_id, supervisor_id)
 
     response = {
         'status': True,
