@@ -6,7 +6,7 @@ from jet.admin import CompactInline
 from school.models import (Nationality, Profile, Course,
                            PersonalFile, Student, Grade,
                            Family, Gender, Matriculation,
-                           PaperCenter, Section,
+                           PaperCenter, Section, Note,
                            GradeSection, CourseGradeSection,
                            NoteControlEdition, UserCoursesByYear)
 from constance.admin import ConstanceAdmin, Config
@@ -52,7 +52,6 @@ class CatalogsAdmin(admin.ModelAdmin):
 
 @admin.register(Matriculation)
 class MatriculationAdmin(admin.ModelAdmin):
-    readonly_fields = ['teaching_year']
     list_display = ('link_edit_matriculation', 'teaching_year',
                     'grade_section', 'status')
     ordering = ['teaching_year']
@@ -73,6 +72,16 @@ class MatriculationAdmin(admin.ModelAdmin):
                                   student_fullname=obj.student))
 
     link_edit_matriculation.short_description = 'Alumno'
+
+    @classmethod
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(Student)
@@ -211,6 +220,20 @@ class ProfileAdmin(admin.ModelAdmin):
                            format(url=url))
 
     link_ver_asignatura.short_description = 'Asignatura'
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+
+    @classmethod
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 class MyUserAdmin(UserAdmin):
