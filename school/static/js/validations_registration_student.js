@@ -13,6 +13,4 @@ $(function ($) {
                 input_cantidad_hermanos.prop('disabled', !valor)
             }
         });
-
-
 });

@@ -40,7 +40,9 @@ def calculate_note(note_1, note_2, decimals=0):
 def control_edition_note(list_control_fields_edited, note, teacher_id=None, supervisor_id=None):
     from .models import NoteControlEdition
     from django.contrib.admin.models import LogEntry
+    from django.contrib.contenttypes.models import ContentType
     import json
+    note_type = ContentType.objects.get(app_label='school', model='note')
 
     fields = []
     for register_edited in list_control_fields_edited:
@@ -64,14 +66,19 @@ def control_edition_note(list_control_fields_edited, note, teacher_id=None, supe
     django_log_entry.action_flag = flag_add
 
     key_message = 'added' if flag_add <= 1 else 'changed'
-    change_message = {
-        key_message: {
-            'fields': fields
+    if key_message == 'added':
+        change_message = {
+            key_message: {}
         }
-    }
+    else:
+        change_message = {
+            key_message: {
+                'fields': fields
+            }
+        }
 
     django_log_entry.change_message = json.dumps([change_message])
-    django_log_entry.content_type_id = 20  # django contenttype_id of note
+    django_log_entry.content_type_id = note_type.id
     django_log_entry.user_id = supervisor_id or teacher_id
 
     django_log_entry.save()
