@@ -52,6 +52,8 @@ class CatalogsAdmin(admin.ModelAdmin):
 
 @admin.register(Matriculation)
 class MatriculationAdmin(admin.ModelAdmin):
+    readonly_fields = ['student', 'teaching_year',
+                       'grade_section', 'status']
     list_display = ('link_edit_matriculation', 'teaching_year',
                     'grade_section', 'status')
     ordering = ['teaching_year']
@@ -73,13 +75,10 @@ class MatriculationAdmin(admin.ModelAdmin):
 
     link_edit_matriculation.short_description = 'Alumno'
 
+    class Media:
+        js = ('js/django_matriculation.js',)
+
     @classmethod
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
     def has_delete_permission(self, request, obj=None):
         return False
 
