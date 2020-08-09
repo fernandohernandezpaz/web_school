@@ -175,6 +175,10 @@ def save_note(request):
             first_semestral = calculate_note(note_from_student.bimonthly_I, note_from_student.bimonthly_II)
             note_from_student.biannual_I = round(first_semestral)
             note_from_student.biannual_I_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'biannual_I',
+                'value': note_from_student.biannual_I
+            })
 
         if student_note.get('iiibimensual'):
             note_from_student.bimonthly_III = int(student_note.get('iiibimensual'))
@@ -196,10 +200,18 @@ def save_note(request):
             second_semestral = calculate_note(note_from_student.bimonthly_III, note_from_student.bimonthly_IV)
             note_from_student.biannual_II = round(second_semestral)
             note_from_student.biannual_II_date_register = date.today()
+            control_fields_edited.append({
+                'field_name': 'biannual_II',
+                'value': note_from_student.biannual_II
+            })
 
         if note_from_student.biannual_I is not None and note_from_student.biannual_II is not None:
             final = calculate_note(note_from_student.biannual_I, note_from_student.biannual_II)
             note_from_student.final = round(final)
+            control_fields_edited.append({
+                'field_name': 'final',
+                'value': note_from_student.final
+            })
 
         note_from_student.save()
 
@@ -207,8 +219,11 @@ def save_note(request):
         group = request.user.groups.first()
         if group and group.name.lower() != 'docente'.lower():
             supervisor_id = request.user.id
+        else:
+            if request.user.is_superuser:
+                supervisor_id = request.user.id
 
-        control_edition_note(control_fields_edited, note_from_student.id, supervisor_id)
+        control_edition_note(control_fields_edited, note_from_student, teacher_id, supervisor_id)
 
     response = {
         'status': True,
