@@ -204,6 +204,7 @@ class Student(models.Model):
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE,
                                     verbose_name='Nacionalidad')
     status = models.SmallIntegerField(choices=STUDENT_STATUS_CHOICE,
+                                      default=1,
                                       verbose_name='Estado Estudiante')
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Fecha de Registro')
