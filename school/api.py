@@ -96,6 +96,8 @@ def get_students(request):
 
 def save_form(request):
     try:
+        from django.contrib.admin.models import LogEntry
+        import json
         student_id = int(request.POST.get('student_id'))
         grade_section_id = int(request.POST.get('grade_section'))
         teaching_year = int(request.POST.get('teaching_year'))
@@ -106,11 +108,18 @@ def save_form(request):
             teaching_year=teaching_year,
         ).first()
 
+        django_log_entry = LogEntry()
         if matriculation_exist:
             matriculation_exist.student_id = student_id
             matriculation_exist.grade_section_id = grade_section_id
             matriculation_exist.status = status
             matriculation_exist.save()
+
+            django_log_entry.action_flag = 2
+            key_message = 'changed'
+            django_log_entry.object_id = matriculation_exist.id
+            django_log_entry.object_repr = matriculation_exist.__str__()
+
             message = 'Matrícula actualizada exitosamente'
         else:
             matriculation = Matriculation()
@@ -118,7 +127,25 @@ def save_form(request):
             matriculation.grade_section_id = grade_section_id
             matriculation.status = status
             matriculation.save()
+
+            django_log_entry.action_flag = 1
+            key_message = 'added'
+            django_log_entry.object_id = matriculation.id
+            django_log_entry.object_repr = matriculation.__str__()
+
             message = 'Matrícula guardada exitosamente'
+
+        change_message = {
+            key_message: {
+                'fields': ['estudiante', 'grado y sección', 'estado']
+            }
+        }
+
+        django_log_entry.change_message = json.dumps([change_message])
+        django_log_entry.content_type_id = 17  # django contenttype_id of note
+        django_log_entry.user_id = request.user.id
+
+        django_log_entry.save()
 
         response = {
             'message': message,
