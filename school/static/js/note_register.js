@@ -108,14 +108,14 @@ $(function ($) {
         var note_red = element.val();
         if (note_red < NOTA_MINIMA_APROBADO) {
             element.parent('td')
-                .addClass('red-cell');
+                .addClass('red-cell','red-cell-a');
         } else {
             element.parent('td')
-                .removeClass('red-cell');
+                .removeClass('red-cell','red-cell-a');
         }
         if (note_red.length === 0) {
             element.parent('td')
-                .removeClass('red-cell');
+                .removeClass('red-cell','red-cell-a');
         }
     }
 
