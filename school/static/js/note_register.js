@@ -117,6 +117,13 @@ $(function ($) {
             element.parent('td')
                 .removeClass('red-cell');
         }
+
+        $.each($('.red-cell'), function (index, element) {
+            const nota = $(element).find('input').val();
+            if (nota >= NOTA_MINIMA_APROBADO) {
+                $(element).removeClass('red-cell');
+            }
+        });
     }
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {
