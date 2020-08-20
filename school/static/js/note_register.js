@@ -108,15 +108,22 @@ $(function ($) {
         var note_red = element.val();
         if (note_red < NOTA_MINIMA_APROBADO) {
             element.parent('td')
-                .addClass('red-cell','red-cell-a');
+                .addClass('red-cell');
         } else {
             element.parent('td')
-                .removeClass('red-cell','red-cell-a');
+                .removeClass('red-cell');
         }
         if (note_red.length === 0) {
             element.parent('td')
-                .removeClass('red-cell','red-cell-a');
+                .removeClass('red-cell');
         }
+
+        $.each($('.red-cell'), function (index, element) {
+            const nota = $(element).find('input').val();
+            if (nota >= NOTA_MINIMA_APROBADO) {
+                $(element).removeClass('red-cell');
+            }
+        });
     }
 
     function calculating_semestre(value_1, value_2, input_id, span_id) {

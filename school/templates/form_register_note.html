@@ -147,7 +147,7 @@
                                            class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px;text-align: center"
-                                    class="{% if student.semestral_i and student.semestral_i < 60 %}red-cell-a{% endif %}">
+                                    class="{% if student.semestral_i and student.semestral_i < 60 %}red-cell{% endif %}">
                                     <span id="isemestre_input_span{{ forloop.counter }}">
                                         {% if student.semestral_i %}{{ student.semestral_i }}{% endif %}
                                     </span>
@@ -192,7 +192,7 @@
                                            class="validar_maxymin">
                                 </td>
                                 <td style="width: 75px;text-align: center"
-                                    class="{% if student.semestral_ii and student.semestral_ii < 60 %}red-cell-a{% endif %}">
+                                    class="{% if student.semestral_ii and student.semestral_ii < 60 %}red-cell{% endif %}">
                                     <span id="iisemestre_input_span{{ forloop.counter }}">
                                         {% if student.semestral_ii %}{{ student.semestral_ii }}{% endif %}
                                     </span>
@@ -207,7 +207,7 @@
                                            readonly>
                                 </td>
                                 <td style="width: 75px;text-align: center"
-                                    class="{% if student.final and student.final < 60 %}red-cell-a{% endif %}">
+                                    class="{% if student.final and student.final < 60 %}red-cell{% endif %}">
                                     <span id="notafinal_input_span{{ forloop.counter }}">
                                         {% if student.final %}{{ student.final }}{% endif %}
                                     </span>

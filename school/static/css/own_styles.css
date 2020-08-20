@@ -18,9 +18,3 @@ input#id_mobile, input#id_cellphone {
     font-weight: bolder;
     padding: 0.3em;
 }
-
-.red-cell-a {
-    border: red 2px solid;
-    font-weight: bolder;
-    padding: 10px;
-}
