@@ -18,3 +18,24 @@ input#id_mobile, input#id_cellphone {
     font-weight: bolder;
     padding: 0.3em;
 }
+
+.row-buttons {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+a.btn {
+    color: white;
+    height: 20px;
+    padding: 5px;
+}
+
+a.btn:hover {
+    color: white;
+    padding: 6px;
+}
+
+.btn-lista_asistencia {
+    width: 45px;
+}

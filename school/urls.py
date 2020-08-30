@@ -5,7 +5,7 @@ from django.urls import path
 from .views import (NewMatriculationFormView,
                     NewViewCourseGradeSectionList,
                     NewRegisterNote)
-from . import api
+from . import api, reports
 
 app_name = 'school'
 
@@ -21,4 +21,9 @@ urlpatterns = [
          NewRegisterNote.as_view(),
          name='lista_de_alumnos_por_asignatura'),
     path('guardar/nota', api.save_note, name='api_save_note'),
+
+    # URL of reports
+    path('<int:teacher_id>/lista_asistencia/<int:grade_section_course_id>', reports.AttendanceReport.as_view(),
+         name='report_attendance')
+
 ]
