@@ -80,8 +80,8 @@ class GradeSection(models.Model):
         return '{} {}'.format(self.grade, self.section, self.order)
 
     class Meta:
-        verbose_name = 'Grado Seccion'
-        verbose_name_plural = 'Grados Secciones'
+        verbose_name = 'Aula'
+        verbose_name_plural = 'Aulas'
         unique_together = [['grade', 'section']]
 
 
@@ -95,8 +95,8 @@ class CourseGradeSection(models.Model):
         return '{} {}'.format(self.course, self.grade_section)
 
     class Meta:
-        verbose_name = 'Asignatura Grado Seccion'
-        verbose_name_plural = 'Asignaturas Grados Secciones'
+        verbose_name = 'Asignatura Por Aula'
+        verbose_name_plural = 'Asignaturas Por Aulas'
         unique_together = [['course', 'grade_section']]
 
 

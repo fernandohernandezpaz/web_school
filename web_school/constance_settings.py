@@ -13,6 +13,6 @@ CONSTANCE_CONFIG = {
     'FECHA_LIMITE_REGISTRO_II_BIMENSUAL': (date(year, 8, 29), "Ultima fecha de registro", date),
     'FECHA_LIMITE_REGISTRO_III_BIMENSUAL': (date(year, 10, 29), "Ultima fecha de registro", date),
     'FECHA_LIMITE_REGISTRO_IV_BIMENSUAL': (date(year, 12, 12), "Ultima fecha de registro", date),
-
+    'NOMBRE_DEL_COLEGIO': ('','Nombre del Colegio', str),
 }
 
