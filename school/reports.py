@@ -5,6 +5,7 @@ from xhtml2pdf import pisa
 from .commons import get_current_year
 from .models import Matriculation, CourseGradeSection
 from django.contrib.auth.models import User
+from constance import config
 
 
 class AttendanceReport(View):
@@ -26,6 +27,7 @@ class AttendanceReport(View):
                    'student__names',
                    'student__last_name')
         context = {
+            'nombre_colegio': config.NOMBRE_DEL_COLEGIO,
             'students': students,
             'grade_section_course': grade_section_course,
             'teacher': teacher,
