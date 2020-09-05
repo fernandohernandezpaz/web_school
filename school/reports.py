@@ -37,7 +37,9 @@ class AttendanceReport(View):
         html = template.render(context=context)
         response = HttpResponse(content_type='application/pdf')
 
-        response['Content-Disposition'] = 'attachment; filename="lista_asistencia.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="lista_asistencia {aula} {anio}.pdf"'.format(
+            aula=grade_section_course, anio=year
+        )
 
         pisa_status = pisa.CreatePDF(html, dest=response)
         if pisa_status.err:
