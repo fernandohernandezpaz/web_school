@@ -24,6 +24,8 @@ urlpatterns = [
 
     # URL of reports
     path('<int:teacher_id>/lista_asistencia/<int:grade_section_course_id>', reports.AttendanceReport.as_view(),
-         name='report_attendance')
+         name='report_attendance'),
+    path('<int:teacher_id>/listado_notas/<int:grade_section_course_id>', reports.AcademicNotesReport.as_view(),
+             name='report_academic_notes')
 
 ]
