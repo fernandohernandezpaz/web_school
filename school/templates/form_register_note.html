@@ -86,7 +86,15 @@
                     <div class="row-buttons">
                         <a class="btn btn-lista_asistencia"
                            href="{% url 'school:report_attendance' teacher_id=teacher_id  grade_section_course_id=grade_section_course.id %}">
-                            Generar listado asistencia</a>
+                            <i class="fa fa-edit"></i>
+                            Generar listado asistencia
+                        </a>
+
+                         <a class="btn btn-lista_notas"
+                           href="{% url 'school:report_academic_notes' teacher_id=teacher_id  grade_section_course_id=grade_section_course.id %}">
+                             <i class="fa fa-sticky-note-o"></i>
+                            Generar listado Notas
+                         </a>
                     </div>
 
                     <table style="width:100%" id="result_list">

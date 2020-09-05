@@ -6,9 +6,9 @@ from django.core.exceptions import PermissionDenied
 fields_note_spanish = {
     'bimonthly_I': 'Bimensual I',
     'bimonthly_II': 'Bimensual II',
+    'biannual_I': 'Semestral I',
     'bimonthly_III': 'Bimensual III',
     'bimonthly_IV': 'Bimensual IV',
-    'biannual_I': 'Semestral I',
     'biannual_II': 'Semestral II',
     'final': 'Nota Final',
 }

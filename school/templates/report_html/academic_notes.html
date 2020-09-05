@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Lista de asistencia {{ grade_section_course }} {{ year }}</title>
+    <title>Notas de {{ grade_section_course }} {{ year }}</title>
     <style>
         @page {
             size: letter portrait;
@@ -38,6 +38,9 @@
         <th colspan="2" rowspan="1"><h2 style="color: black; text-align: left;">{{ nombre_colegio }}</h2></th>
     </tr>
     <tr>
+        <th colspan="2" rowspan="1"><h3 style="color: black; text-align: left;">LISTA DE NOTAS</h3></th>
+    </tr>
+    <tr>
         <th colspan="1" rowspan="1" style="width: 50%;text-align: left;"><h4>ASISTENCIA ESCOLAR AÑO {{ year }}</h4>
         </th>
         <th colspan="1" rowspan="1" style="width: 50%;"><h4>FECHA: __________________</h4></th>
@@ -61,19 +64,27 @@
 <table style="margin: 15px 0 5px 0;border: 1px solid black;" cellpadding="3" border="0" cellspacing="3">
     <thead>
     <tr>
-        <th style="width: 5%">#</th>
-        <th style="width: 20%">CÓDIGO MINED</th>
-        <th>NOMBRE DEL ESTUDIANTE</th>
-        <th>OBSERVACIÓN</th>
+        <th style="width: 3%">#</th>
+        <th style="width: 12%">Código MINED</th>
+        <th>Estudiante</th>
+        {% for columna in columnas %}
+            <th style="width: 8%; font-size: 10px">{{  columna }}</th>
+        {% endfor %}
     </tr>
     </thead>
     <tbody>
-    {% for student in students %}
+    {% for student in students_notes %}
         <tr>
             <td style="text-align: center">{{ forloop.counter }}</td>
             <td>{{ student.student__code_mined }}</td>
             <td>{{ student.student__names }} {{ student.student__last_name }}</td>
-            <td></td>
+            <td style="text-align: center">{{ student.note__bimonthly_I|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__bimonthly_II|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__biannual_I|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__bimonthly_III|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__bimonthly_IV|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__biannual_II|default_if_none:'' }}</td>
+            <td style="text-align: center">{{ student.note__final|default_if_none:'' }}</td>
         </tr>
     {% endfor %}
     </tbody>
