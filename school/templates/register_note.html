@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/own_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+    <script>
+        var keys_note = ['ibimensual', 'iibimensual',
+            'iiibimensual', 'ivbimensual'];
+        var URLS_API = {
+            'save': '{% url 'school:api_save_note' %}'
+        };
+
+        const NOTA_MINIMA_APROBADO = {{ config.NOTA_MINIMA_APROBADO }};
+
+        $(function () {
+            {% if request.user.groups.first or request.user.is_superuser %}
+                {% if request.user.groups.first.name|lower == 'secretaria'  %}
+                    $('.validar_maxymin').attr('disabled', 'disabled');
+                {% endif %}
+            {% endif %}
+        });
+    </script>
+    <script src="{% static 'js/note_register.js' %}"></script>
+    <script src="{% static 'js/tabs.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+    <div id="content-main">
+        <form action="post" id="form_register_note" data-continue="false">
+            <input type="hidden" name="course" id="course" value="{{ grade_section_course.course_id }}">
+            <input type="hidden" name="teacher_id" id="teacher" value="{{ teacher_id }}">
+            <main>
+                <input id="tab1" checked type="radio" name="tabs">
+                <label for="tab1">Aula</label>
+                <input id="tab2" type="radio" name="tabs">
+                <label for="tab2">Historico</label>
+                <input id="tab3" type="radio" name="tabs">
+                <label for="tab3">Estadística</label>
+                <section id="content1">
+                    {% include 'notes/form.html' %}
+                </section>
+                <section id="content2">
+                    {% include 'notes/history.html' %}
+                </section>
+                <section id="content3">
+                    {% include 'notes/statistics.html' %}
+                </section>
+            </main>
+            <div class="submit-row">
+
+                <p class="deletelink-box">
+                    <a href="{% url 'school:lista_de_asignaturas_por_seccion' teacher_id=teacher_id %}"
+                       class="deletelink">Regresar</a>
+                </p>
+
+                <input type="submit" id="btn_save" value="Guardar" data-continue="false" class="default save"
+                       name="_save"
+                       disabled>
+                {% if request.user.groups.first %}
+                    {% if request.user.groups.first.name|lower == 'secretaria'|lower or request.user.is_superuser %}
+                        <button type="button" id="enabled_inputs" class="btn">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Habilitar formulario
+                        </button>
+                    {% endif %}
+                {% else %}
+                    {% if request.user.is_superuser %}
+                        <button type="button" id="enabled_inputs" class="btn">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Habilitar formulario
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

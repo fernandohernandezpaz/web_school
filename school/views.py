@@ -4,7 +4,7 @@ from django.views.generic import FormView
 from .forms import MatriculationForm
 from .models import (Matriculation, Student, Family,
                      UserCoursesByYear, CourseGradeSection,
-                     Note)
+                     Note, NoteControlEdition)
 from django.contrib.auth.models import User
 from django.db.models import F
 from django.forms.models import model_to_dict
@@ -14,7 +14,7 @@ from django.views.generic import TemplateView
 from constance import config
 
 
-def fill_with_data_from_db_or_empty(student, notes):
+def fill_with_data_from_db_or_empty(student, notes, notes_id):
     keys = {'note_id': 'id', 'bi_i': 'bimonthly_I',
             'bi_ii': 'bimonthly_II', 'semestral_i': 'biannual_I',
             'bi_iii': 'bimonthly_III', 'bi_iv': 'bimonthly_IV',
@@ -24,6 +24,7 @@ def fill_with_data_from_db_or_empty(student, notes):
 
     if notes:
         from .models import NoteControlEdition
+        notes_id.append(notes.id)
         notes_dict = model_to_dict(notes)
 
         control_edition_note = NoteControlEdition.objects. \
@@ -40,7 +41,7 @@ def fill_with_data_from_db_or_empty(student, notes):
                 quantity_editing = len(quantity_editing)
                 supervisor_register = list(filter(lambda f: f['supervisor_id'], control_edition_note))
                 if supervisor_register:
-                    quantity_editing += 1
+                    quantity_editing += 3
 
                 student[key_bimonthly_edition] = quantity_editing
     else:
@@ -113,10 +114,12 @@ class NewViewCourseGradeSectionList(CheckIsLoggin, ListView):
 
 
 class NewRegisterNote(CheckIsLoggin, TemplateView):
-    template_name = 'form_register_note.html'
+    template_name = 'register_note.html'
 
     def get_context_data(self, **kwargs):
+        from .commons import fields_note_spanish
         context = {}
+        notes_id = []
         grado_seccion_curso = CourseGradeSection.objects.get(pk=kwargs['id'])
         # getting a list of students with matriculation active and
         # they are registered in a specific course
@@ -137,10 +140,14 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
                 matriculation_id=student['id'],  # id of matriculation
                 course_id=grado_seccion_curso.course_id
             ).first()
-            fill_with_data_from_db_or_empty(student, notes)
+            fill_with_data_from_db_or_empty(student, notes, notes_id)
 
         context['teacher_id'] = kwargs['teacher_id']
         context['students'] = students
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
+        context['spanish_fields'] = fields_note_spanish
+        context['history'] = NoteControlEdition.objects. \
+            filter(note_id__in=notes_id).all()
+
         return context

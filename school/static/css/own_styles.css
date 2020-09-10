@@ -46,3 +46,7 @@ a.btn:hover {
     background-color: orange;
     width: 50px;
 }
+
+#btn_save, #enabled_inputs {
+    cursor: pointer;
+}
