@@ -19,7 +19,7 @@
 
         $(function () {
             {% if request.user.groups.first or request.user.is_superuser %}
-                {% if request.user.groups.first.name|lower == 'secretaria'  %}
+                {% if request.user.groups.first.name|lower != 'docente'  %}
                     $('.validar_maxymin').attr('disabled', 'disabled');
                 {% endif %}
             {% endif %}
@@ -37,16 +37,24 @@
             <main>
                 <input id="tab1" checked type="radio" name="tabs">
                 <label for="tab1">Aula</label>
-                <input id="tab2" type="radio" name="tabs">
-                <label for="tab2">Historico</label>
+                {% if request.user.groups.first or request.user.is_superuser %}
+                    {% if request.user.groups.first.name|lower != 'docente' %}
+                        <input id="tab2" type="radio" name="tabs">
+                        <label for="tab2">Historico</label>
+                    {% endif %}
+                {% endif %}
                 <input id="tab3" type="radio" name="tabs">
                 <label for="tab3">Estadística</label>
                 <section id="content1">
                     {% include 'notes/form.html' %}
                 </section>
-                <section id="content2">
-                    {% include 'notes/history.html' %}
-                </section>
+                {% if request.user.groups.first or request.user.is_superuser %}
+                    {% if request.user.groups.first.name|lower != 'docente' %}
+                        <section id="content2">
+                            {% include 'notes/history.html' %}
+                        </section>
+                    {% endif %}
+                {% endif %}
                 <section id="content3">
                     {% include 'notes/statistics.html' %}
                 </section>

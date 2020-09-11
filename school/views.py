@@ -147,7 +147,10 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
         context['spanish_fields'] = fields_note_spanish
-        context['history'] = NoteControlEdition.objects. \
-            filter(note_id__in=notes_id).all()
+
+        rol = self.request.user.groups.first()
+        if rol and rol.name != 'docente' or self.request.user.is_superuser:
+            context['history'] = NoteControlEdition.objects. \
+                filter(note_id__in=notes_id).all()
 
         return context
