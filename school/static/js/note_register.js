@@ -1,5 +1,5 @@
 $(function ($) {
-    let btn_save = $('#btn_save');
+    const btn_save = $('#btn_save');
     btn_save.attr('disabled', 'disabled');
     let typingTimer;               // timer identifier
     let doneTypingInterval = 500; // time in ms
@@ -37,6 +37,7 @@ $(function ($) {
             } else {
                 add_bad_note_class($(this));
                 btn_save.prop('disabled', false);
+                btn_save.removeAttr('disabled');
                 const object_data_element = {
                     span_id: $(this).data('span'),
                     input_id: $(this).data('input'),
@@ -85,9 +86,9 @@ $(function ($) {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(result => {
-                                if (result.value){
-                                        location.reload()
-                                }
+                            if (result.value) {
+                                location.reload()
+                            }
                         });
                     }
                 }
