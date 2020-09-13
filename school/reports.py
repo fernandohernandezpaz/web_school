@@ -27,12 +27,14 @@ class AttendanceReport(View):
             values('student__code_mined',
                    'student__names',
                    'student__last_name')
+        title = 'Lista de asistencia {} {}'.format(grade_section_course, year)
         context = {
             'nombre_colegio': config.NOMBRE_DEL_COLEGIO,
             'students': students,
             'grade_section_course': grade_section_course,
             'teacher': teacher,
-            'year': year
+            'year': year,
+            'title': title
         }
         template = get_template('report_html/attendance.html')
         html = template.render(context=context)
@@ -75,14 +77,15 @@ class AcademicNotesReport(View):
                    'note__biannual_II',
                    'note__final'
                    )
-
+        title = 'Notas de {} {}'.format(grade_section_course, year)
         context = {
             'nombre_colegio': config.NOMBRE_DEL_COLEGIO,
             'students_notes': students,
             'grade_section_course': grade_section_course,
             'teacher': teacher,
             'columnas': fields_note_spanish.values(),
-            'year': year
+            'year': year,
+            'title': title
         }
         template = get_template('report_html/academic_notes.html')
         html = template.render(context=context)
