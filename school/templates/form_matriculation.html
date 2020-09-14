@@ -35,11 +35,9 @@
         {% endif %}
     </script>
     <script src="{% static 'js/matriculation.js' %}"></script>
-
     <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
     <script src="{% static 'jquery-modal/jquery.modal.min.js' %}"></script>
     <script src="{% static 'admin/js/jquery.init.js' %}"></script>
-
 {% endblock %}
 {% block content %}
     <div id="content-main">
@@ -84,7 +82,6 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
 
                 <div class="form-row">
@@ -128,8 +125,11 @@
                 <p class="deletelink-box"><a href="/admin/school/matriculation/" class="deletelink">Cancelar</a></p>
 
                 <input type="submit" class="save" data-continue="true" value="Grabar y añadir otro" name="_addanother">
-
-
+                {% if request.resolver_match.url_name == 'matriculation_detail' %}
+                    <a class="btn btn-reporte" href="{% url 'school:report_matriculation' id=matriculation.id %}">
+                        <i class="fa fa-file-pdf-o"></i> Generar formato matricula
+                    </a>
+                {% endif %}
             </div>
 
             <div id="ModalTable" class="modal">

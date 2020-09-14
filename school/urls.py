@@ -11,7 +11,7 @@ app_name = 'school'
 
 urlpatterns = [
     path('matricula', NewMatriculationFormView.as_view(), name='new_form_matriculation'),
-    path('matricula/<int:id>', NewMatriculationFormView.as_view(), name='matriculation_detail'),
+    path('matricula/<int:id>/', NewMatriculationFormView.as_view(), name='matriculation_detail'),
     path('school_space', api.get_school_space, name='api_school_space'),
     path('students', api.get_students, name='api_students'),
     path('matricula/guardar', api.save_form, name='api_save'),
@@ -26,6 +26,6 @@ urlpatterns = [
     path('<int:teacher_id>/lista_asistencia/<int:grade_section_course_id>', reports.AttendanceReport.as_view(),
          name='report_attendance'),
     path('<int:teacher_id>/listado_notas/<int:grade_section_course_id>', reports.AcademicNotesReport.as_view(),
-             name='report_academic_notes')
-
+         name='report_academic_notes'),
+    path('matricula/<int:id>/pdf/', reports.MatriculationReport.as_view(), name='report_matriculation')
 ]
