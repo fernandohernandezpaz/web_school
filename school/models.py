@@ -169,12 +169,18 @@ class Family(models.Model):
     mobile = models.PositiveIntegerField(null=True, blank=True,
                                          validators=validateQuantityDigits('Celular', 8),
                                          verbose_name='Celular')
-    cellphone = models.PositiveIntegerField(null=True, blank=True,
+    phone = models.PositiveIntegerField(null=True, blank=True,
                                             validators=validateQuantityDigits('Teléfono', 8),
                                             verbose_name='Teléfono')
     tutor = models.BooleanField(default=False, verbose_name='Tutor')
     occupation = models.CharField(max_length=30, blank=True,
                                   verbose_name="Ocupación")
+    address = models.TextField(max_length=255, default='', null=False,
+                               verbose_name='Dirección')
+    work_place = models.CharField(max_length=100, default='', null=False,
+                               verbose_name='Lugar de trabajo')
+    email = models.EmailField(max_length=100, default='', null=True, blank=True,
+                                  verbose_name='Correo Electrónico')
 
     def __str__(self):
         return '{}'.format(self.full_name)
@@ -213,7 +219,7 @@ class Student(models.Model):
 
     def calculate_age(self):
         import datetime
-        return int((datetime.datetime.now() - self.birthday).days / 365.25)
+        return int((datetime.date.today() - self.birthday).days / 365.25)
 
     age = property(calculate_age)
 

@@ -1,0 +1,419 @@
+{% extends 'report_html/base.html' %}
+{% load static own_context_processor %}
+{% block content %}
+
+    <table style="margin: 0;" cellpadding="0" border="0" cellspacing="0">
+        <tbody>
+        <tr>
+            <th colspan="1" rowspan="1">
+                <h2 style="text-align: left;">{{ nombre_colegio }}</h2>
+            </th>
+            <th colspan="1" rowspan="1">
+                {% if logo %}
+                    <div style="width: 50px;height: 65px;text-align: right">
+                        {% get_media_prefix as MEDIA_URL %}
+                        <img style="width: 50px;height: 65px" src="{{ MEDIA_URL }}{{ logo }}" alt="logo">
+                    </div>
+                {% endif %}
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2" rowspan="1">
+                <h3 style="text-align: center;">{{ location }}</h3>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2" rowspan="1">
+                <h3 style="text-align: center;">HOJA DE MATRÍCULA</h3>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <table>
+        <tbody>
+        <tr>
+            <th style="text-align: left; width: 105px">
+                Fecha de Matricula:
+            </th>
+            <th style="width: 250px;text-align: left;">
+                <div style="width: 100%;border-bottom: 1px solid black;">
+                    &nbsp;&nbsp;&nbsp;&nbsp; {{ matriculation.registration_date }} &nbsp;&nbsp;
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 style="text-align: center;">I. DATOS GENERALES</h3>
+
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 115px">
+                Nombres y Apellidos:
+            </th>
+            <th style="width: 450px;text-align: left;border-bottom: 1px solid black;">
+                {{ matriculation.student.names }} {{ matriculation.student.last_name }}
+            </th>
+        </tr>
+    </table>
+    <br>
+
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 115px">
+                Fecha de Nacimiento:
+            </th>
+            <th style="width: 170px;text-align: center;border-bottom: 1px solid black;">
+                {{ matriculation.student.birthday }}
+            </th>
+            <th style="text-align: left; width: 5px">
+                &nbsp;
+            </th>
+            <th style="text-align: left; width: 40px">
+                Edad:
+            </th>
+            <th style="width: 60px;text-align: center;border-bottom: 1px solid black;">
+                {{ matriculation.student.age }}
+            </th>
+            <th style="text-align: left; width: 5px">
+                &nbsp;
+            </th>
+            <th style="text-align: left; width: 40px">
+                Sexo:
+            </th>
+            <th style="width: 80px;text-align: center;border-bottom: 1px solid black;">
+                {{ matriculation.student.gender }}
+            </th>
+            <th style="text-align: left; width: 5px">
+                &nbsp;
+            </th>
+            <th style="text-align: left; width: 70px">
+                Nacionalidad:
+            </th>
+            <th style="width: 120px;text-align: center;border-bottom: 1px solid black;">
+                {{ matriculation.student.nationality }}
+            </th>
+        </tr>
+    </table>
+
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 105px">
+                Telefono de Casa:
+            </th>
+            <th style="width: 150px;text-align: center;border-bottom: 1px solid black;">
+                {% if tutor %}
+                    {{ tutor.phone }}
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 5px">
+                &nbsp;
+            </th>
+            <th style="text-align: left; width: 160px">
+                Código unico del estudiante:
+            </th>
+            <th style="width: 295px;text-align: center;border-bottom: 1px solid black;">
+                {{ matriculation.student.code_mined }}
+            </th>
+        </tr>
+    </table>
+
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 60px">Dirección</th>
+            <th style="text-align: left; width: 655px; border-bottom: 1px solid black;">
+                {% if tutor %}
+                    {{ tutor.address }}
+                {% endif %}
+            </th>
+        </tr>
+    </table>
+
+    <h3 style="text-align: center;">II. DATOS FAMILIARES</h3>
+    {% for key_member in parents.keys %}
+        <table cellpadding="1" border="0" cellspacing="1">
+            <tr>
+                <th style="text-align: left; width: 115px">
+                    Nombres del {% if forloop.first %}Padre{% else %}Madre{% endif %}:
+                </th>
+                <th style="width: 450px;text-align: left;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.full_name }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+            </tr>
+        </table>
+        <br>
+        <table cellpadding="1" border="0" cellspacing="1">
+            <tr>
+                <th style="text-align: left; width: 105px">
+                    Lugar de Trabajo:
+                </th>
+                <th style="width: 270px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.work_place }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+                <th style="text-align: left; width: 5px">
+                    &nbsp;
+                </th>
+                <th style="text-align: left; width: 80px">
+                    Ocupación:
+                </th>
+                <th style="width: 255px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.occupation }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+            </tr>
+        </table>
+        <br>
+        <table cellpadding="1" border="0" cellspacing="1">
+            <tr>
+                <th style="text-align: left; width: 115px">
+                    Correo Electrónico:
+                </th>
+                <th style="width: 270px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.email }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+                <th style="text-align: left; width: 5px">
+                    &nbsp;
+                </th>
+                <th style="text-align: left; width: 80px">
+                    No. de Cédula:
+                </th>
+                <th style="width: 250px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.document }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+            </tr>
+        </table>
+        <br>
+        <table cellpadding="1" border="0" cellspacing="1">
+            <tr>
+                <th style="text-align: left; width: 50px">
+                    Celular:
+                </th>
+                <th style="width: 80px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.mobile }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+                <th style="text-align: left; width: 5px">
+                    &nbsp;
+                </th>
+                <th style="text-align: left; width: 50px">
+                    Teléfono:
+                </th>
+                <th style="width: 80px;text-align: center;border-bottom: 1px solid black;">
+                    {% if parents|get_value:key_member %}
+                        {% with member=parents|get_value:key_member %}
+                            {{ member.phone }}
+                        {% endwith %}
+                    {% endif %}
+                </th>
+            </tr>
+        </table>
+        <br>
+    {% endfor %}
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 175px">
+                ¿Tiene hermanos en este centro?
+            </th>
+            <th style="text-align: center; width: 100px; border-bottom: 1px solid black;">
+                {% if matriculation.student.personalfile.have_brothers_center %}
+                    Si
+                {% else %}
+                    No
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 15px"></th>
+            <th style="text-align: left; width: 60px">
+                ¿Cuantos?
+            </th>
+            <th style="text-align: center; width: 100px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.how_many|default_if_none:'' }}
+            </th>
+            <th style="text-align: left; width: 15px"></th>
+            <th style="text-align: left; width: 70px">
+                Religión
+            </th>
+            <th style="text-align: center; width: 100px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.religion|default_if_none:'' }}
+            </th>
+        </tr>
+    </table>
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 160px">
+                Nombre de (los) hermano(s):
+            </th>
+            <th style="text-align: left; width: 550px; border-bottom: 1px solid black;">
+                {{ hermanos }}
+            </th>
+        </tr>
+    </table>
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 120px">
+                Emergencia llamar a:
+            </th>
+            <th style="text-align: left; width: 590px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.in_emergencies_call|default_if_none:'' }}
+            </th>
+        </tr>
+    </table>
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 120px">
+                Centro de procedencia:
+            </th>
+            <th style="text-align: left; width: 190px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.origin_center|default_if_none:'' }}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 70px">
+                Año cursado
+            </th>
+            <th style="text-align: center; width: 110px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.year_taken_origin_center|default_if_none:'' }}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 90px">
+                Año que cursara
+            </th>
+            <th style="text-align: center; width: 120px; border-bottom: 1px solid black;">
+                {{ matriculation.grade_section }}
+            </th>
+        </tr>
+    </table>
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 135px">
+                Enfermedades que padece:
+            </th>
+            <th style="text-align: left; width: 575px; border-bottom: 1px solid black;">
+                {{ matriculation.student.personalfile.diseases|default_if_none:'' }}
+            </th>
+        </tr>
+    </table>
+
+    {% for foo in '1234'|make_list %}
+        <br>
+    {% endfor %}
+    <table cellpadding="3" border="0" cellspacing="3">
+        <tr>
+            <th style="text-align: left; width: 100px"></th>
+            <th style="text-align: center; width: 230px; border-top: 1px solid black;">
+                FIRMA DEL RESPONSABLE DE MATRÍCULA
+            </th>
+            <th style="text-align: left; width: 120px"></th>
+            <th style="text-align: center; width: 230px; border-top: 1px solid black;">
+                FIRMA DEL PADRE O TUTOR
+            </th>
+        </tr>
+    </table>
+
+    <h3 style="text-align: center;">PARA USO DEL CENNTRO</h3>
+    <hr>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 100px">
+                Apta del año ant.:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+                {% if matriculation.student.papercenter %}
+                    {% if matriculation.student.papercenter.academic_notes %}
+                        Si
+                    {% else %}
+                        No
+                    {% endif %}
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 50px">
+                Diploma:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+                {% if matriculation.student.papercenter %}
+                    {% if matriculation.student.papercenter.diploma %}
+                        Si
+                    {% else %}
+                        No
+                    {% endif %}
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 50px">
+                P.Nac:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+                {% if matriculation.student.papercenter %}
+                    {% if matriculation.student.papercenter.birth_certificate %}
+                        Si
+                    {% else %}
+                        No
+                    {% endif %}
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 60px">
+                C.Conducta:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+                {% if matriculation.student.papercenter %}
+                    {% if matriculation.student.papercenter.conduct_certificate %}
+                        Si
+                    {% else %}
+                        No
+                    {% endif %}
+                {% endif %}
+            </th>
+            <th style="text-align: left; width: 5px"></th>
+            <th style="text-align: left; width: 60px">
+                Otros:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+            </th>
+        </tr>
+    </table>
+    <br>
+    <table cellpadding="1" border="0" cellspacing="1">
+        <tr>
+            <th style="text-align: left; width: 100px">
+                Observaciones:
+            </th>
+            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+                {% if matriculation.student.papercenter %}
+                    {{ matriculation.student.papercenter.observations|default_if_none:'' }}
+                {% endif %}
+            </th>
+        </tr>
+    </table>
+
+{% endblock %}

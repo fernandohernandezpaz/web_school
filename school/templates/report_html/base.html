@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+      <style>
+        @page {
+            size: letter portrait;
+            margin: 1cm;
+            @frame header_frame {
+            -pdf-frame-content: header_content;
+            left: 50pt;
+            width: 512pt;
+            top: 50pt;
+            height: 5pt;
+        }
+        @frame footer_frame {
+            -pdf-frame-content:footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% block content %}
+{% endblock %}
+
+
+{% include 'report_html/footer.html' %}
+
+</body>
+</html>

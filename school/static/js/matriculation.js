@@ -80,17 +80,19 @@ $(function ($) {
                     dataType: 'json',
                     type: 'POST',
                     success: function (response) {
-
                         if (response.status) {
-                            alert_message(response.message, title = '¡Informe!',
-                                icon = 'success');
-                            setTimeout(() => {
+                            Swal.fire({
+                                title: 'Guardado exitoso',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(result => {
                                 if (reload_page) {
                                     window.location = URLS_API.current_page;
                                 } else {
                                     window.location = URLS_API.back_url;
                                 }
-                            }, 2600);
+                            });
                         } else {
                             alert_message(response.message);
                         }

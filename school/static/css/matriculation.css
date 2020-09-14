@@ -25,7 +25,26 @@ p.no-space {
 }
 
 p.space {
-    color: red !important;
+    color: blue !important;
     font-size: 12px !important;
     font-weight: bold !important;
+}
+
+.btn {
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+    height: 40px;
+    margin: 5px;
+    outline: none;
+    padding: 7px 5px;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    color: white;
+}
+
+.btn-reporte {
+    background-color: darkmagenta;
 }

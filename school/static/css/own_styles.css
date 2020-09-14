@@ -1,14 +1,14 @@
-input#id_mobile, input#id_cellphone {
+input#id_mobile, input#id_phone {
     width: 160px !important;
 }
 
 .btn {
     color: white;
-    background-color: #007bff;
-    border: 0 #007bff;
     border-radius: 4px;
     height: 33px;
+    margin: 5px;
     outline: none;
+    padding: 5px;
     text-transform: uppercase;
 }
 
@@ -25,14 +25,7 @@ input#id_mobile, input#id_cellphone {
     cursor: pointer;
 }
 
-a.btn {
-    color: white;
-    height: 20px;
-    margin: 5px;
-    padding: 5px;
-}
-
-a.btn:hover {
+.btn:hover {
     color: white;
     padding: 6px;
 }

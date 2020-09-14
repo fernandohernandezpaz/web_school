@@ -1,91 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Lista de asistencia {{ grade_section_course }} {{ year }}</title>
-    <style>
-        @page {
-            size: letter portrait;
-            margin: 1cm;
-            @frame header_frame {
-            -pdf-frame-content: header_content;
-            left: 50pt;
-            width: 512pt;
-            top: 50pt;
-            height: 5pt;
-        }
-        @frame footer_frame {
-        -pdf-frame-content:footer_content;
-        left: 50pt; width: 512pt; top: 772pt; height: 20pt;
-        }
-        }
-    </style>
-</head>
-<body>
-<!-- Content for Static Frame 'footer_frame' -->
-<div id="footer_content">
-    Documento impreso el {% now "SHORT_DATETIME_FORMAT" %}.
-    <strong> página</strong>
-    <pdf:pagenumber><strong>de
-        <pdf:pagecount>
-    </strong>
-</div>
-
-
-<table style="margin: 0;" cellpadding="0" border="0" cellspacing="0">
-    <tbody>
-    <tr>
-        <th colspan="2" rowspan="1"><h2 style="color: black; text-align: left;">{{ nombre_colegio }}</h2></th>
-    </tr>
-     <tr>
-        <th colspan="2" rowspan="1"><h3 style="color: black; text-align: left;">LISTA DE ASISTENCIA</h3></th>
-    </tr>
-    <tr>
-        <th colspan="1" rowspan="1" style="width: 50%;text-align: left;"><h4>ASISTENCIA ESCOLAR AÑO {{ year }}</h4>
-        </th>
-        <th colspan="1" rowspan="1" style="width: 50%;"><h4>FECHA: __________________</h4></th>
-    </tr>
-    <tr>
-        <th colspan="2" rowspan="1" style="width: 6%;text-align: left;">
-            DOCENTE: <u>&nbsp;&nbsp; {{ teacher.first_name|upper }} {{ teacher.last_name|upper }} &nbsp;&nbsp;</u>
-        </th>
-    </tr>
-    <tr>
-        <th colspan="2" rowspan="1" style="width: 100%;text-align: left;">
-            ASIGNATURA: <u>&nbsp;&nbsp; {{ grade_section_course.course|upper }} &nbsp;&nbsp;</u>
-            GRADO: <u>&nbsp;&nbsp; {{ grade_section_course.grade_section.grade }} &nbsp;&nbsp;</u>
-            SECCIÓN: <u>&nbsp;&nbsp; {{ grade_section_course.grade_section.section }} &nbsp;&nbsp;</u>
-        </th>
-    </tr>
-    </tbody>
-</table>
-
-
-<table style="margin: 15px 0 5px 0;border: 1px solid black;" cellpadding="3" border="0" cellspacing="3">
-    <thead>
-    <tr>
-        <th style="width: 5%">#</th>
-        <th style="width: 20%">CÓDIGO MINED</th>
-        <th>NOMBRE DEL ESTUDIANTE</th>
-        <th>OBSERVACIÓN</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for student in students %}
+{% extends 'report_html/base.html' %}
+{% block content %}
+    <table style="margin: 0;" cellpadding="0" border="0" cellspacing="0">
+        <tbody>
         <tr>
-            <td style="text-align: center">{{ forloop.counter }}</td>
-            <td>{{ student.student__code_mined }}</td>
-            <td>{{ student.student__names }} {{ student.student__last_name }}</td>
-            <td></td>
+            <th colspan="2" rowspan="1"><h2 style="color: black; text-align: left;">{{ nombre_colegio }}</h2></th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <tr>
+            <th colspan="2" rowspan="1"><h3 style="color: black; text-align: left;">LISTA DE ASISTENCIA</h3></th>
+        </tr>
+        <tr>
+            <th colspan="1" rowspan="1" style="width: 50%;text-align: left;"><h4>ASISTENCIA ESCOLAR AÑO {{ year }}</h4>
+            </th>
+            <th colspan="1" rowspan="1" style="width: 50%;"><h4>FECHA: __________________</h4></th>
+        </tr>
+        <tr>
+            <th colspan="2" rowspan="1" style="width: 6%;text-align: left;">
+                DOCENTE: <u>&nbsp;&nbsp; {{ teacher.first_name|upper }} {{ teacher.last_name|upper }} &nbsp;&nbsp;</u>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2" rowspan="1" style="width: 100%;text-align: left;">
+                ASIGNATURA: <u>&nbsp;&nbsp; {{ grade_section_course.course|upper }} &nbsp;&nbsp;</u>
+                GRADO: <u>&nbsp;&nbsp; {{ grade_section_course.grade_section.grade }} &nbsp;&nbsp;</u>
+                SECCIÓN: <u>&nbsp;&nbsp; {{ grade_section_course.grade_section.section }} &nbsp;&nbsp;</u>
+            </th>
+        </tr>
+        </tbody>
+    </table>
 
-<div style="width: 20px; height: 1px;border-top: 1px solid black;margin: 35px 230px 0 230px;text-align: center; padding:3px;">
-    <strong>{{ teacher.first_name|upper }} {{ teacher.last_name|upper }}</strong>
-</div>
+    <table style="margin: 15px 0 5px 0;border: 1px solid black;" cellpadding="3" border="0" cellspacing="3">
+        <thead>
+        <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 20%">CÓDIGO MINED</th>
+            <th>NOMBRE DEL ESTUDIANTE</th>
+            <th>OBSERVACIÓN</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td style="text-align: center">{{ forloop.counter }}</td>
+                <td>{{ student.student__code_mined }}</td>
+                <td>{{ student.student__names }} {{ student.student__last_name }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-
-</body>
-</html>
+    <div style="width: 20px; height: 1px;border-top: 1px solid black;margin: 35px 230px 0 230px;text-align: center; padding:3px;">
+        <strong>{{ teacher.first_name|upper }} {{ teacher.last_name|upper }}</strong>
+    </div>
+{% endblock %}

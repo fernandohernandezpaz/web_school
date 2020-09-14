@@ -63,7 +63,6 @@ class MatriculationAdmin(admin.ModelAdmin):
         'grade_section'
     ]
     list_per_page = 20
-    list_editable = ('status',)
     change_list_template = 'admin/matriculation/change_list.html'
 
     def link_edit_matriculation(self, obj):
@@ -140,12 +139,12 @@ class FamilyAdmin(admin.ModelAdmin):
         'family_role',
         'tutor',
     ]
-    # define the distribution and order of the fields of the model
+    # define the distribution and order of the model's fields
     fieldsets = [
         ('Información General del Familiar',
-         {'fields': ['full_name', 'document', 'family_role',
-                     'mobile', 'cellphone',
-                     'tutor', 'occupation']}),
+         {'fields': ['full_name', 'document', 'work_place',
+                     'family_role', 'mobile', 'phone',
+                     'email', 'tutor', 'occupation', 'address']}),
     ]
 
     class Media:
