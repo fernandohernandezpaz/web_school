@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/own_styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+    <link rel="stylesheet" href="{% static 'datatables.net-dt/css/jquery.dataTables.min.css' %}">
     <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
     <script>
@@ -26,6 +27,7 @@
         });
     </script>
     <script src="{% static 'js/note_register.js' %}"></script>
+    <script src="{% static 'datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/tabs.js' %}"></script>
 
 {% endblock %}
@@ -78,7 +80,7 @@
                     {% endif %}
                 {% else %}
                     {% if request.user.is_superuser %}
-                        <button type="button" id="enabled_inputs" class="btn">
+                        <button type="button" id="enabled_inputs" class="btn btn-habilitar">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Habilitar formulario
                         </button>

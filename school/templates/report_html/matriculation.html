@@ -339,12 +339,12 @@
         </tr>
     </table>
 
-    <h3 style="text-align: center;">PARA USO DEL CENNTRO</h3>
+    <h3 style="text-align: center;">PARA USO DEL CENTRO</h3>
     <hr>
     <table cellpadding="1" border="0" cellspacing="1">
         <tr>
             <th style="text-align: left; width: 100px">
-                Apta del año ant.:
+                Acta del año ant.:
             </th>
             <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
                 {% if matriculation.student.papercenter %}
@@ -408,7 +408,7 @@
             <th style="text-align: left; width: 100px">
                 Observaciones:
             </th>
-            <th style="text-align: center; width: 70px; border-bottom: 1px solid black;">
+            <th style="text-align: center; width: 615px; border-bottom: 1px solid black;">
                 {% if matriculation.student.papercenter %}
                     {{ matriculation.student.papercenter.observations|default_if_none:'' }}
                 {% endif %}

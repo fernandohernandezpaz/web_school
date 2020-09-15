@@ -2,7 +2,7 @@ $(function ($) {
     const btn_save = $('#btn_save');
     btn_save.attr('disabled', 'disabled');
     let typingTimer;               // timer identifier
-    let doneTypingInterval = 500; // time in ms
+    let doneTypingInterval = 250; // time in ms
     const data_form = [];          // array to save the student with note edited
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let input_course = $('#course').val();
