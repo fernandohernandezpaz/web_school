@@ -3,7 +3,7 @@ input#id_mobile, input#id_phone {
 }
 
 .btn {
-    color: white;
+    color: white !important;
     border-radius: 4px;
     border: 0;
     height: 33px;
@@ -27,7 +27,7 @@ input#id_mobile, input#id_phone {
 }
 
 .btn:hover {
-    color: white;
+    color: white !important;
 }
 
 .btn-lista_asistencia {
@@ -47,3 +47,13 @@ input#id_mobile, input#id_phone {
 .btn-habilitar {
     background-color: #007bff;
 }
+
+#history_table_length, #history_table_filter {
+    margin-bottom: 10px;
+    width: 270px;
+}
+
+#history_table_length label, #history_table_filter label {
+    width: 100%;
+}
+
