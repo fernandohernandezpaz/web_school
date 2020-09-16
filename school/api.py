@@ -1,7 +1,9 @@
+import json
 from django.http import JsonResponse
 from django.db.models import Value, F
 from django.db.models.functions import Concat
-from .models import Matriculation, GradeSection, Student, Note
+from .models import (Matriculation, GradeSection, Student,
+                     Note, CourseGradeSection)
 from .commons import (get_current_year, convert_date)
 from constance import config
 
@@ -98,9 +100,7 @@ def save_form(request):
     try:
         from django.contrib.admin.models import LogEntry
         from django.contrib.contenttypes.models import ContentType
-        import json
         matriculation_type = ContentType.objects.get(app_label='school', model='matriculation')
-        import json
         student_id = int(request.POST.get('student_id'))
         grade_section_id = int(request.POST.get('grade_section'))
         teaching_year = int(request.POST.get('teaching_year'))
@@ -166,7 +166,6 @@ def save_form(request):
 
 
 def save_note(request):
-    import json
     from datetime import date
     from .commons import calculate_note, control_edition_note
     course_id = request.POST.get('course_id')
@@ -260,6 +259,71 @@ def save_note(request):
     response = {
         'status': True,
         'message': 'Notas guardadas exitosamente'
+    }
+
+    return JsonResponse(response)
+
+
+def statistics_period_notes(request):
+    from django.db.models import Count, Case, When, IntegerField, Q
+    column_note = request.POST.get('period')
+    teacher_id = int(request.POST.get('teacher_id'))
+    current_year = get_current_year()
+    grade_section_course_id = int(request.POST.get('grade_section_course_id', 0))
+    course_id = int(request.POST.get('course_id'))
+
+    filter_column_note = '{}__isnull'.format(column_note)
+    filters = {
+        filter_column_note: False,
+        'teacher_id': teacher_id,
+        'course_id': course_id,
+        'matriculation__teaching_year': current_year,
+        'course__coursegradesection__id': grade_section_course_id
+    }
+
+    if grade_section_course_id != 0:
+        grade_section_course = CourseGradeSection.objects.get(pk=grade_section_course_id)
+        filters['matriculation__grade_section'] = grade_section_course.grade_section_id
+
+    students = Note.objects.filter(**filters). \
+        values('id', column_note,
+               'matriculation__student__names',
+               'matriculation__student__last_name')
+
+    periods_note = [{
+        'nombre': 'Aprendizaje Avanzado',
+        'valoracion': [90, 100],
+        'color': '#0839ff',
+    }, {
+        'nombre': 'Aprendizaje Sastifactorio',
+        'valoracion': [76, 89],
+        'color': '#00f531',
+    }, {
+        'nombre': 'Aprendizaje Elemental',
+        'valoracion': [60, 75],
+        'color': '#ffee00'
+    }, {
+        'nombre': 'Aprendizaje Inicial',
+        'valoracion': [0, 59],
+        'color': '#f22e2e',
+    }]
+
+    for period in periods_note:
+        filter_column_note = {'{}__range'.format(column_note): period.get('valoracion')}
+
+        quantity_notes = students.aggregate(quantity=Count(Case(
+            When(Q(**filter_column_note), then=1),
+            output_field=IntegerField()
+        )))
+
+        start = period.get('valoracion')[0]
+        end = period.get('valoracion')[1]
+        period['quantity_notes'] = quantity_notes.get('quantity', 0)
+        period['student_list'] = list(filter(lambda i: start <= i[column_note] <= end, students))
+
+    response = {
+        'periods': periods_note,
+        'status': True
     }
 
     return JsonResponse(response)

@@ -117,6 +117,7 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
     template_name = 'register_note.html'
 
     def get_context_data(self, **kwargs):
+        from datetime import date
         from .commons import fields_note_spanish
         context = {}
         notes_id = []
@@ -127,7 +128,7 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
             filter(teaching_year=get_current_year(),
                    grade_section__id=grado_seccion_curso.grade_section_id,
                    status=1). \
-            values('id',  # id of matriculation
+            values('id',
                    'student_id',
                    'student__code_mined',
                    'student__names',
@@ -142,11 +143,28 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
             ).first()
             fill_with_data_from_db_or_empty(student, notes, notes_id)
 
+        # get the current period to register note
+        current_period = fields_note_spanish['bimonthly_I']
+        today = date.today()
+        limits_date = {
+            'bi': config.FECHA_LIMITE_REGISTRO_I_BIMENSUAL,
+            'bii': config.FECHA_LIMITE_REGISTRO_II_BIMENSUAL,
+            'biii': config.FECHA_LIMITE_REGISTRO_III_BIMENSUAL,
+            'biv': config.FECHA_LIMITE_REGISTRO_IV_BIMENSUAL
+        }
+        if limits_date['bi'] <= today <= limits_date['bii']:
+            current_period = fields_note_spanish['bimonthly_II']
+        if limits_date['bii'] <= today <= limits_date['biii']:
+            current_period = fields_note_spanish['bimonthly_III']
+        if limits_date['biii'] <= today <= limits_date['biv']:
+            current_period = fields_note_spanish['bimonthly_IV']
+
         context['teacher_id'] = kwargs['teacher_id']
         context['students'] = students
         context['grade_section_course'] = grado_seccion_curso
         context['config'] = config
         context['spanish_fields'] = fields_note_spanish
+        context['current_period'] = current_period
 
         rol = self.request.user.groups.first()
         if rol and rol.name != 'docente' or self.request.user.is_superuser:

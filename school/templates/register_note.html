@@ -1,19 +1,20 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
+{% block title %}Registro de notas | {{ grade_section_course }}{% endblock %}
 
 {% block extrastyle %}
     <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
     <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/own_styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/tabs.css' %}">
-    <link rel="stylesheet" href="{% static 'datatables.net-dt/css/jquery.dataTables.min.css' %}">
     <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
     <script>
         var keys_note = ['ibimensual', 'iibimensual',
             'iiibimensual', 'ivbimensual'];
         var URLS_API = {
-            'save': '{% url 'school:api_save_note' %}'
+            save: '{% url 'school:api_save_note' %}',
+            statistics_period_notes: '{% url 'school:api_statistics_period_notes' %}',
         };
 
         const NOTA_MINIMA_APROBADO = {{ config.NOTA_MINIMA_APROBADO }};
@@ -30,12 +31,16 @@
     <script src="{% static 'datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/tabs.js' %}"></script>
 
+    <script src="{% static 'echarts/dist/echarts.min.js' %}"></script>
+    <script src="{% static 'js/statistics.js' %}"></script>
+
 {% endblock %}
 {% block content %}
     <div id="content-main">
         <form action="post" id="form_register_note" data-continue="false">
             <input type="hidden" name="course" id="course" value="{{ grade_section_course.course_id }}">
             <input type="hidden" name="teacher_id" id="teacher" value="{{ teacher_id }}">
+            <input type="hidden" name="grade_section_course_id" id="grade_section_course_id" value="{{ grade_section_course.id }}">
             <main>
                 <input id="tab1" checked type="radio" name="tabs">
                 <label for="tab1">Aula</label>

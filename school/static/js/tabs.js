@@ -4,7 +4,7 @@ $(function () {
     let table = $('#history_table');
     if (table.length > 0) {
         table.dataTable({
-            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "Todos"]],
+            'lengthMenu': [[15, 25, 50, -1], [15, 25, 50, 'Todos']],
             'language': {
                 'sProcessing': 'Procesando...',
                 'sLengthMenu': 'Mostrar _MENU_ registros',
