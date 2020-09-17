@@ -47,6 +47,7 @@ $(function () {
                 case 'tab3':
                     btn_save.fadeOut();
                     btn_enabled_edition.fadeOut();
+                    $(window).trigger('resize');
                     break
             }
         });

@@ -1,5 +1,6 @@
 $(function () {
-    const filtro = $('.periods:checked').val();
+    const filtro = $('.periods:checked');
+    const corte = $('#corte');
     const input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     const course = $('#course').val();
     const teacher = $('#teacher').val();
@@ -16,16 +17,16 @@ $(function () {
                 teacher_id: teacher,
                 grade_section_course_id: grade_section_course,
             };
-            crearGrafico(campos);
+            crearGrafico(campos, $(this));
         });
 
     function crearGrafico(campos = {
         csrfmiddlewaretoken: input_tocken,
-        period: filtro,
+        period: filtro.val(),
         course_id: course,
         teacher_id: teacher,
         grade_section_course_id: grade_section_course,
-    }) {
+    }, input_filtro = filtro) {
         $.ajax({
             url: URLS_API.statistics_period_notes,
             data: campos,
@@ -34,9 +35,43 @@ $(function () {
             success: function (response) {
                 const chart = echarts.init(document.getElementById('notes_graph'));
                 const data = response['periods']
+                const nombre_corte_evaluativo = input_filtro.parent().text();
+                corte.html(nombre_corte_evaluativo);
+
+                cargarEstudiantesEnTabla(data, '#notes_bad_students');
+                let series = new Array(4).fill({
+                    type: 'bar',
+                    barGap: 0,
+                    xAxisIndex: 1,
+                    yAxisIndex: 1
+                });
+
+                series[0] = {
+                    data: data.map(item => item['quantity_notes']),
+                    type: 'bar',
+                    label: {
+                        show: true,
+                        position: 'top',
+                        textStyle: {
+                            color: '#555'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: (params) => {
+                                let colors = data.map(item => item['color'])
+                                return colors[params.dataIndex]
+                            }
+                        }
+                    },
+                    xAxisIndex: 0,
+                    yAxisIndex: 0
+                };
+
                 const option = {
+                    toolbox: setToolBox('Escala de Calificaciones'),
                     title: {
-                        text: 'Definir nombre del grafico',
+                        text: 'Escala de Calificaciones',
                         textStyle: {
                             fontSize: 13,
                             color: '#000'
@@ -47,6 +82,13 @@ $(function () {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow'
+                        },
+                        formatter: (params) => {
+                            let axisValue = `<p>${params[0].axisValue}</p>`;
+                            params.forEach(item => {
+                                axisValue += `<p>${item.marker} Estudiantes: ${item.data}</p>`;
+                            });
+                            return axisValue;
                         }
                     },
                     legend: {
@@ -126,48 +168,56 @@ $(function () {
                             show: false
                         }
                     }],
-                    series: [{
-                        data: data.map(item => item['quantity_notes']),
-                        type: 'bar',
-                        label: {
-                            show: true,
-                            position: 'top',
-                            textStyle: {
-                                color: '#555'
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: (params) => {
-                                    let colors = data.map(item => item['color'])
-                                    return colors[params.dataIndex]
-                                }
-                            }
-                        },
-                        xAxisIndex: 0,
-                        yAxisIndex: 0
-                    }, {
-                        type: 'bar',
-                        barGap: 0,
-                        xAxisIndex: 1,
-                        yAxisIndex: 1
-                    }, {
-                        type: 'bar',
-                        barGap: 0,
-                        xAxisIndex: 1,
-                        yAxisIndex: 1
-                    }, {
-                        type: 'bar',
-                        barGap: 0,
-                        xAxisIndex: 1,
-                        yAxisIndex: 1
-                    }]
+                    series: series
                 };
-                chart.setOption(option)
+                chart.setOption(option);
+
+                window.onresize = function () {
+                    chart.resize();
+                };
+
                 chart.on('click', (params) => {
                     console.log(params);
                 })
             }
         });
+    }
+
+    function setToolBox(title_1, isCustomTable) {
+        let tableData = {
+            show: true,
+            feature: {
+                restore: {
+                    title: 'Refrescar'
+                },
+                saveAsImage: {
+                    title: 'Descargar imagen'
+                }
+            }
+        };
+        if (isCustomTable)
+            Object.assign(tableData, this.customTable());
+
+        return tableData;
+    }
+
+
+    function cargarEstudiantesEnTabla(data, id_table, limit_data = 5) {
+        const table = $(id_table).find('tbody');
+        const students = data[data.length - 1]['student_list'].reverse();
+        const column_note = filtro.val();
+
+        let index = 1;
+        for (const student of students) {
+            if (index > limit_data) {
+                break;
+            }
+            table.append(
+                `<tr><td>${index}</td>` +
+                `<td>${student['matriculation__student__names']} ${student['matriculation__student__last_name']}</td>` +
+                `<td>${student[column_note]}</td></tr>`
+            )
+            index++;
+        }
     }
 });
