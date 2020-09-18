@@ -265,7 +265,7 @@ def save_note(request):
 
 
 def statistics_period_notes(request):
-    from django.db.models import Count, Case, When, IntegerField, Q
+    from django.db.models import Count, Case, When, IntegerField, Q, Avg
     column_note = request.POST.get('period')
     teacher_id = int(request.POST.get('teacher_id'))
     current_year = get_current_year()
@@ -321,8 +321,12 @@ def statistics_period_notes(request):
         period['quantity_notes'] = quantity_notes.get('quantity', 0)
         period['student_list'] = list(filter(lambda i: start <= i[column_note] <= end, students))
 
+    average = students.aggregate(Avg(column_note))
+    average_column = '{}__avg'.format(column_note)
+
     response = {
         'periods': periods_note,
+        'average': round(average.get(average_column, 0)),
         'status': True
     }
 

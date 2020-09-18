@@ -1,6 +1,7 @@
 $(function () {
     const filtro = $('.periods:checked');
-    const corte = $('#corte');
+    const corte = $('.corte');
+    const promedio = $('.promedio');
     const input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     const course = $('#course').val();
     const teacher = $('#teacher').val();
@@ -35,10 +36,14 @@ $(function () {
             success: function (response) {
                 const chart = echarts.init(document.getElementById('notes_graph'));
                 const data = response['periods']
+                const average = response['average']
                 const nombre_corte_evaluativo = input_filtro.parent().text();
                 corte.html(nombre_corte_evaluativo);
+                promedio.css('color', average > 70 ? 'black' : 'red');
+                promedio.html(average);
 
-                cargarEstudiantesEnTabla(data, '#notes_bad_students');
+                cargarEstudiantesEnTabla(data[data.length - 1], '#notes_bad_students');
+                cargarEstudiantesEnTabla(data[0], '#notes_good_students');
                 let series = new Array(4).fill({
                     type: 'bar',
                     barGap: 0,
@@ -73,9 +78,11 @@ $(function () {
                     title: {
                         text: 'Escala de Calificaciones',
                         textStyle: {
-                            fontSize: 13,
-                            color: '#000'
-                        }
+                            fontSize: 17,
+                            color: '#000',
+                            fontWeight: 'bolder',
+                            align: 'center'
+                        },
                     },
                     tooltip: {
                         show: true,
@@ -202,22 +209,33 @@ $(function () {
     }
 
 
-    function cargarEstudiantesEnTabla(data, id_table, limit_data = 5) {
-        const table = $(id_table).find('tbody');
-        const students = data[data.length - 1]['student_list'].reverse();
-        const column_note = filtro.val();
+    function cargarEstudiantesEnTabla(data, id_table) {
+        let table = $(id_table).find('tbody');
+        let students = data['student_list'].reverse();
+        const column_name = filtro.val();
 
+        agregarFilaEstudiante(table, students, column_name);
+    }
+
+    function agregarFilaEstudiante(table, students, column_name, limit_data = 5) {
         let index = 1;
-        for (const student of students) {
-            if (index > limit_data) {
-                break;
+        table.html('');
+        if (students.length > 0) {
+            for (const student of students) {
+                if (index > limit_data) {
+                    break;
+                }
+                table.append(
+                    `<tr><td>${index}</td>` +
+                    `<td>${student['matriculation__student__names']} ${student['matriculation__student__last_name']}</td>` +
+                    `<td>${student[column_name]}</td></tr>`
+                )
+                index++;
             }
+        } else {
             table.append(
-                `<tr><td>${index}</td>` +
-                `<td>${student['matriculation__student__names']} ${student['matriculation__student__last_name']}</td>` +
-                `<td>${student[column_note]}</td></tr>`
+                `<tr><td colspan="3" style="text-align: center;"><strong>NO HAY REGISTROS</strong></td></tr>`
             )
-            index++;
         }
     }
 });
