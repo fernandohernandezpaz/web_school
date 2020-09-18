@@ -212,7 +212,7 @@ $(function () {
     function cargarEstudiantesEnTabla(data, id_table) {
         let table = $(id_table).find('tbody');
         let students = data['student_list'].reverse();
-        const column_name = filtro.val();
+        const column_name = $('.periods:checked').val();
 
         agregarFilaEstudiante(table, students, column_name);
     }
