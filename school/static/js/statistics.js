@@ -1,5 +1,6 @@
 $(function () {
-    const filtro = $('.periods:checked');
+    const filtro = $('.scales:checked');
+    const message = $('#danger_average');
     const corte = $('.corte');
     const promedio = $('.promedio');
     const input_tocken = $('input[name=csrfmiddlewaretoken]').val();
@@ -10,10 +11,10 @@ $(function () {
     crearGrafico();
 
     $('body')
-        .on('change', '.periods', function () {
+        .on('change', '.scales', function () {
             const campos = {
                 csrfmiddlewaretoken: input_tocken,
-                period: $(this).val(),
+                scale: $(this).val(),
                 course_id: course,
                 teacher_id: teacher,
                 grade_section_course_id: grade_section_course,
@@ -23,11 +24,11 @@ $(function () {
 
     function crearGrafico(campos = {
         csrfmiddlewaretoken: input_tocken,
-        period: filtro.val(),
+        scale: filtro.val(),
         course_id: course,
         teacher_id: teacher,
         grade_section_course_id: grade_section_course,
-    }, input_filtro = filtro) {
+    }) {
         $.ajax({
             url: URLS_API.statistics_period_notes,
             data: campos,
@@ -35,13 +36,9 @@ $(function () {
             type: 'POST',
             success: function (response) {
                 const chart = echarts.init(document.getElementById('notes_graph'));
-                const data = response['periods']
-                const average = response['average']
-                const nombre_corte_evaluativo = input_filtro.parent().text();
-                corte.html(nombre_corte_evaluativo);
-                promedio.css('color', average > 70 ? 'black' : 'red');
-                promedio.html(average);
+                const data = response['scales']
 
+                setearColorDependiendoEscala(data, response['average']);
                 cargarEstudiantesEnTabla(data[data.length - 1], '#notes_bad_students');
                 cargarEstudiantesEnTabla(data[0], '#notes_good_students');
                 let series = new Array(4).fill({
@@ -212,7 +209,7 @@ $(function () {
     function cargarEstudiantesEnTabla(data, id_table) {
         let table = $(id_table).find('tbody');
         let students = data['student_list'].reverse();
-        const column_name = $('.periods:checked').val();
+        const column_name = $('.scales:checked').val();
 
         agregarFilaEstudiante(table, students, column_name);
     }
@@ -236,6 +233,20 @@ $(function () {
             table.append(
                 `<tr><td colspan="3" style="text-align: center;"><strong>NO HAY REGISTROS</strong></td></tr>`
             )
+        }
+    }
+
+    function setearColorDependiendoEscala(scales, average) {
+        const nombre_corte_evaluativo = filtro.parent().text();
+        corte.html(nombre_corte_evaluativo);
+        const scale = scales.find(scale => average >= scale.valoracion[0] && average <= scale.valoracion[1]);
+        promedio.css('color', scale.color);
+        promedio.html(average);
+        message.css('color', scales.reverse()[0].color)
+        if (average < 70) {
+            message.fadeIn('slow');
+        } else {
+            message.fadeOut('slow');
         }
     }
 });

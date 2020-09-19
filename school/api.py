@@ -266,7 +266,7 @@ def save_note(request):
 
 def statistics_period_notes(request):
     from django.db.models import Count, Case, When, IntegerField, Q, Avg
-    column_note = request.POST.get('period')
+    column_note = request.POST.get('scale')
     teacher_id = int(request.POST.get('teacher_id'))
     current_year = get_current_year()
     grade_section_course_id = int(request.POST.get('grade_section_course_id', 0))
@@ -290,7 +290,7 @@ def statistics_period_notes(request):
                'matriculation__student__names',
                'matriculation__student__last_name')
 
-    periods_note = [{
+    scales_note = [{
         'nombre': 'Aprendizaje Avanzado',
         'valoracion': [90, 100],
         'color': '#0839ff',
@@ -308,24 +308,24 @@ def statistics_period_notes(request):
         'color': '#f22e2e',
     }]
 
-    for period in periods_note:
-        filter_column_note = {'{}__range'.format(column_note): period.get('valoracion')}
+    for scale in scales_note:
+        filter_column_note = {'{}__range'.format(column_note): scale.get('valoracion')}
 
         quantity_notes = students.aggregate(quantity=Count(Case(
             When(Q(**filter_column_note), then=1),
             output_field=IntegerField()
         )))
 
-        start = period.get('valoracion')[0]
-        end = period.get('valoracion')[1]
-        period['quantity_notes'] = quantity_notes.get('quantity', 0)
-        period['student_list'] = list(filter(lambda i: start <= i[column_note] <= end, students))
+        start = scale.get('valoracion')[0]
+        end = scale.get('valoracion')[1]
+        scale['quantity_notes'] = quantity_notes.get('quantity', 0)
+        scale['student_list'] = list(filter(lambda i: start <= i[column_note] <= end, students))
 
     average = students.aggregate(Avg(column_note))
     average_column = '{}__avg'.format(column_note)
 
     response = {
-        'periods': periods_note,
+        'scales': scales_note,
         'average': round(average.get(average_column, 0)),
         'status': True
     }
