@@ -9,6 +9,8 @@ CONSTANCE_ADDITIONAL_FIELDS = {
     'image_field': ['django.forms.ImageField', {}]
 }
 
+# NOTE si cambia el nombre de las key de fecha limite cambiarlo tambien en views linea 146
+
 CONSTANCE_CONFIG = {
     'CANTIDAD_ALUMNOS_POR_AULA': (30, 'La cantidad limite de alumnos por cada aula(Grado Sección)', int),
     'NOTA_MINIMA_APROBADO': (60, 'Nota minima para aprobsar una evaluación(Nota)', int),

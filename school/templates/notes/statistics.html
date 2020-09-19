@@ -1,3 +1,62 @@
 <fieldset class="module aligned  module_0 initialized">
     <h1>Estadísticas</h1>
+    <h5><strong>Filtro por período:</strong></h5>
+
+    {% for periodo in spanish_fields.items %}
+        <label for="scale">
+            <input type="radio" name="scale" class="scales"
+                   value="{{ periodo.0 }}"{% if periodo.1|lower == current_period|lower %}
+                   checked="checked"{% endif %}>{{ periodo.1 }}
+        </label>
+    {% endfor %}
+    <br>
+    <hr>
+    <br>
+    <h1>
+        El promedio del aula en el período
+        <span class="corte" style="color: black">corte</span>
+        es de
+        <span class="promedio" style="color: black">promedio</span>
+    </h1>
+    <h1 style="display: none;" id="danger_average">
+        El promedio general de la asignatura
+        de {{ grade_section_course.course }} del
+        aula {{ grade_section_course.grade_section }} es muy bajo y requiere de supervisión</h1>
+    <div id="notes_graph" style="width: 100%; height: 450px;margin-top: 25px"></div>
+
+    <h3>
+        Alumnos con mejor aprendizaje para el corte evaluativo
+        <strong class="corte" style="color: black">corte</strong>
+    </h3>
+    <div class="results">
+        <table style="width:100%; margin-bottom: 10px;margin-top: 10px" id="notes_good_students">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Nota</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <h3>
+        Alumnos con dificultades de aprendizaje para el corte evaluativo
+        <strong class="corte" style="color: black">corte</strong>
+    </h3>
+    <div class="results">
+        <table style="width:100%; margin-bottom: 10px;margin-top: 10px" id="notes_bad_students">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Nota</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </fieldset>
