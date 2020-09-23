@@ -37,8 +37,9 @@ $(function () {
             success: function (response) {
                 const chart = echarts.init(document.getElementById('notes_graph'));
                 const data = response['scales']
+                const average = response['average'].toFixed(0);
 
-                setearColorDependiendoEscala(data, response['average']);
+                setearColorDependiendoEscala(data, average);
                 cargarEstudiantesEnTabla(data[data.length - 1], '#notes_bad_students');
                 cargarEstudiantesEnTabla(data[0], '#notes_good_students');
                 let series = new Array(4).fill({

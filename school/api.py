@@ -326,7 +326,7 @@ def statistics_period_notes(request):
 
     response = {
         'scales': scales_note,
-        'average': round(average.get(average_column, 0)),
+        'average': average.get(average_column),
         'status': True
     }
 
