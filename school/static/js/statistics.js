@@ -238,9 +238,10 @@ $(function () {
     }
 
     function setearColorDependiendoEscala(scales, average) {
-        const nombre_corte_evaluativo = filtro.parent().text();
+        const nombre_corte_evaluativo = $('.scales:checked').parent().text();
         corte.html(nombre_corte_evaluativo);
-        const scale = scales.find(scale => average >= scale.valoracion[0] && average <= scale.valoracion[1]);
+        console.log(filtro);
+	const scale = scales.find(scale => average >= scale.valoracion[0] && average <= scale.valoracion[1]);
         promedio.css('color', scale.color);
         promedio.html(average);
         message.css('color', scales.reverse()[0].color)
