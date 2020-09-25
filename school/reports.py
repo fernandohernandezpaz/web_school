@@ -68,6 +68,7 @@ class AcademicNotesReport(View):
         students = Matriculation.objects. \
             filter(teaching_year=year,
                    grade_section__id=grade_section_course.grade_section_id,
+                   note__course_id=grade_section_course.course_id,
                    status=1). \
             values('student__names',
                    'student__code_mined',

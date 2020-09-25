@@ -40,8 +40,9 @@ $(function () {
                 const average = response['average'].toFixed(0);
 
                 setearColorDependiendoEscala(data, average);
-                cargarEstudiantesEnTabla(data[data.length - 1], '#notes_bad_students');
-                cargarEstudiantesEnTabla(data[0], '#notes_good_students');
+
+                cargarEstudiantesEnTabla(data[0], '#notes_bad_students');
+                cargarEstudiantesEnTabla(data[data.length - 1], '#notes_good_students');
                 let series = new Array(4).fill({
                     type: 'bar',
                     barGap: 0,
@@ -238,9 +239,9 @@ $(function () {
     }
 
     function setearColorDependiendoEscala(scales, average) {
-        const nombre_corte_evaluativo = filtro.parent().text();
+        const nombre_corte_evaluativo = $('.scales:checked').parent().text();
         corte.html(nombre_corte_evaluativo);
-        const scale = scales.find(scale => average >= scale.valoracion[0] && average <= scale.valoracion[1]);
+	const scale = scales.find(scale => average >= scale.valoracion[0] && average <= scale.valoracion[1]);
         promedio.css('color', scale.color);
         promedio.html(average);
         message.css('color', scales.reverse()[0].color)
