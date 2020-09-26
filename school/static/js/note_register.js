@@ -1,8 +1,6 @@
 $(function ($) {
     const btn_save = $('#btn_save');
     btn_save.attr('disabled', 'disabled');
-    let typingTimer;               // timer identifier
-    let doneTypingInterval = 250; // time in ms
     const data_form = [];          // array to save the student with note edited
     let input_tocken = $('input[name=csrfmiddlewaretoken]').val();
     let input_course = $('#course').val();
@@ -167,10 +165,8 @@ $(function ($) {
     }
 
     function collect_data_by_input_edit(input_edited) {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(() => {
-                if (input_edited.val() <= 100 && input_edited.val() !== '') {
-                    const row_contain_input = input_edited.parent().parent();
+	    if (input_edited.val() <= 100 && input_edited.val() !== '') {
+		    const row_contain_input = input_edited.parent().parent();
                     const matriculation_input = row_contain_input.find('td:eq(0)')
                         .find('.matriculation_id');
                     const matriculation_id = convert_to_zero_if_empty(matriculation_input.val());
@@ -194,9 +190,6 @@ $(function ($) {
                             student_note
                         );
                     }
-                }
-            },
-            doneTypingInterval
-        );
+	    }
     }
 });
