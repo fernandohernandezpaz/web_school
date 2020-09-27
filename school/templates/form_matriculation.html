@@ -1,7 +1,27 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
 
-{% block title %}Matriculación{% endblock %}
+{% block title %}
+    {% if request.resolver_match.url_name == 'matriculation_detail' %}
+        Matricula | {{ matriculation.student }} {{ matriculation.grade_section }} {{ matriculation.teaching_year }}
+    {% else %}
+        Matriculación
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        <a href="{% url 'admin:index' %}school">{% trans 'School' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        <a href="{% url 'admin:school_matriculation_changelist' %}school">{% trans 'Matriculas' %}</a>
+        {% if request.resolver_match.url_name == 'matriculation_detail' %}
+            <span class="icon-arrow-right breadcrumbs-separator"></span>
+            {{ matriculation.student }} {{ matriculation.grade_section }} {{ matriculation.teaching_year }}
+        {% endif %}
+    </div>
+{% endblock %}
 
 {% block extrastyle %}
     <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
