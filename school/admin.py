@@ -56,13 +56,14 @@ class MatriculationAdmin(admin.ModelAdmin):
                        'grade_section', 'status']
     list_display = ('link_edit_matriculation', 'teaching_year',
                     'grade_section', 'status')
-    ordering = ['teaching_year']
+    ordering = ['-teaching_year', 'registration_date']
     search_fields = ['student__names', 'student__last_name']
     list_filter = [
         'teaching_year',
         'grade_section'
     ]
     list_per_page = 20
+    list_editable = ('status',)
     change_list_template = 'admin/matriculation/change_list.html'
 
     def link_edit_matriculation(self, obj):
