@@ -56,7 +56,7 @@ class MatriculationAdmin(admin.ModelAdmin):
                        'grade_section', 'status']
     list_display = ('link_edit_matriculation', 'teaching_year',
                     'grade_section', 'status')
-    ordering = ['teaching_year']
+    ordering = ['-teaching_year', 'registration_date']
     search_fields = ['student__names', 'student__last_name']
     list_filter = [
         'teaching_year',
