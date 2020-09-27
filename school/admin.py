@@ -63,6 +63,7 @@ class MatriculationAdmin(admin.ModelAdmin):
         'grade_section'
     ]
     list_per_page = 20
+    list_editable = ('status',)
     change_list_template = 'admin/matriculation/change_list.html'
 
     def link_edit_matriculation(self, obj):
