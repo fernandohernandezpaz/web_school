@@ -1,6 +1,20 @@
 {% extends "admin/base.html" %}
+
 {% load static i18n %}
+
 {% block title %}Registro de notas | {{ grade_section_course }}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        <a href="{% url 'admin:index' %}school">{% trans 'School' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        <a href="{% url 'school:lista_de_asignaturas_por_seccion' teacher_id=teacher_id %}">{% trans 'Asignaturas por aulas' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        {{ grade_section_course }}
+    </div>
+{% endblock %}
 
 {% block extrastyle %}
     <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
@@ -41,7 +55,8 @@
         <form action="post" id="form_register_note" data-continue="false">
             <input type="hidden" name="course" id="course" value="{{ grade_section_course.course_id }}">
             <input type="hidden" name="teacher_id" id="teacher" value="{{ teacher_id }}">
-            <input type="hidden" name="grade_section_course_id" id="grade_section_course_id" value="{{ grade_section_course.id }}">
+            <input type="hidden" name="grade_section_course_id" id="grade_section_course_id"
+                   value="{{ grade_section_course.id }}">
             <main>
                 <input id="tab1" checked type="radio" name="tabs">
                 <label for="tab1">Aula</label>

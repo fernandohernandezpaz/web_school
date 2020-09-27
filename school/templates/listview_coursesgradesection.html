@@ -1,6 +1,21 @@
 {% extends "admin/base.html" %}
 {% load static i18n %}
 
+
+{% block title %}
+    Asignaturas por aulas | {{ teacher.first_name }} {{ teacher.last_name }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        <a href="{% url 'admin:index' %}school">{% trans 'School' %}</a>
+        <span class="icon-arrow-right breadcrumbs-separator"></span>
+        Asignaturas por aulas
+    </div>
+{% endblock %}
+
 {% block content %}
     <div id="content-main">
         <div id="changelist" class="module filtered initialized">
