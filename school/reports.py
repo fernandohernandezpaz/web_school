@@ -41,6 +41,7 @@ class AttendanceReport(View):
                    'student__last_name')
         title = 'Lista de asistencia {} {}'.format(grade_section_course, year)
         context = {
+            'logo': config.LOGO_DEL_COLEGIO,
             'nombre_colegio': config.NOMBRE_DEL_COLEGIO,
             'students': students,
             'grade_section_course': grade_section_course,
@@ -82,7 +83,8 @@ class AcademicNotesReport(View):
                    'note__final'
                    )
         title = 'Notas de {} {}'.format(grade_section_course, year)
-        context = {
+        context = {  
+            'logo': config.LOGO_DEL_COLEGIO,
             'nombre_colegio': config.NOMBRE_DEL_COLEGIO,
             'students_notes': students,
             'grade_section_course': grade_section_course,

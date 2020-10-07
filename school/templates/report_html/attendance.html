@@ -1,9 +1,18 @@
 {% extends 'report_html/base.html' %}
+{% load static own_context_processor %}
 {% block content %}
     <table style="margin: 0;" cellpadding="0" border="0" cellspacing="0">
         <tbody>
         <tr>
             <th colspan="2" rowspan="1"><h2 style="color: black; text-align: left;">{{ nombre_colegio }}</h2></th>
+	    <th colspan="1" rowspan="1">
+                {% if logo %}
+                    <div style="width: 50px;height: 65px;text-align: right">
+                        {% get_media_prefix as MEDIA_URL %}
+                        <img style="width: 50px;height: 65px" src="{{ MEDIA_URL }}{{ logo }}" alt="logo">
+                    </div>
+                {% endif %}
+            </th>
         </tr>
         <tr>
             <th colspan="2" rowspan="1"><h3 style="color: black; text-align: left;">LISTA DE ASISTENCIA</h3></th>
@@ -32,7 +41,7 @@
         <thead>
         <tr>
             <th style="width: 5%">#</th>
-            <th style="width: 20%">CÓDIGO MINED</th>
+            <th style="width: 15%">CÓDIGO MINED</th>
             <th>NOMBRE DEL ESTUDIANTE</th>
             <th>OBSERVACIÓN</th>
         </tr>
