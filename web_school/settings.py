@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'school.templatetags.own_context_processor.info',
             ],
             'libraries': {
                 'own_context_processor': 'school.templatetags.own_context_processor',
