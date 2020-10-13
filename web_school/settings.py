@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'school.templatetags.own_context_processor.info',
             ],
             'libraries': {
                 'own_context_processor': 'school.templatetags.own_context_processor',
@@ -156,6 +157,10 @@ CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 # Jet Menu Settings
 JET_SIDE_MENU_COMPACT = True
 JET_SIDE_MENU_ITEMS = build_django_jet_menu()
+
+# Media settings
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_URL = '/media/'
 
 # optional constance settings
 try:
