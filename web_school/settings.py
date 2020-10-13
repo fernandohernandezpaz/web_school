@@ -158,6 +158,10 @@ CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 JET_SIDE_MENU_COMPACT = True
 JET_SIDE_MENU_ITEMS = build_django_jet_menu()
 
+# Media settings
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_URL = '/media/'
+
 # optional constance settings
 try:
     from .constance_settings import *

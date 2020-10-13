@@ -22,6 +22,6 @@ def get_value(dict, key):
 
 def info(request):
     return {
-        'logo': config.LOGO_DEL_COLEGIO,
+        'logo_colegio': config.LOGO_DEL_COLEGIO,
         'nombre_colegio': config.NOMBRE_DEL_COLEGIO
     }
