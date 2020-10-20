@@ -57,6 +57,7 @@
             <input type="hidden" name="teacher_id" id="teacher" value="{{ teacher_id }}">
             <input type="hidden" name="grade_section_course_id" id="grade_section_course_id"
                    value="{{ grade_section_course.id }}">
+                   {% csrf_token %}
             <main>
                 <input id="tab1" checked type="radio" name="tabs">
                 <label for="tab1">Aula</label>
