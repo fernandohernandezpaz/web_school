@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.conf.urls import url, include
+from school.views import PublicViewStudentForParents
 
 urlpatterns = [
     url('jet/', include('jet.urls', 'jet')),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
     path('school/', include('school.urls')),
+    path('colegio/estudiantes', PublicViewStudentForParents.as_view(), name='public_page')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,6 +24,7 @@ urlpatterns = [
     path('students', api.get_students, name='api_students'),
     path('matricula/guardar', api.save_form, name='api_save'),
     path('estadisticas/periodos/notas', api.statistics_period_notes, name='api_statistics_period_notes'),
+    path('buscar/estudiante', api.find_student, name='api_find_student'),
 
     # URL of reports
     path('<int:teacher_id>/lista_asistencia/<int:grade_section_course_id>', reports.AttendanceReport.as_view(),

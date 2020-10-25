@@ -1,0 +1,67 @@
+{% extends 'public/base.html' %}
+{% load static %}
+{% block content %}
+    <div id="cover">
+        <form method="get" action="">
+            {% csrf_token %}
+            <div class="tb">
+                <div class="td">
+                    <label>
+                        <input v-model="search" id="buscador" type="text" placeholder="Buscar por CODIGO MINED"
+                               required autocomplete="off">
+                    </label>
+                </div>
+                <div class="td" id="s-cover">
+                    {% verbatim %}
+                    <button type="button" class="find" v-on:click="buscarEstudiante()">
+                        <div id="s-circle"></div>
+                        <span></span>
+                    </button>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="tabla_information" style="display: none">
+        <h2 class="font-ligter">Estudiante: <span class="font-bold" id="nombre_completo"></span></h2>
+        <h2 class="font-ligter">
+            Fecha Nacimiento: <span class="font-bold" id="fecha_nacimiento"></span>
+            Edad: <span class="font-bold" id="edad"></span> años
+        </h2>
+        <h2 class="font-ligter">
+            Género: <span class="font-bold" id="genero"></span>
+            Nacionalidad: <span class="font-bold" id="nacionalidad"></span>
+        </h2>
+        <h2 class="font-ligter">Código MINED: <span class="font-bold" id="codigo_mined"></span></h2>
+        <h2 class="font-ligter">
+            Año en curso: <span class="font-bold" id="anio_curso"></span>
+            Grado y Sección: <span class="font-bold" id="grado_seccion"></span>
+        </h2>
+
+        <table cellspacing="3" cellpadding="3" style="width: 100%">
+            <thead>
+            <tr>
+                <th>Asignatura</th>
+                {% for campo in campos %}
+                    <th>{{ campo }}</th>
+                {% endfor %}
+                <th>Docente</th>
+            </tr>
+            </thead>
+            <tbody id="body_table">
+            </tbody>
+        </table>
+    </div>
+    <div id="dummy-target"></div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        const urls = {
+            find_student: '{% url 'school:api_find_student' %}'
+        };
+        const campos = [{% for campo in campos %}'{{ campo }}',{% endfor %}];
+    </script>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'js/vue_app.js' %}"></script>
+{% endblock %}
