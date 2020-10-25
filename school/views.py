@@ -172,3 +172,13 @@ class NewRegisterNote(CheckIsLoggin, TemplateView):
                 filter(note_id__in=notes_id).all()
 
         return context
+
+
+class PublicViewStudentForParents(TemplateView):
+    template_name = 'public/main.html'
+
+    def get_context_data(self, **kwargs):
+        from .commons import fields_note_spanish
+        context = super().get_context_data(**kwargs)
+        context['campos'] = fields_note_spanish.values()
+        return context

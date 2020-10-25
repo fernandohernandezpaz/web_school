@@ -331,3 +331,61 @@ def statistics_period_notes(request):
     }
 
     return JsonResponse(response)
+
+
+def find_student(request):
+    codigo_mined = request.POST.get('codigo_mined')
+    current_year = get_current_year()
+    if Student.objects.filter(code_mined=codigo_mined).exists():
+        student = Student.objects.filter(code_mined=codigo_mined). \
+            annotate(nombre_completo=Concat('names', Value(' '), 'last_name')). \
+            get()
+        student = {
+            'id': student.id,
+            'nombre_completo': student.nombre_completo,
+            'genero': student.gender.name,
+            'nacionalidad': student.nationality.name,
+            'codigo_mined': student.code_mined,
+            'fecha_nacimiento': student.birthday,
+            'edad': student.calculate_age()
+        }
+
+        matriculation = Matriculation.objects. \
+            filter(teaching_year=current_year,
+                   student_id=student.get('id')).get()
+        matriculation = {
+            'id': matriculation.id,
+            'grado_seccion': matriculation.grade_section.__str__(),
+            'anio_curso': matriculation.teaching_year,
+            'fecha_registro': matriculation.registration_date,
+        }
+
+        notes_set = Note.objects.filter(matriculation_id=matriculation.get('id')).all()
+
+        notes = list()
+        if notes_set.exists():
+            for note in notes_set.iterator():
+                notes.append({
+                    'Asignatura': note.course.name,
+                    'Docente': '{} {}'.format(note.teacher.first_name, note.teacher.last_name),
+                    'Bimensual I': note.bimonthly_I or 0,
+                    'Bimensual II': note.bimonthly_II or 0,
+                    'Semestral I': note.biannual_I or 0,
+                    'Bimensual III': note.bimonthly_III or 0,
+                    'Bimensual IV': note.bimonthly_IV or 0,
+                    'Semestral II': note.biannual_II or 0,
+                    'Nota Final': note.final or 0
+                })
+    else:
+        student = None
+        matriculation = None
+        notes = None
+
+    response = {
+        'student': student,
+        'matriculation': matriculation,
+        'notes': notes,
+        'status': True
+    }
+
+    return JsonResponse(response)
