@@ -162,8 +162,11 @@ JET_SIDE_MENU_ITEMS = build_django_jet_menu()
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 MEDIA_URL = '/media/'
 
+# Expire session
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # optional constance settings
 try:
     from .constance_settings import *
 except ImportError:
-    pass
+    ipass
