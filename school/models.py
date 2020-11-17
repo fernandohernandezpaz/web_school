@@ -117,6 +117,7 @@ class Profile(models.Model):
                                 verbose_name='Formación')
     cellphone = models.PositiveIntegerField(null=True,
                                             blank=True,
+                                            validators=validateQuantityDigits('Teléfono', 8),
                                             verbose_name='Teléfono')
     address = models.TextField(max_length=200, null=True,
                                blank=True,
@@ -163,7 +164,8 @@ class Family(models.Model):
     full_name = models.CharField(max_length=50,
                                  verbose_name='Nombre Completo')
     document = models.CharField(max_length=16, unique=True, null=False, blank=False,
-                                verbose_name='Cédula')
+                                verbose_name='Cédula', help_text='<strong style="color: black">Formato '
+                                                                 'xxx-xxxxxx-xxxxL</strong>')
     family_role = models.CharField(max_length=20, choices=FAMILY_ROLE_CHOICES,
                                    null=False, verbose_name='Rol Familiar')
     mobile = models.PositiveIntegerField(null=True, blank=True,

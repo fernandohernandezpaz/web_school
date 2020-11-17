@@ -169,4 +169,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 try:
     from .constance_settings import *
 except ImportError:
-    ipass
+    pass

@@ -148,10 +148,10 @@ class FamilyAdmin(admin.ModelAdmin):
                      'email', 'tutor', 'occupation', 'address']}),
     ]
 
-    class Media:
-        css = {
-            'all': ('css/own_styles.css',),
-        }
+    # class Media:
+    #     css = {
+    #         'all': ('css/own_styles.css',),
+    #     }
 
 
 @admin.register(PersonalFile)

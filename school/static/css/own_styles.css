@@ -1,4 +1,4 @@
-input#id_mobile, input#id_phone {
+input#id_mobile, input#id_phone, input#id_profile-0-cellphone {
     width: 160px !important;
 }
 
