@@ -145,13 +145,8 @@ class FamilyAdmin(admin.ModelAdmin):
         ('Información General del Familiar',
          {'fields': ['full_name', 'document', 'work_place',
                      'family_role', 'mobile', 'phone',
-                     'email', 'tutor', 'occupation', 'address']}),
+                     'email', 'occupation', 'address', 'tutor']}),
     ]
-
-    # class Media:
-    #     css = {
-    #         'all': ('css/own_styles.css',),
-    #     }
 
 
 @admin.register(PersonalFile)
