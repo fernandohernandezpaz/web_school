@@ -1,4 +1,4 @@
-Django==2.2.21
+Django==2.2.22
 django-environ==0.4.5
 django-jet==1.0.8
 django-constance==2.6.0
