@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  school_db:
+    container_name: school_db
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - dev
+  school_app:
+    build: .
+    container_name: web_school_image
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - school_db
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
